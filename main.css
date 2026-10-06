@@ -1,0 +1,71 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --black: rgb(28, 28, 28);
+
+    --white: rgb(220, 220, 220);
+    --white-05: rgb(from var(--white) r g b / 0.5);
+}
+
+body {
+    height: 3000px;
+    /*  */
+
+    .wellcome {
+        background-image: url("./resources/images/bg-mountains.webp");
+
+        .filterLayer {
+            --blur: 0px;
+
+            backdrop-filter: grayscale(0.6) blur(var(--blur));
+        }
+    }
+
+    .section-1 {
+        top: 100vh;
+        background-color: var(--white-05);
+    }
+}
+
+/* helper positions */
+.absolute {
+    position: absolute;
+}
+
+.relative {
+    position: relative;
+}
+
+.fixed {
+    position: fixed;
+}
+
+/* helper sizes */
+.maxVP {
+    width: 100vw;
+    height: 100vh;
+}
+
+.max {
+    width: 100%;
+    height: 100%;
+}
+
+.z1 {
+    z-index: 1;
+}
+
+.z2 {
+    z-index: 2;
+}
+
+/* helpers bg */
+.bg-cover {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
