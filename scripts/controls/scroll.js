@@ -1,3 +1,17 @@
+/* import { reactiveScroll } from "../framework.js"
+console.log(reactiveScroll)
+ */
+/* reactiveScroll.add({
+    name: "scroll",
+    value: window.scrollY,
+    listeners: scroll.reactToScroll
+})
+
+window.addEventListener("scroll", () => {
+    reactiveScroll.scroll = window.scrollY
+})
+
+
 const wellcomeHeight = document.querySelector("#wellcome").offsetHeight
 
 
@@ -17,4 +31,4 @@ export const reactToScroll = (scroll) => {
     }
 }
 
-reactToScroll(window.scrollY)
+reactToScroll(window.scrollY) */

@@ -16,12 +16,29 @@ body {
 
     .wellcome {
 
-        .bg-layer {
-            background-image: url("./resources/images/bg-mountains.webp");
+        .bgLayer {
+            background-image: url("./../images/bg-mountains.webp");
         }
 
-        .filter-layer {
+        .filterLayer {
             backdrop-filter: grayscale(0.6);
+        }
+
+        .titlesLayer {
+            width: fit-content;
+            height: 300px;
+            border: 1px solid red;
+
+            .titH1 {
+
+                .comp {
+                    font-family: "neuropol";
+                    font-size: 60px;
+                    font-weight: bolder;
+                    color: var(--white);
+                    letter-spacing: 4px;
+                }
+            }
         }
     }
 
