@@ -15,9 +15,21 @@ const addReactives = (modules) => {
     return reactives
 }
 
-const init = async () => {
-    const modules = await getImports()
-    return addReactives(modules)
+const loadControls = async () => {
+    const controls = {}
+    await Promise.all([
+        import("./controls/scroll.js").then(mod => controls["scroll"] = mod)
+    ])
+    return controls
 }
 
-export const reactives = await init()
+const init = async () => {
+    const [modules, controls] = await Promise.all([
+        getImports(),
+        loadControls()
+    ])
+    const reactives = addReactives(modules)
+    Object.values(controls).forEach(control => control.init(reactives))
+}
+
+init()

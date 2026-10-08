@@ -1,3 +1,6 @@
+export const init = (modules) => {
+    console.log(modules)
+}
 /* import { reactiveScroll } from "../framework.js"
 console.log(reactiveScroll)
  */
