@@ -4,14 +4,14 @@ const getImports = async () => {
     const modules = {}
     await Promise.all([
         import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/helpers/reactive.js`).then(mod => modules["reactive"] = mod),
-        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/components/fallBack/textAppear.js`).then(mod => modules["textAppear"] = mod)
+        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/components/fallBack/textAppear.js`).then(mod => modules["textAppear"] = mod),
     ])
     return modules
 }
 
 const addReactives = (modules) => {
     const reactives = {}
-    reactives["scroll"] = modules.reactive.reactive() /* nombres redundante añadir default en modulo */
+    reactives["viewPort"] = modules.reactive.default()
     return reactives
 }
 
