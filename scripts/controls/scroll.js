@@ -20,32 +20,30 @@ export const init = async (reacts) => {
     activeVPMonitor()
 }
 
-const addScrollUpdate = (reactive) => {
-    window.addEventListener("scroll", () => reactive.onScroll = window.scrollY)
-}
-
 const sections = {
-    wellcome: document.querySelector("#wellcome")
+    wellcome: document.querySelector("#wellcome"),
+    section1: document.querySelector("#section-1"),
 }
 
-const sizes = {
-    wellcome: null
-}
+const sizes = [
+    ["wellcome", [0, null]],
+    ["section1", [null, null]],
+]
 
-const updateVPsize = () => Object.entries(sections).forEach(([key, value]) => sizes[key] = value.offsetHeight)
+const addScrollUpdate = (reactive) => window.addEventListener("scroll", () => reactive.onScroll = window.scrollY)
+
+const updateVPsize = () => sizes.forEach(([key, value]) => {
+    const section = sections[key]
+    const top = section.offsetTop
+    value[0] = top
+    value[1] = section.offsetHeight + top
+})
 
 const activeVPMonitor = () => window.addEventListener("resize", () => updateVPsize())
 
 const reactToScroll = (scroll) => {
-    if (scroll === 0 || scroll < sizes.wellcome) {
-        if (reactives.viewPort.onSection === "wellcome") return
-        reactives.viewPort.onSection = "wellcome"
-    }
-
-    if (scroll >= sizes.wellcome) {
-        if (reactives.viewPort.onSection === "section-1") return
-        reactives.viewPort.onSection = "section-1"
-    }
+    const onSection = sizes.find(([key, value]) => scroll >= value[0] && scroll < value[1])?.[0] || null
+    reactives.viewPort.onSection !== onSection && (reactives.viewPort.onSection = onSection)
 }
 
 const alertSection = (section) => {
