@@ -25,7 +25,7 @@ const sections = {
     section1: document.querySelector("#section-1"),
 }
 
-const sizes = [
+const sizes = [ /* start - end */
     ["wellcome", [0, null]],
     ["section1", [null, null]],
 ]
@@ -42,7 +42,7 @@ const updateVPsize = () => sizes.forEach(([key, value]) => {
 const activeVPMonitor = () => window.addEventListener("resize", () => updateVPsize())
 
 const reactToScroll = (scroll) => {
-    const onSection = sizes.find(([key, value]) => scroll >= value[0] && scroll < value[1])?.[0] || null
+    const onSection = sizes.find(([key, value]) => scroll >= value[0] && scroll < value[1])?.[0] || null /* body */
     reactives.viewPort.onSection !== onSection && (reactives.viewPort.onSection = onSection)
 }
 

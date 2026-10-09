@@ -2,6 +2,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    list-style: none;
 }
 
 :root {
@@ -15,10 +16,7 @@ body {
     /*  */
 
     .wellcome {
-
-        .bgLayer {
-            background-image: url("./../images/bg-mountains.webp");
-        }
+        background-image: url("./../images/bg-mountains.webp");
 
         .filterLayer {
             backdrop-filter: grayscale(0.6);
@@ -27,28 +25,42 @@ body {
         .titlesLayer {
             width: fit-content;
             height: 300px;
-            border: 1px solid red;
-
-            .titH1 {
-
-                .comp {
-                    font-family: "neuropol";
-                    font-size: 60px;
-                    font-weight: bolder;
-                    color: var(--white);
-                    letter-spacing: 4px;
-                }
-            }
-        }
+/*             border: 1px solid red;
+ */        }
     }
+}
 
-    .section-1 {
-        top: 100vh;
-        width: 100%;
-        height: 140vh;
-        background-color: rgb(from var(--white) r g b / 0.6);
-        backdrop-filter: blur(10px);
-    }
+/* shared specifics */
+.section {
+    width: 100%;
+    height: 140vh;
+    padding: 10%;
+}
+
+.bg-cover {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.horLimit {
+    width: 100%;
+    max-width: 1400px;
+}
+
+/* helper flex */
+.FCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.FRow {
+    display: flex;
+}
+
+.FSpaceB {
+    justify-content: space-between;
 }
 
 /* helper positions */
@@ -81,11 +93,4 @@ body {
 
 .z2 {
     z-index: 2;
-}
-
-/* helpers bg */
-.bg-cover {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
 }

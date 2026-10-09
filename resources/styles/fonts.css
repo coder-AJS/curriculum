@@ -5,3 +5,11 @@
     font-style: normal;
     font-display: swap; /* Recomendado para que el texto cargue rápido */
 }
+
+@font-face {
+    font-family: 'conthrax'; 
+    src: url('./../fonts/Conthrax-SemiBold.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* Recomendado para que el texto cargue rápido */
+}

@@ -6,21 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C.V.</title>
 
-    <link rel="stylesheet" href="https://coder-ajs.github.io/lev/style/flex.css">
     <link rel="stylesheet" href="./resources/styles/main.css">
     <link rel="stylesheet" href="./resources/styles/fonts.css">
+    <link rel="stylesheet" href="./resources/styles/section1.css">
 
 </head>
 
 <body>
-    <section id="wellcome" class="wellcome maxVP FRow FCenter fixed z1">
-        <div id="bgLayer" class="bg-cover bgLayer max absolute z1"></div>
-        <div id="filterLayer" class="filterLayer max absolute z1"></div>
-        <div class="titlesLayer max FRow FCenter absolute z1">
-            <div id="titH1" class="titH1"></div>
-        </div>
+    <section id="wellcome" class="wellcome bg-cover maxVP FCenter fixed z1">
+        <div class="filterLayer max absolute"></div>
+        <div class="titlesLayer max FCenter absolute"></div>
     </section>
-    <section id="section-1" class="section-1 relative z2"></section>
+
+    <section id="section-1" class="section section-1 FCenter relative z2">
+        <ul class="cardsCont horLimit">
+            <li class="card bg-cover relative">
+                <div class="bars absolute"></div>
+                <div class="bars absolute FCenter">HTML</div>
+                <div class="statBox max absolute"></div>
+            </li>
+            <li class="card bg-cover relative">
+                <div class="bars absolute"></div>
+                <div class="bars absolute FCenter">CSS</div>
+            </li>
+            <li class="card bg-cover relative">
+                <div class="bars absolute"></div>
+                <div class="bars absolute FCenter">JAVASCRIPT</div>
+            </li>
+        </ul>
+    </section>
 
     <script type="module" src="./scripts/level.js"></script>
 </body>
