@@ -59,7 +59,19 @@ body {
     display: flex;
 }
 
-.FSpaceB {
+.FCol {
+    display: flex;
+}
+
+.FA_center {
+    align-items: center;
+}
+
+.FJ_center {
+    justify-content: center;
+}
+
+.FJ_between {
     justify-content: space-between;
 }
 

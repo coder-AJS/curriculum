@@ -1,20 +1,21 @@
-let reactives = null
+let vp = null
 
-export const init = async (reacts) => {
-    reactives = reacts
-    reacts.viewPort.add({
+export const init = async (reactive) => {
+    vp = reactive.viewPort
+
+    vp.add({
         name: "onScroll",
         value: window.scrollY,
         listeners: reactToScroll
     })
 
-    reacts.viewPort.add({
+    vp.add({
         name: "onSection",
         value: null,
-        listeners: alertSection
     })
 
-    addScrollUpdate(reacts.viewPort)
+
+    addScrollUpdate(vp)
     updateVPsize()
     reactToScroll(window.scrollY)
     activeVPMonitor()
@@ -30,7 +31,7 @@ const sizes = [ /* start - end */
     ["section1", [null, null]],
 ]
 
-const addScrollUpdate = (reactive) => window.addEventListener("scroll", () => reactive.onScroll = window.scrollY)
+const addScrollUpdate = (reactive) => window.addEventListener("scroll", () => vp.onScroll = window.scrollY)
 
 const updateVPsize = () => sizes.forEach(([key, value]) => {
     const section = sections[key]
@@ -42,10 +43,6 @@ const updateVPsize = () => sizes.forEach(([key, value]) => {
 const activeVPMonitor = () => window.addEventListener("resize", () => updateVPsize())
 
 const reactToScroll = (scroll) => {
-    const onSection = sizes.find(([key, value]) => scroll >= value[0] && scroll < value[1])?.[0] || null /* body */
-    reactives.viewPort.onSection !== onSection && (reactives.viewPort.onSection = onSection)
-}
-
-const alertSection = (section) => {
-    console.log(section)
+    const section = sizes.find(([key, value]) => scroll >= value[0] && scroll < value[1])?.[0] || null /* body */
+    vp.onSection !== section && (vp.onSection = section)
 }
