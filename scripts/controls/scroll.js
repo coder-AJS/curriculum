@@ -46,3 +46,7 @@ const reactToScroll = (scroll) => {
     const section = sizes.find(([key, value]) => scroll >= value[0] && scroll < value[1])?.[0] || null /* body */
     vp.onSection !== section && (vp.onSection = section)
 }
+
+export const block = (bol) => {
+    document.body.style.overflow = bol ? "hidden" : ""
+}
