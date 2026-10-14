@@ -14,7 +14,7 @@ const config = [
             domHeight: "460px"
         },
         logic: {
-            id: "statHtml",
+            id: "html",
             title: "HTML",
             progress: 90
         },
@@ -32,7 +32,7 @@ const config = [
             domHeight: "460px"
         },
         logic: {
-            id: "statCss",
+            id: "css",
             title: "CSS",
             progress: 90
         },
@@ -50,7 +50,7 @@ const config = [
             domHeight: "460px"
         },
         logic: {
-            id: "statJs",
+            id: "js",
             title: "JAVASCRIPT",
             progress: 90
         },
@@ -61,14 +61,19 @@ const config = [
     },
 ]
 
-let html = false
-let css = false
-let js = false
-document.addEventListener("component", (e) => {
-   e.detail.id.includes("Html") && (html = true)
-   e.detail.id.includes("Css") && (css = true)
-   e.detail.id.includes("Js") && (js = true)
+let statsReady = {
+    html: false,
+    css: false,
+    js: false
+}
 
+const alertDom = () => {
+
+}
+
+document.addEventListener("component", (e) => {
+    statsReady[e.detail.id] = e.detail.state
+    Object.values(statsReady).every(Boolean) && alertDom()
 })
 
 const createComponent = async (box, config, component) => {
@@ -78,7 +83,4 @@ const createComponent = async (box, config, component) => {
     instance.configure("logic", config.logic)
     instance.addToNode(config.node)
     console.log(box, config, component)
-
-    await new Promise(resolve => setTimeout(resolve, 1000))
-/*     instance.init()
- */}
+}

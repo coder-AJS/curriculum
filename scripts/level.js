@@ -1,11 +1,5 @@
 const levelVersion = "e5a86d29df1585baffc0f1f106794096b9782351"
 
-const addReactive = (reactiveMod) => {
-    const reactive = {}
-    reactive["viewPort"] = reactiveMod.reactive()
-    return reactive.viewPort
-}
-
 const getHelpers = async () => {
     const helpers = {}
     await Promise.all([
@@ -24,11 +18,10 @@ const getComponents = async () => {
     return components
 }
 
-
 const getIface = async () => {
     const iface = {}
     await Promise.all([
-        await import("./iface/section1.js").then(mod => iface["section1"] = mod)
+        import("./iface/section1.js").then(mod => iface["section1"] = mod),
     ])
     return iface
 }
@@ -36,8 +29,8 @@ const getIface = async () => {
 const loadControls = async () => {
     const controls = {}
     await Promise.all([
+        import("./controls/components.js").then(mod => controls["components"] = mod),
         import("./controls/scroll.js").then(mod => controls["scroll"] = mod),
-        import("./controls/section1_stats.js").then(mod => controls["section1"] = mod),
     ])
     return controls
 }
@@ -50,7 +43,7 @@ const init = async () => {
         loadControls(),
     ])
 
-    const reactive = addReactive(helpers.reactiveMod)
+    const reactive = {} /* reactive global object */
     Object.values(controls).forEach(control => control.init(reactive, helpers))
     Object.values(iface).forEach(iface => iface.init(helpers, components))
 }

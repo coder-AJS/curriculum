@@ -1,11 +1,10 @@
-import * as section1 from "./section1_stats.js"
-
 let vp = null
 let helpers = null
 let section1_statsOpened = false
 
-export const init = async (viewPort, helpersOBJ) => {
-    vp = viewPort
+export const init = async (reactive, helpersOBJ) => {
+    reactive["vp"] = helpersOBJ.reactiveMod.reactive()
+    vp = reactive.vp
     helpers = helpersOBJ
 
     updateVPsize()
