@@ -25,8 +25,9 @@ body {
         .titlesLayer {
             width: fit-content;
             height: 300px;
-/*             border: 1px solid red;
- */        }
+            /*             border: 1px solid red;
+ */
+        }
     }
 }
 

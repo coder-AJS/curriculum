@@ -20,7 +20,7 @@
 
         .stat_hidden {
             left: -50%;
-            transform: scale(0.4);
+            transform: scale(0);
             opacity: 0;
         }
     }

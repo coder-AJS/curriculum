@@ -1,22 +1,22 @@
-const levelVersion = "713fa13646c6ca17cfc9f5dda186e09270252b6d"
+const levelVersion = "265881972e1f77adb2b1aeb2651e1e0731c5e67b"
 
-const addReactives = (modules) => {
+const addReactive = (reactiveMod) => {
     const reactive = {}
-    reactive["viewPort"] = modules.reactive.default()
-    return reactive
+    reactive["viewPort"] = reactiveMod.reactive()
+    return reactive.viewPort
 }
 
-const getImports = async () => {
-    const modules = {}
+const getHelpers = async () => {
+    const helpers = {}
     await Promise.all([
-        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/helpers/reactive.js`).then(mod => modules["reactive"] = mod),
-        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/components/fallBack/textAppear.js`).then(mod => modules["textAppear"] = mod),
-        import("./../card.js").then(mod => modules["card"] = mod),
+        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/helpers/reactive.js`).then(mod => helpers["reactiveMod"] = mod),
+        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/helpers/tempo.js`).then(mod => helpers["tempo"] = mod),
+        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/helpers/viewPort.js`).then(mod => helpers["viewPort"] = mod)
     ])
-    return modules
+    return helpers
 }
 
-const loadIface = async () => {
+const getIface = async () => {
     const iface = {}
     await Promise.all([
 
@@ -34,14 +34,15 @@ const loadControls = async () => {
 }
 
 const init = async () => {
-    const [modules, controls, iface] = await Promise.all([
-        getImports(),
+    const [helpers, iface, controls] = await Promise.all([
+        getHelpers(),
+        getIface(),
         loadControls(),
-        loadIface()
     ])
-    const reactive = addReactives(modules)
-    Object.values(controls).forEach(control => control.init(reactive))
-    Object.values(iface).forEach(iface => iface.init(modules))
+    
+    const reactive = addReactive(helpers.reactiveMod)
+    Object.values(controls).forEach(control => control.init(reactive, helpers))
+    Object.values(iface).forEach(iface => iface.init(helpers))
 }
 
 init()

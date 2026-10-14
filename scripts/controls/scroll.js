@@ -1,24 +1,27 @@
+import * as section1 from "./section1_stats.js"
+
 let vp = null
+let helpers = null
+let section1_statsOpened = false
 
-export const init = async (reactive) => {
-    vp = reactive.viewPort
+export const init = async (viewPort, helpersOBJ) => {
+    vp = viewPort
+    helpers = helpersOBJ
 
-    vp.add({
-        name: "onScroll",
-        value: window.scrollY,
-        listeners: reactToScroll
-    })
+    updateVPsize()
+    activeVPMonitor()
 
     vp.add({
         name: "onSection",
-        value: null,
+        value: "body",
+        listeners: [
+            alertSection,
+            activeSection
+        ]
     })
 
-
-    addScrollUpdate(vp)
-    updateVPsize()
-    reactToScroll(window.scrollY)
-    activeVPMonitor()
+    changeSection(window.scrollY)
+    window.addEventListener("scroll", async () => await changeSection(window.scrollY))
 }
 
 const sections = {
@@ -31,8 +34,6 @@ const sizes = [ /* start - end */
     ["section1", [null, null]],
 ]
 
-const addScrollUpdate = (reactive) => window.addEventListener("scroll", () => vp.onScroll = window.scrollY)
-
 const updateVPsize = () => sizes.forEach(([key, value]) => {
     const section = sections[key]
     const top = section.offsetTop
@@ -41,12 +42,20 @@ const updateVPsize = () => sizes.forEach(([key, value]) => {
 })
 
 const activeVPMonitor = () => window.addEventListener("resize", () => updateVPsize())
+const identifySection = (scroll) => sizes.find(([key, value]) => scroll >= value[0] && scroll < value[1])?.[0] || "body"
 
-const reactToScroll = (scroll) => {
-    const section = sizes.find(([key, value]) => scroll >= value[0] && scroll < value[1])?.[0] || null /* body */
-    vp.onSection !== section && (vp.onSection = section)
+const changeSection = async (scroll) => {
+    const section = identifySection(scroll)
+    section !== vp.onSection && (vp.onSection = section)
 }
 
-export const block = (bol) => {
-    document.body.style.overflow = bol ? "hidden" : ""
+const activeSection = async (section) => {
+        if (section === "section1" && !section1_statsOpened) {
+        helpers.viewPort.blockScroll(document.body)
+        section1_statsOpened = true
+        await section1.animateStats()
+        helpers.viewPort.blockScroll(document.body, false)
+    }
 }
+
+const alertSection = (section) => console.log(section)
