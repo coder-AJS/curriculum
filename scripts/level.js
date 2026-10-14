@@ -1,4 +1,4 @@
-const levelVersion = "265881972e1f77adb2b1aeb2651e1e0731c5e67b"
+const levelVersion = "e5a86d29df1585baffc0f1f106794096b9782351"
 
 const addReactive = (reactiveMod) => {
     const reactive = {}
