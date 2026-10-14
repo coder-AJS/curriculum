@@ -4,12 +4,12 @@ export const init = (viewPort, helpersOBJ) => {
     helpers = helpersOBJ
 }
 
-
 export const animateStats = async () => {
     const statBoxes = document.querySelectorAll(".statBox")
-    for (const box of statBoxes) {
-        box.classList.remove("stat_hidden")
-        await helpers.tempo.sleep(160)
+
+    for (let i = 0; i < statBoxes.length; i++) {
+        statBoxes[i].classList.remove("statHidden")
+        await helpers.tempo.sleep(150)
     }
     await helpers.tempo.sleep(2000)
 }

@@ -49,6 +49,11 @@ body {
     max-width: 1400px;
 }
 
+/* transitions */
+.tempo500 {
+    transition: 500ms ease-in-out;
+}
+
 /* helper flex */
 .FCenter {
     display: flex;

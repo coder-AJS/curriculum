@@ -16,10 +16,19 @@ const getHelpers = async () => {
     return helpers
 }
 
+const getComponents = async () => {
+    const components = {}
+    await Promise.all([
+        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/components/circularProgressCard.js`).then(mod => components["statCard"] = mod),
+    ])
+    return components
+}
+
+
 const getIface = async () => {
     const iface = {}
     await Promise.all([
-
+        await import("./iface/section1.js").then(mod => iface["section1"] = mod)
     ])
     return iface
 }
@@ -34,15 +43,16 @@ const loadControls = async () => {
 }
 
 const init = async () => {
-    const [helpers, iface, controls] = await Promise.all([
+    const [helpers, components, iface, controls] = await Promise.all([
         getHelpers(),
+        getComponents(),
         getIface(),
         loadControls(),
     ])
-    
+
     const reactive = addReactive(helpers.reactiveMod)
     Object.values(controls).forEach(control => control.init(reactive, helpers))
-    Object.values(iface).forEach(iface => iface.init(helpers))
+    Object.values(iface).forEach(iface => iface.init(helpers, components))
 }
 
 init()

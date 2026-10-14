@@ -1,1 +1,0 @@
-const cardBoxes = document.querySelectorAll(".card")
