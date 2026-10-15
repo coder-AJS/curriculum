@@ -1,7 +1,34 @@
-export const init = (helpers, components) => {
-    const stat3dBoxes = document.querySelectorAll(".stat3d")
+import * as appLock from "../controls/appLock.js"
 
-    stat3dBoxes.forEach((item, index) => createComponent(item, config[index], components.statCard))
+export const init = (reactives, level) => {
+    const section1 = level.helpers.reactive.newReactive()
+    reactives["section1"] = section1
+    section1.add({
+        name: "stats",
+        value: false,
+        listeners: () => appLock.requestUnBlock(reactives)
+    })
+
+    const validateStatsReady = () => {
+        if (Object.values(componentsReady).every(Boolean)) {
+            reactives.section1.stats = true
+        }
+    }
+
+    const componentsReady = { 
+        html: false, 
+        css: false, 
+        js: false 
+    }
+
+    document.addEventListener("component", (e) => {
+        componentsReady[e.detail.id] = e.detail.state
+        validateStatsReady()
+    })
+
+    const stat3dBoxes = document.querySelectorAll(".stat3d")
+    stat3dBoxes.forEach((item, index) => createComponent(item, config[index], level.components.statCard))
+
 }
 
 const config = [
@@ -61,26 +88,10 @@ const config = [
     },
 ]
 
-let statsReady = {
-    html: false,
-    css: false,
-    js: false
-}
-
-const alertDom = () => {
-
-}
-
-document.addEventListener("component", (e) => {
-    statsReady[e.detail.id] = e.detail.state
-    Object.values(statsReady).every(Boolean) && alertDom()
-})
-
 const createComponent = async (box, config, component) => {
     const instance = new component.default()
     box.appendChild(instance)
     instance.configure("css", config.css)
     instance.configure("logic", config.logic)
     instance.addToNode(config.node)
-    console.log(box, config, component)
 }

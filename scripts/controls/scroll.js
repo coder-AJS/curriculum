@@ -1,9 +1,9 @@
 let section1_statsOpened = false
 
 export const init = async (r, h) => {
-    r.viewPort = h.reactive.newReactive()
+/*     r.viewPort = h.reactive.newReactive()
 
-    updateVPsize()
+ */    updateVPsize()
     activeVPMonitor()
 
     r.viewPort.add({
@@ -17,10 +17,6 @@ export const init = async (r, h) => {
 
     changeSection(r, window.scrollY)
     window.addEventListener("scroll", async () => await changeSection(window.scrollY))
-}
-
-export const toggleScroll = (boolean) => {
-    document.body.style.overflow = boolean ? "" : "hiddent"
 }
 
 const sections = {

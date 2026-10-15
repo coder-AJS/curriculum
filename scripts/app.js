@@ -3,14 +3,13 @@ const iface = {
 }
 
 const controls = {
-    components: "./controls/components.js",
-    scroll: "./controls/scroll.js"
+    scroll: "./controls/scroll.js",
+    section1: "./controls/section1.js"
 }
 
 const getModules = async (modules) => {
     return Object.fromEntries(await Promise.all(
         Object.entries(modules).map(async ([key, value]) => [key, await import(value)])
-
     ))
 }
 

@@ -1,4 +1,4 @@
-let helpers = null
+/* let helpers = null
 
 export const init = (viewPort, helpersOBJ) => {
     helpers = helpersOBJ
@@ -12,4 +12,4 @@ export const animateStats = async () => {
         await helpers.tempo.sleep(150)
     }
     await helpers.tempo.sleep(2000)
-}
+} */
