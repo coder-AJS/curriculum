@@ -5,10 +5,7 @@ const importModules = async () => {
         import("./level.js").then(mod => mod.init()),
         import("./app.js").then(mod => mod.init())
     ])
-    return {
-        "level": level, 
-        "app": app
-    }
+    return [level, app]
 }
 
 const addReactives = () => {
@@ -17,18 +14,17 @@ const addReactives = () => {
     return reactives
 }
 
-const prepareApp = async (modules, reactives) => {
+const prepareApp = async (app, level, reactives) => {
     await Promise.all([
-        modules.app.controls.scroll.init(reactives, modules.level.helpers)
+        app.controls.scroll.init(reactives, level.helpers)
     ])
 }
 
 const init = async () => {
     document.body.style.overflow = "hidden"
     const reactives = addReactives()
-    const modules = await importModules()
-    console.log(modules)
-    await prepareApp(modules, reactives)
+    const [level, app] = await importModules()
+    await prepareApp(app, level, reactives)
 }
 
 init()

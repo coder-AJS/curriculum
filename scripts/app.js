@@ -1,28 +1,22 @@
-const getIface = async () => {
-    const iface = {}
-    await Promise.all([
-        import("./iface/section1.js").then(mod => iface["section1"] = mod),
-    ])
-    return iface
+const iface = {
+    section1: "./iface/section1.js"
 }
 
-const getControls = async () => {
-    const controls = {}
-    await Promise.all([
-        import("./controls/components.js").then(mod => controls["components"] = mod),
-        import("./controls/scroll.js").then(mod => controls["scroll"] = mod),
-    ])
-    return controls
+const controls = {
+    components: "./controls/components.js",
+    scroll: "./controls/scroll.js"
+}
+
+const getModules = async (modules) => {
+    return Object.fromEntries(await Promise.all(
+        Object.entries(modules).map(async ([key, value]) => [key, await import(value)])
+
+    ))
 }
 
 export const init = async () => {
-    const [iface, controls] = await Promise.all([
-        getIface(),
-        getControls()
-    ])
-    
-    return {
-        "iface": iface,
-        "controls": controls
-    }
+    const modules = { iface, controls }
+    return Object.fromEntries(await Promise.all(
+        Object.entries(modules).map(async ([key, value]) => [key, await getModules(value)])
+    ))
 }
