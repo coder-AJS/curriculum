@@ -1,51 +1,31 @@
-const levelVersion = "e5a86d29df1585baffc0f1f106794096b9782351"
+const levelVersion = "2d4cfe1c1523757f89fa36ae3b3c729541c2167b"
+const serverUrl = `https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}`
 
 const getHelpers = async () => {
-    const helpers = {}
-    await Promise.all([
-        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/helpers/reactive.js`).then(mod => helpers["reactiveMod"] = mod),
-        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/helpers/tempo.js`).then(mod => helpers["tempo"] = mod),
-        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/helpers/viewPort.js`).then(mod => helpers["viewPort"] = mod)
+    const mods = await Promise.all([
+        import(`${serverUrl}/helpers/reactive.js`).then(mod => ["reactive", mod]),
+        import(`${serverUrl}/helpers/tempo.js`).then(mod => ["tempo", mod]),
+        import(`${serverUrl}/helpers/viewPort.js`).then(mod => ["viewPort", mod])
     ])
-    return helpers
+    return Object.fromEntries(mods)
 }
 
 const getComponents = async () => {
-    const components = {}
-    await Promise.all([
-        import(`https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}/components/circularProgressCard.js`).then(mod => components["statCard"] = mod),
+    const mods = await Promise.all([
+        import(`${serverUrl}/components/circularProgressCard.js`).then(mod => ["statCard", mod]),
     ])
-    return components
+    return Object.fromEntries(mods)
 }
 
-const getIface = async () => {
-    const iface = {}
-    await Promise.all([
-        import("./iface/section1.js").then(mod => iface["section1"] = mod),
-    ])
-    return iface
-}
 
-const loadControls = async () => {
-    const controls = {}
-    await Promise.all([
-        import("./controls/components.js").then(mod => controls["components"] = mod),
-        import("./controls/scroll.js").then(mod => controls["scroll"] = mod),
-    ])
-    return controls
-}
-
-const init = async () => {
-    const [helpers, components, iface, controls] = await Promise.all([
+export const init = async () => {
+    const [helpers, components] = await Promise.all([
         getHelpers(),
         getComponents(),
-        getIface(),
-        loadControls(),
     ])
 
-    const reactive = {} /* reactive global object */
-    Object.values(controls).forEach(control => control.init(reactive, helpers))
-    Object.values(iface).forEach(iface => iface.init(helpers, components))
+    return {
+        "helpers" : helpers,
+        "components": components,
+    }
 }
-
-init()

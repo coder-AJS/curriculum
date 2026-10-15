@@ -1,16 +1,12 @@
-let vp = null
-let helpers = null
 let section1_statsOpened = false
 
-export const init = async (reactive, helpersOBJ) => {
-    reactive["vp"] = helpersOBJ.reactiveMod.reactive()
-    vp = reactive.vp
-    helpers = helpersOBJ
+export const init = async (r, h) => {
+    r.viewPort = h.reactive.newReactive()
 
     updateVPsize()
     activeVPMonitor()
 
-    vp.add({
+    r.viewPort.add({
         name: "onSection",
         value: "body",
         listeners: [
@@ -19,8 +15,12 @@ export const init = async (reactive, helpersOBJ) => {
         ]
     })
 
-    changeSection(window.scrollY)
+    changeSection(r, window.scrollY)
     window.addEventListener("scroll", async () => await changeSection(window.scrollY))
+}
+
+export const toggleScroll = (boolean) => {
+    document.body.style.overflow = boolean ? "" : "hiddent"
 }
 
 const sections = {
@@ -43,17 +43,17 @@ const updateVPsize = () => sizes.forEach(([key, value]) => {
 const activeVPMonitor = () => window.addEventListener("resize", () => updateVPsize())
 const identifySection = (scroll) => sizes.find(([key, value]) => scroll >= value[0] && scroll < value[1])?.[0] || "body"
 
-const changeSection = async (scroll) => {
-    const section = identifySection(scroll)
-    section !== vp.onSection && (vp.onSection = section)
+const changeSection = async (r, scroll) => {
+    const section = identifySection(r, scroll)
+    section !== r.viewPort.onSection && (r.viewPort.onSection = section)
 }
 
 const activeSection = async (section) => {
         if (section === "section1" && !section1_statsOpened) {
-        helpers.viewPort.blockScroll(document.body)
+        h.viewPort.blockScroll(document.body)
         section1_statsOpened = true
         await section1.animateStats()
-        helpers.viewPort.blockScroll(document.body, false)
+        h.viewPort.blockScroll(document.body, false)
     }
 }
 
