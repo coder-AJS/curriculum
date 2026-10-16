@@ -1,14 +1,14 @@
-const levelVersion = "c95be6712cb4a6dc40a68a4eea6f90b1ddfd84c0"
+const levelVersion = "a64392dba26f71998e39d4ec4c33ada8833b3416"
 const serverUrl = `https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}`
 
 const helpers = {
     reactive: `${serverUrl}/helpers/reactive.js`,
-    tempo: `${serverUrl}/helpers/tempo.js`,
-    viewPort: `${serverUrl}/helpers/viewPort.js`
+    tempo: `${serverUrl}/helpers/tempo.js`
 }
 
 const components = {
-    statCard: `${serverUrl}/components/circularProgressCard.js`
+/*     statCard: `${serverUrl}/components/circularProgressCard.js`
+ */    statCard: "./../card.js"
 }
 
 const getModules = async (modules) => {

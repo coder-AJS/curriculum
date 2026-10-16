@@ -14,10 +14,10 @@ const prepareApp = async (reactives, level, app) => {
     ])
 }
 
-const loadControls = async (app, level) => {
+const loadControls = async (reactives, level, app) => {
     await Promise.all([
-/*         app.controls.scroll.init(reactives, level.helpers),
- */    ])
+        app.controls.appScroll.init(reactives, level)
+    ])
 }
 
 const init = async () => {
@@ -27,7 +27,7 @@ const init = async () => {
     const [level, app] = await importModules()
 
     await prepareApp(reactives, level, app)
-    await loadControls(app, level)
+    await loadControls(reactives, level, app)
 }
 
 init()

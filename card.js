@@ -12,34 +12,42 @@ globalStyle.replaceSync(`
         display: flex;
         width: 100%;
         height: 100%;
+        opacity: 0;
+        transition: 500ms;
     }
 
     .mainBox {
-        background-image: var(--backgroundImage);
-        background-size: auto 120%;
-        background-repeat: no-repeat;
-        background-position: center;
-        border-radius: 16px;
-        box-shadow: 8px 8px 10px var(--black);
         overflow: hidden;
 
-        .bars {
+        .backLayer {
+            background-image: var(--backgroundImage);
+            background-size: auto 140%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .bar {
             width: 100%;
             height: 60px;
             background-color: rgba(255, 255, 255, 0.2);
-            font-family: "mainFont";
-            font-size: 20px;
-            color: gainsboro;
+            font-family: var(--familyFont_1);
+            color: white;
             letter-spacing: 2px;
             backdrop-filter: blur(4px);
+        }
 
-            &:nth-child(2) {
+        .barTop {
+            height: 60px;
+            font-size: 20px;
+        }
+
+        .barBottom {
+            height: 34%;
+            top: calc(100% - 30px);
+
+            .nodeNotConfigured {
                 width: 100%;
-                height: 34%;
-                top: calc(100% - 30px);
-
-                .infoBox {
-                }
+                height: 30px;
             }
         }
 
@@ -51,7 +59,6 @@ globalStyle.replaceSync(`
                 top: 25%;
                 width: 100%;
                 aspect-ratio: 1/1;
-                border: 1px solid red;
 
                 .circleExt {
                     width: 100%;
@@ -68,20 +75,18 @@ globalStyle.replaceSync(`
                 }
 
                 .circleInt {
-                    display: flex;
-                    flex-direction: column;
                     align-items: center;
                     width: calc(100% - 31px);
                     aspect-ratio: 1/1;
                     border-radius: 50%;
                     background-color: rgba(0, 0, 0, 0.8);
-                    font-family: counterFont;
+                    font-family: var(--familyFont_2);
                     color: white;
                     mix-blend-mode: multiply;
                     container-type: inline-size;
 
                     .symbolLayer {
-                        bottom: 14%;
+                        bottom: 18%;
                         font-size: 18cqi;
                     }
 
@@ -109,20 +114,16 @@ globalStyle.replaceSync(`
         }
 
         &:has(.statBox .hiddenInput:checked) {
-            background-size: auto 300%;
-
-            & .bars {
+            .backLayer { background-size: auto 240%; }
+            
+            & .bar {
                 color: rgb(60, 60, 60);
                 background-color: rgba(255, 255, 255, 0.5);
-
-                &:nth-child(2) {
-                    top: 66%;
-                }
             }
 
-            & .statBox .circleBox {
-                top: 10%;
-            }
+            & .barBottom { top: 66%; }
+
+            & .statBox .circleBox { top: 10%; }
         }
     }
 
@@ -130,47 +131,56 @@ globalStyle.replaceSync(`
     .relative { position: relative; }
     .max { width: 100%; height: 100%; }
     .FCenter { display: flex; justify-content: center; align-items: center; }
-    .animated { transition: 500ms ease-in-out;
+    .FCol { display: flex; flex-direction: column; }
+    .transitioned { transition: 300ms ease-in-out;
 }
 `
 )
 
-export default class DualProgressCard extends HTMLElement {
-    #configured = false
+export default class AvancedProgressCard001 extends HTMLElement {
+    #configuredCss = false
+    #configuredLogic = false
+    #configureImage = false
+    #configuredNode = false
+    #initialized = false
+    #ready = false
+
+    #node = { html: "NODE NOT CONFIGURED", style: null }
     #progress = 0
-    #mainFont = { name: "mainFont", url: "./resources/fonts/Oxanium-Regular.ttf" }
-    #counterFont = { name: "counterFont", url: "./resources/fonts/Conthrax-SemiBold.otf" }
 
     constructor() {
         super()
 
         this.css = {
             backgroundImage: "none",
+            familyFont_1: "inherit",
+            familyFont_2: "inherit",
         }
 
         this.logic = {
+            id: null,
+            dom: document,
             title: "title",
             progress: 0,
-            autoInit: true
+            autoInit: false
         }
 
         this.dom = this.attachShadow({ mode: "open" })
+        this.dom.adoptedStyleSheets = [globalStyle]
     }
 
     async #draw() {
         this.dom.innerHTML = `
-            <div class="mainBox max animated relative">
-                <div class="bars FCenter animated absolute">${this.logic.title}</div>
-                <div class="bars animated absolute">
-                    <div class="infoBox max relative">
-
-                    </div>
-                </div>
-                <div class="statBox max animated relative">
-                    <ul class="circleBox FCenter animated relative">
+            <style>${this.#node.style ?? ""}</style>
+            <div class="mainBox max transitioned relative">
+                <div class="backLayer max transitioned absolute"></div>
+                <div class="bar barTop FCenter transitioned absolute">${this.logic.title}</div>
+                <div id="node" class="bar barBottom transitioned absolute">${this.#node.html}</div>
+                <div class="statBox max transitioned absolute">
+                    <ul class="circleBox FCenter transitioned relative">
                         <li class="circleExt"></li>
                         <li class="circleLine absolute"></li>
-                        <li class="circleInt absolute">
+                        <li class="circleInt FCol absolute">
                             <ul class="containerBox absolute">
                                 <li class="numberBox FCenter">${this.#progress}</li>
                             </ul>
@@ -181,30 +191,62 @@ export default class DualProgressCard extends HTMLElement {
                 </div>
             </div>
         `
-        return
     }
 
     async #sleep(ms) { await new Promise(resolve => setTimeout(resolve, ms)) }
 
-    configure(type, config) {
+    async #unloadImg(url) {
+        return new Promise((resolve, reject) => {
+            const newImage = new Image()
+            newImage.src = url
+            newImage.decode()
+                .then(() => resolve(newImage))
+                .catch((e) => reject(e))
+        })
+            .then(() => {
+                this.#configureImage = true
+                this.#alertDom()
+            })
+            .catch((e) => {
+                console.error("component error: failed lo get image", this)
+                throw e
+            })
+    }
+
+    #alertDom() {
+        if (this.#configuredCss && this.#configuredLogic && this.#configureImage && this.#configuredNode) {
+            this.#ready = true
+            this.logic.dom.dispatchEvent(new CustomEvent("component", { detail: { id: this.logic.id, state: true, instance: this } }))
+        }
+    }
+
+    async configure(type, config) {
         if (type !== "css" && type !== "logic") {
-            console.error("error in configure method type not valid", this)
+            console.error("component error: configure type not valid", this)
             return null
         }
 
         const configObj = type === "css" ? this.css : this.logic
         for (const key of Object.keys(config)) {
             if (!(key in configObj)) {
-                console.error(`component configure error, ${key} is not valid prop`, this)
+                console.error(`component error: ${key} is not valid prop`, this)
                 return null
             }
         }
 
-        Object.assign(configObj, config)
-        configObj === this.css && this.update()
+        if (type === "logic") {
+            Object.assign(configObj, config)
+            this.#configuredLogic = true
+        }
 
-        this.#configured = true
-        this.dom.adoptedStyleSheets = [globalStyle]
+        if (type === "css") {
+            Object.assign(configObj, config)
+            this.update()
+            this.#configuredCss = true
+            configObj.backgroundImage && this.#unloadImg(configObj.backgroundImage)
+        }
+
+        if (this.#configuredCss && this.#configuredLogic && this.#configuredNode && this.#configureImage) this.#alertDom()
     }
 
     update() {
@@ -215,6 +257,12 @@ export default class DualProgressCard extends HTMLElement {
     }
 
     async updateProgress(progress) {
+        if (progress <= this.#progress) {
+            console.error(`component error: updateProgress can't be less than or equal to acumulated progress`,
+                "\nacumulated progress: ", this.#progress, "\nrequest update: ", progress, "\ncomponent", this
+            )
+            return null
+        }
         const containerBox = this.dom.querySelector(".containerBox")
         const numberBox = Array.from(this.dom.querySelectorAll(".numberBox"))
 
@@ -234,24 +282,30 @@ export default class DualProgressCard extends HTMLElement {
         }
     }
 
-    async #loadFont() {
-        const fonts = [this.#mainFont, this.#counterFont]
-        for (const font of fonts) {
-            const newFont = new FontFace(font.name, `url(${font.url})`)
-            document.fonts.add(await newFont.load())
+    addToNode(obj) {
+        if (!obj?.html || !obj?.style) {
+            console.error("component error: addToNode error parameters", this)
+            return null
+        }
+
+        if (!this.#configuredNode && !this.#initialized) {
+            this.#node.style = obj.style
+            this.#node.html = obj.html
+            this.#configuredNode = true
+            this.#alertDom()
         }
     }
 
     async init() {
-        if (this.#configured) {
-            this.#loadFont()
-            await this.#draw()
-            await this.#sleep(1000)
+        if (this.#ready) {
+            this.#initialized = true
+            this.#draw()
+            this.style.opacity = "1"
             this.logic.autoInit && this.updateProgress(this.logic.progress)
         } else {
-            console.error("component error: not configured", this)
+            console.error("component error: not ready", this)
         }
     }
 }
 
-customElements.define("dualprog-card", DualProgressCard)
+customElements.define("avanced-progress-card-001", AvancedProgressCard001)

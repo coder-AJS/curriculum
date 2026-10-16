@@ -1,15 +1,18 @@
-/* let helpers = null
+export const animate = async (level) => {
+    const cards = document.querySelectorAll(".stat3d")
+    const bgLayers = document.querySelectorAll(".cardsCont .bgLayer")
 
-export const init = (viewPort, helpersOBJ) => {
-    helpers = helpersOBJ
+    for (let i = 0; i < cards.length; i++) {
+        cardsIntro(cards[i])
+        await level.helpers.tempo.sleep(350)
+    }
+    
+      /* better rendering engine performace  */
+    for (const item of bgLayers) { 
+        item.style.opacity = "0"
+        await level.helpers.tempo.sleep(500)
+        item.classList.add("hidden")
+    }
 }
 
-export const animateStats = async () => {
-    const statBoxes = document.querySelectorAll(".statBox")
-
-    for (let i = 0; i < statBoxes.length; i++) {
-        statBoxes[i].classList.remove("statHidden")
-        await helpers.tempo.sleep(150)
-    }
-    await helpers.tempo.sleep(2000)
-} */
+const cardsIntro = async (card) => card.classList.remove("stat3dHidden")

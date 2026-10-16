@@ -3,7 +3,7 @@ const iface = {
 }
 
 const controls = {
-    scroll: "./controls/scroll.js",
+    appScroll: "./controls/appScroll.js",
     section1: "./controls/section1.js"
 }
 

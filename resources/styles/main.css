@@ -48,9 +48,17 @@ body {
     max-width: 1400px;
 }
 
+.hidden {
+    display: none;
+}
+
 /* transitions */
 .tempo500 {
     transition: 500ms ease-in-out;
+}
+
+.tempo1200 {
+    transition: 1200ms ease-in-out
 }
 
 /* helper flex */

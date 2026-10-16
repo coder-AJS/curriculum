@@ -2,12 +2,12 @@ import * as appLock from "../controls/appLock.js"
 
 export const init = (reactives, level) => {
     const section1 = level.helpers.reactive.newReactive()
-    reactives["section1"] = section1
     section1.add({
         name: "stats",
         value: false,
         listeners: () => appLock.requestUnBlock(reactives)
     })
+    reactives["section1"] = section1
 
     const validateStatsReady = () => {
         if (Object.values(componentsReady).every(Boolean)) {
@@ -15,15 +15,17 @@ export const init = (reactives, level) => {
         }
     }
 
-    const componentsReady = { 
-        html: false, 
-        css: false, 
-        js: false 
+    const componentsReady = {
+        html: false,
+        css: false,
+        js: false
     }
 
     document.addEventListener("component", (e) => {
         componentsReady[e.detail.id] = e.detail.state
         validateStatsReady()
+        componentsReady[e.detail.id] = true 
+        e.detail.instance.init()
     })
 
     const stat3dBoxes = document.querySelectorAll(".stat3d")
@@ -35,15 +37,13 @@ const config = [
     {
         css: {
             backgroundImage: "./../../resources/images/pexels-alamsaim-29280658.jpg",
-            mainFont: "oxanium",
-            counterFont: "conthrax",
-            domWidth: "300px",
-            domHeight: "460px"
+            familyFont_1: "oxanium",
+            familyFont_2: "conthrax",
         },
         logic: {
             id: "html",
             title: "HTML",
-            progress: 90
+            progress: 100
         },
         node: {
             html: "a",
@@ -53,15 +53,13 @@ const config = [
     {
         css: {
             backgroundImage: "./../../resources/images/pexels-iskyfluous-3484440.jpg",
-            mainFont: "oxanium",
-            counterFont: "conthrax",
-            domWidth: "300px",
-            domHeight: "460px"
+            familyFont_1: "oxanium",
+            familyFont_2: "conthrax",
         },
         logic: {
             id: "css",
             title: "CSS",
-            progress: 90
+            progress: 95
         },
         node: {
             html: "a",
@@ -70,16 +68,14 @@ const config = [
     },
     {
         css: {
-            backgroundImage: "./../../resources/images/pexels-alamsaim-29280658.jpg",
-            mainFont: "oxanium",
-            counterFont: "conthrax",
-            domWidth: "300px",
-            domHeight: "460px"
+            backgroundImage: "./../../resources/images/pexels-oznkary-16509173.jpg",
+            familyFont_1: "oxanium",
+            familyFont_2: "conthrax",
         },
         logic: {
             id: "js",
             title: "JAVASCRIPT",
-            progress: 90
+            progress: 91
         },
         node: {
             html: "a",

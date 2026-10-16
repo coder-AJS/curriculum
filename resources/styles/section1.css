@@ -1,44 +1,45 @@
 .section-1 {
     top: 100vh;
-    background-color: rgb(from var(--white) r g b / 0.8);
+    background-color: rgb(from var(--white) r g b / 0.10);
+    backdrop-filter: blur(10px);
 
     .cardsCont {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, min-content);
+        justify-content: space-between;
         height: 100%;
 
-/*         border: 1px solid red;
- */
         .statBox {
-            justify-self: center;
             width: 300px;
             height: 460px;
             perspective: 900px;
             border-radius: 16px;
-            backdrop-filter: blur(4px);
-            background-color: rgba(255, 255, 255, 0.3);
-            
+            background-color: rgba(255, 255, 255, 0.2);
+
             .bgLayer {
                 background-image: url("./../images/stats.png");
                 background-size: 40%;
                 background-repeat: no-repeat;
                 background-position: center;
-                opacity: 0.2;
+                opacity: 0.5;
             }
 
             .stat3d {
                 transform-style: preserve-3d;
-                transform: rotateY(var(--rotateY));
-/*                 border: 1px solid blue;
- */
-                --rotateY: 40deg;
+                transform: rotateY(var(--rotateY)) scale(1);
+                --rotateY: 20deg;
                 --rotateY: 0;
+                border-radius: 16px;
+                box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.8);
+                opacity: 1;
+                overflow: hidden;
             }
-        }
 
-        .statHidden {
-            transform: scale(0);
-            opacity: 0;
+            .stat3dHidden {
+                transform: rotateY(var(--rotateY)) scale(1.1);
+                opacity: 0;
+                filter: blur(15px) grayscale(1);
+            }
         }
     }
 }

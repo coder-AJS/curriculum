@@ -1,8 +1,8 @@
-import * as viewPort from "../helpers/viewPort.js"
+import * as scroll from "../helpers/scroll.js"
 
-export const block = () => viewPort.blockScroll(document.body)
+export const block = () => scroll.block(document.body)
 
-export const unBlock = () => viewPort.blockScroll(document.body, false)
+export const unBlock = () => scroll.block(document.body, false)
 
 export const requestUnBlock = (reactives) => {
     let locked = true
