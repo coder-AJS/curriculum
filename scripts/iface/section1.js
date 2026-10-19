@@ -26,12 +26,11 @@ export const init = (reactives, level) => {
 
         componentsReady[e.detail.id] = e.detail.state
         validateStatsReady()
-        componentsReady[e.detail.id] = true
         e.detail.instance.init()
     })
 
     const stat3dBoxes = document.querySelectorAll(".stat3d")
-    Object.entries(config).forEach((item, index) => createComponent(stat3dBoxes[index], item, level.components.statCard))
+    Object.entries(config).forEach(([key, conf], index) => createComponent(level, stat3dBoxes[index], conf, nodes[key], level.components.statCard))
 }
 
 const config = {
@@ -74,7 +73,7 @@ const nodes = {
     html: [
         "Cumplimiento estricto de estándares W3C",
         "Arquitectura correcta de marcado semántico",
-        "Optimización de layouts y estructuras",
+        "Optimización de layouts y estructuras html",
         "Desarrollo front limpio sin estilos inline",
         "Diseño y validación nativa de formularios"
     ],
@@ -115,16 +114,18 @@ const addnodesTemplate = async (nodeContent) => {
             }
         }
     `
-
     return { "html": nodeTemplate, "style": nodeStyle }
 }
 
-const createComponent = async (box, config, component) => {
-    const instance = new component.default()
-    box.appendChild(instance)
-    await instance.configure("css", config[1].css)
-    await instance.configure("logic", config[1].logic)
-    await instance.configure("node", await addnodesTemplate(nodes[config[0]]))
+const createComponent = async (level, box, config, node, module) => {
+    console.log(level, box, config, node, module)
+    const component = await level.helpers.component.addComponent({
+        "module": module,
+        parent: box,
+        css: config.css,
+        logic: config.logic,
+        node: await addnodesTemplate(node)
+    })
 }
 
 console.log(config)

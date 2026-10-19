@@ -21,8 +21,8 @@ const loadControls = async (reactives, level, app) => {
 }
 
 const init = async () => {
-    appLock.block()
-
+/*     appLock.block()
+ */
     const reactives = {}
     const [level, app] = await importModules()
 

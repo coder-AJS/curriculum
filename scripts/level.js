@@ -1,7 +1,8 @@
-const levelVersion = "24f6f9d2ce7222cefe0394d0aae9f8999871c987"
+const levelVersion = "1240f6f8541d288b8cb2c2e7f975a2d7ef7a4d94"
 const serverUrl = `https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}`
 
 const helpers = {
+    component: `${serverUrl}/helpers/components.js`,
     dom: `${serverUrl}/helpers/dom.js`,
     reactive: `${serverUrl}/helpers/reactive.js`,
     tempo: `${serverUrl}/helpers/tempo.js`
