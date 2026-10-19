@@ -22,8 +22,6 @@ export const init = (reactives, level) => {
     }
 
     document.addEventListener("component", (e) => {
-        console.log(e.detail.id, e.detail.state)
-
         componentsReady[e.detail.id] = e.detail.state
         validateStatsReady()
         e.detail.instance.init()
@@ -118,7 +116,6 @@ const addnodesTemplate = async (nodeContent) => {
 }
 
 const createComponent = async (level, box, config, node, module) => {
-    console.log(level, box, config, node, module)
     const component = await level.helpers.component.addComponent({
         "module": module,
         parent: box,
@@ -127,5 +124,3 @@ const createComponent = async (level, box, config, node, module) => {
         node: await addnodesTemplate(node)
     })
 }
-
-console.log(config)

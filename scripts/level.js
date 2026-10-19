@@ -9,8 +9,8 @@ const helpers = {
 }
 
 const components = {
-    statCard: `${serverUrl}/components/avancedProgressCard001.js`,
-    statCard: `./../card.js`,
+/*     statCard: `${serverUrl}/components/avancedProgressCard001.js`,
+ */    statCard: `./../card.js`,
 }
 
 const getModules = async (modules) => {

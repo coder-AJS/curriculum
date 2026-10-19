@@ -2,7 +2,7 @@ import * as scroll from "../helpers/scroll.js"
 import * as stats from "./section1.js"
 
 export const init = async (reactives, level) => {
-    let sectionOpened = false
+    let section1 = { open: false }
     updateVPsize()
     activeVPMonitor()
 
@@ -12,7 +12,7 @@ export const init = async (reactives, level) => {
         value: "body",
         listeners: [
             alertSection,
-            () => activeSection(viewPort, level, sectionOpened)
+            () => activeSection(viewPort, level, section1)
         ]
     })
     reactives["viewPort"] = viewPort
@@ -46,10 +46,11 @@ const changeSection = async (viewPort, scroll) => {
     section !== viewPort.onSection && (viewPort.onSection = section)
 }
 
-const activeSection = async (viewPort, level, sectionOpened) => {
-    if (viewPort.onSection === "section1" && !sectionOpened) {
+const activeSection = async (viewPort, level, section1) => {
+    if (viewPort.onSection === "section1" && !section1.open) {
+        console.log("dddd")
         scroll.block(document.body)
-        sectionOpened = true
+        section1.open = true
         await stats.animate(level)
         scroll.block(document.body, false)
     }

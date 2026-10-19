@@ -249,7 +249,6 @@ export default class AvancedProgressCard001 extends HTMLElement {
         }
 
         if (type === "node") {
-            console.log(config)
             Object.values(configObj).forEach(item => {
                 if (!(item in configObj) && item !== null) {
                     console.error("component error: configure node error parameters", this)
