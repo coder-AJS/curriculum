@@ -10,10 +10,10 @@
         height: 100%;
 
         .statBox {
-            width: 300px;
-            height: 460px;
+            width: 320px;
+            height: 500px;
             perspective: 900px;
-            border-radius: 16px;
+            border-radius: 6px;
             background-color: rgba(255, 255, 255, 0.2);
 
             .bgLayer {
@@ -29,7 +29,7 @@
                 transform: rotateY(var(--rotateY)) scale(1);
                 --rotateY: 20deg;
                 --rotateY: 0;
-                border-radius: 16px;
+                border-radius: 6px;
                 box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.8);
                 opacity: 1;
                 overflow: hidden;

@@ -11,9 +11,15 @@ globalStyle.replaceSync(`
     :host {
         display: flex;
         width: 100%;
+        max-width: 340px;
+        min-width: 250px;
         height: 100%;
         opacity: 0;
         transition: 500ms;
+
+        --topBarHeight: 60px;
+        --nodeClosedHeight: 30px;
+        --nodeOpenedHeight: 40%;
     }
 
     .mainBox {
@@ -21,44 +27,39 @@ globalStyle.replaceSync(`
 
         .backLayer {
             background-image: var(--backgroundImage);
-            background-size: auto 140%;
+            background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
         }
 
         .bar {
             width: 100%;
-            height: 60px;
             background-color: rgba(255, 255, 255, 0.2);
-            font-family: var(--familyFont_1);
+            font-family: var(--fontFamily_1);
             color: white;
             letter-spacing: 2px;
             backdrop-filter: blur(4px);
         }
 
         .barTop {
-            height: 60px;
+            height: var(--topBarHeight);
             font-size: 20px;
         }
 
         .barBottom {
-            height: 34%;
-            top: calc(100% - 30px);
-
-            .nodeNotConfigured {
-                width: 100%;
-                height: 30px;
-            }
+            height: var(--nodeOpenedHeight);
+            top: calc(100% - var(--nodeClosedHeight));
         }
 
         .statBox {
-            top: 0;
-            padding: 18%;
+            top: var(--topBarHeight);
+            width: 100%;
+            height: calc(100% - var(--topBarHeight) - var(--nodeClosedHeight));
 
             .circleBox {
-                top: 25%;
-                width: 100%;
-                aspect-ratio: 1/1;
+                width: 70%;
+                max-width: 200px;
+                height: fit-content;
 
                 .circleExt {
                     width: 100%;
@@ -80,7 +81,7 @@ globalStyle.replaceSync(`
                     aspect-ratio: 1/1;
                     border-radius: 50%;
                     background-color: rgba(0, 0, 0, 0.8);
-                    font-family: var(--familyFont_2);
+                    font-family: var(--fontFamily_2);
                     color: white;
                     mix-blend-mode: multiply;
                     container-type: inline-size;
@@ -104,26 +105,26 @@ globalStyle.replaceSync(`
                     }
                 }
             }
-
-            .hiddenInput {
-                appearance: none;
-                top: 0;
-                left: 0;
-                cursor: pointer;
-            }
         }
 
-        &:has(.statBox .hiddenInput:checked) {
-            .backLayer { background-size: auto 240%; }
+        .hiddenInput {
+            appearance: none;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+        }
+
+        &:has(.hiddenInput:checked) {
+            .backLayer { transform: scale(2); }
             
             & .bar {
                 color: rgb(60, 60, 60);
                 background-color: rgba(255, 255, 255, 0.5);
             }
 
-            & .barBottom { top: 66%; }
+            & .barBottom { top: calc(100% - var(--nodeOpenedHeight)); }
 
-            & .statBox .circleBox { top: 10%; }
+            & .statBox { height: calc((100% - var(--nodeOpenedHeight)) - var(--topBarHeight)); }
         }
     }
 
@@ -132,7 +133,7 @@ globalStyle.replaceSync(`
     .max { width: 100%; height: 100%; }
     .FCenter { display: flex; justify-content: center; align-items: center; }
     .FCol { display: flex; flex-direction: column; }
-    .transitioned { transition: 300ms ease-in-out;
+    .transitioned { transition: 350ms ease-in-out;
 }
 `
 )
@@ -144,8 +145,6 @@ export default class AvancedProgressCard001 extends HTMLElement {
     #configuredNode = false
     #initialized = false
     #ready = false
-
-    #node = { html: "NODE NOT CONFIGURED", style: null }
     #progress = 0
 
     constructor() {
@@ -153,17 +152,19 @@ export default class AvancedProgressCard001 extends HTMLElement {
 
         this.css = {
             backgroundImage: "none",
-            familyFont_1: "inherit",
-            familyFont_2: "inherit",
+            fontFamily_1: "inherit",
+            fontFamily_2: "inherit",
         }
 
         this.logic = {
             id: null,
             dom: document,
             title: "title",
-            progress: 0,
-            autoInit: false
+            autoInit: false,
+            autoExpand: false
         }
+
+        this.node = { html: null, style: null }
 
         this.dom = this.attachShadow({ mode: "open" })
         this.dom.adoptedStyleSheets = [globalStyle]
@@ -171,12 +172,12 @@ export default class AvancedProgressCard001 extends HTMLElement {
 
     async #draw() {
         this.dom.innerHTML = `
-            <style>${this.#node.style ?? ""}</style>
+            <style>${this.node.style}</style>
             <div class="mainBox max transitioned relative">
                 <div class="backLayer max transitioned absolute"></div>
                 <div class="bar barTop FCenter transitioned absolute">${this.logic.title}</div>
-                <div id="node" class="bar barBottom transitioned absolute">${this.#node.html}</div>
-                <div class="statBox max transitioned absolute">
+                <div id="node" class="bar barBottom transitioned absolute">${this.node.html}</div>
+                <div class="statBox FCenter transitioned absolute">
                     <ul class="circleBox FCenter transitioned relative">
                         <li class="circleExt"></li>
                         <li class="circleLine absolute"></li>
@@ -187,8 +188,8 @@ export default class AvancedProgressCard001 extends HTMLElement {
                             <div class="symbolLayer absolute">%</div>
                         </li>
                     </ul>
-                    <input type="checkbox" class="hiddenInput max absolute">
                 </div>
+                <input id="toggleExpand" type="checkbox" class="hiddenInput max absolute">
             </div>
         `
     }
@@ -221,12 +222,13 @@ export default class AvancedProgressCard001 extends HTMLElement {
     }
 
     async configure(type, config) {
-        if (type !== "css" && type !== "logic") {
+        if (type !== "css" && type !== "logic" && type !== "node") {
             console.error("component error: configure type not valid", this)
             return null
         }
 
-        const configObj = type === "css" ? this.css : this.logic
+        const configObj = this[type]
+
         for (const key of Object.keys(config)) {
             if (!(key in configObj)) {
                 console.error(`component error: ${key} is not valid prop`, this)
@@ -246,6 +248,24 @@ export default class AvancedProgressCard001 extends HTMLElement {
             configObj.backgroundImage && this.#unloadImg(configObj.backgroundImage)
         }
 
+        if (type === "node") {
+            console.log(config)
+            Object.values(configObj).forEach(item => {
+                if (!(item in configObj) && item !== null) {
+                    console.error("component error: configure node error parameters", this)
+                    return null
+                }
+            })
+
+            if (!this.#configuredNode && !this.#initialized) {
+                this.node.style = config.style
+                this.node.html = config.html
+                this.#configuredNode = true
+                this.#alertDom()
+            }
+
+        }
+
         if (this.#configuredCss && this.#configuredLogic && this.#configuredNode && this.#configureImage) this.#alertDom()
     }
 
@@ -256,7 +276,7 @@ export default class AvancedProgressCard001 extends HTMLElement {
         })
     }
 
-    async updateProgress(progress) {
+    async progress(progress) {
         if (progress <= this.#progress) {
             console.error(`component error: updateProgress can't be less than or equal to acumulated progress`,
                 "\nacumulated progress: ", this.#progress, "\nrequest update: ", progress, "\ncomponent", this
@@ -280,17 +300,29 @@ export default class AvancedProgressCard001 extends HTMLElement {
             numberBox.forEach((item, index) => item.textContent = String(this.#progress)[index])
             await this.#sleep(20)
         }
+
+        this.logic.autoExpand && this.#simulateInteraction(true)
+    }
+
+    #simulateInteraction = (boolean) => {
+        const toggleInput = this.dom.querySelector("#toggleExpand")
+        toggleInput.checked = boolean
+    }
+
+    toggleExpand(boolean) {
+        this.#simulateInteraction(boolean)
     }
 
     addToNode(obj) {
+        console.log(obj)
         if (!obj?.html || !obj?.style) {
             console.error("component error: addToNode error parameters", this)
             return null
         }
 
         if (!this.#configuredNode && !this.#initialized) {
-            this.#node.style = obj.style
-            this.#node.html = obj.html
+            this.node.style = obj.style
+            this.node.html = obj.html
             this.#configuredNode = true
             this.#alertDom()
         }

@@ -57,8 +57,8 @@ body {
     transition: 500ms ease-in-out;
 }
 
-.tempo1200 {
-    transition: 1200ms ease-in-out
+.tempo1000 {
+    transition: 1000ms ease-in-out
 }
 
 /* helper flex */
