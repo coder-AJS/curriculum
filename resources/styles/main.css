@@ -11,9 +11,17 @@
     --white: rgb(220, 220, 220);
 }
 
+html {
+    overflow-y: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
 body {
     height: 3000px;
-    /*  */
 
     .wellcome {
         background-image: url("./../images/bg-mountains.webp");
@@ -74,10 +82,15 @@ body {
 
 .FCol {
     display: flex;
+    flex-direction: column;
 }
 
 .FA_center {
     align-items: center;
+}
+
+.FA_end {
+    align-items: end;
 }
 
 .FJ_center {
@@ -118,4 +131,8 @@ body {
 
 .z2 {
     z-index: 2;
+}
+
+.z3 {
+    z-index: 3;
 }

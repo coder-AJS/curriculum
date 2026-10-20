@@ -133,7 +133,8 @@ globalStyle.replaceSync(`
     .max { width: 100%; height: 100%; }
     .FCenter { display: flex; justify-content: center; align-items: center; }
     .FCol { display: flex; flex-direction: column; }
-    .transitioned { transition: 350ms ease-in-out;
+    .tempo350 { transition: 350ms ease-in-out; }
+    .tempo850 { transition: 850ms ease-in-out; }
 }
 `
 )
@@ -173,12 +174,12 @@ export default class AvancedProgressCard001 extends HTMLElement {
     async #draw() {
         this.dom.innerHTML = `
             <style>${this.node.style}</style>
-            <div class="mainBox max transitioned relative">
-                <div class="backLayer max transitioned absolute"></div>
-                <div class="bar barTop FCenter transitioned absolute">${this.logic.title}</div>
-                <div id="node" class="bar barBottom transitioned absolute">${this.node.html}</div>
-                <div class="statBox FCenter transitioned absolute">
-                    <ul class="circleBox FCenter transitioned relative">
+            <div class="mainBox max tempo350 relative">
+                <div class="backLayer max tempo350 absolute"></div>
+                <div class="bar barTop FCenter tempo350 absolute">${this.logic.title}</div>
+                <div id="node" class="bar barBottom tempo850 absolute">${this.node.html}</div>
+                <div class="statBox FCenter tempo850 absolute">
+                    <ul class="circleBox FCenter tempo350 relative">
                         <li class="circleExt"></li>
                         <li class="circleLine absolute"></li>
                         <li class="circleInt FCol absolute">

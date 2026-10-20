@@ -18,6 +18,7 @@ export const animate = async (level) => {
 
     await level.helpers.tempo.sleep(2200)
     components.forEach(item => item.toggleExpand(true))
+    return true
 }
 
 

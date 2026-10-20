@@ -1,8 +1,11 @@
-import * as scroll from "../helpers/scroll.js"
-import * as stats from "./section1.js"
+import * as lock from "./appLock.js"
+import * as section1Cards from "./section1.js"
 
 export const init = async (reactives, level) => {
-    let section1 = { open: false }
+    const open = {
+        section1: false
+    }
+
     updateVPsize()
     activeVPMonitor()
 
@@ -12,7 +15,16 @@ export const init = async (reactives, level) => {
         value: "body",
         listeners: [
             alertSection,
-            () => activeSection(viewPort, level, section1)
+            async (v) => {
+                if (v === "section1") {
+                    if (!open.section1) {
+                        lock.block()
+                        !open.section1 && await section1Cards.animate(level)
+                        lock.unBlock()
+                        open.section1 = true
+                    }
+                }
+            }
         ]
     })
     reactives["viewPort"] = viewPort
@@ -44,16 +56,6 @@ const identifySection = (scroll) => sizes.find(([key, value]) => scroll >= value
 const changeSection = async (viewPort, scroll) => {
     const section = identifySection(scroll)
     section !== viewPort.onSection && (viewPort.onSection = section)
-}
-
-const activeSection = async (viewPort, level, section1) => {
-    if (viewPort.onSection === "section1" && !section1.open) {
-        console.log("dddd")
-        scroll.block(document.body)
-        section1.open = true
-        await stats.animate(level)
-        scroll.block(document.body, false)
-    }
 }
 
 const alertSection = (section) => console.log(section)

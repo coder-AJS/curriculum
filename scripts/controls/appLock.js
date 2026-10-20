@@ -1,11 +1,14 @@
 import * as scroll from "../helpers/scroll.js"
 
-export const block = () => scroll.block(document.body)
+let locked = false
+export const block = () => {
+    !locked && console.info("scroll bloqued")
+    scroll.block(document.documentElement)
+    locked = true
+}
 
-export const unBlock = () => scroll.block(document.body, false)
-
-export const requestUnBlock = (reactives) => {
-    let locked = true
-    reactives.section1.stats && (locked = false)
-    !locked && unBlock()
+export const unBlock = () => { 
+    locked && console.info("scroll unBloqued")
+    scroll.block(document.documentElement, false) 
+    locked = false
 }

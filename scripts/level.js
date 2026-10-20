@@ -1,10 +1,11 @@
-const levelVersion = "1240f6f8541d288b8cb2c2e7f975a2d7ef7a4d94"
+const levelVersion = "c5126ba60f3ccfbbc594b25ecd296f2371086066"
 const serverUrl = `https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}`
 
 const helpers = {
     component: `${serverUrl}/helpers/components.js`,
     dom: `${serverUrl}/helpers/dom.js`,
     reactive: `${serverUrl}/helpers/reactive.js`,
+    style: `${serverUrl}/helpers/style.js`,
     tempo: `${serverUrl}/helpers/tempo.js`
 }
 
@@ -14,14 +15,16 @@ const components = {
 }
 
 const getModules = async (modules) => {
-    return Object.fromEntries(await Promise.all(
-        Object.entries(modules).map(async ([key, value]) => [key, await import(value)])
-    ))
+    const promises = []
+    Object.entries(modules).forEach(([key, value]) => promises.push(import(value).then(mod => modules[key] = mod)))
+    await Promise.all(promises)
 }
 
 export const init = async () => {
-    const modules = { helpers, components }
-    return Object.fromEntries(await Promise.all(
-        Object.entries(modules).map(async ([key, value]) => [key, await getModules(value)])
-    ))
+    const level = { helpers, components }
+    await Promise.all([
+        getModules(level.helpers),
+        getModules(level.components)
+    ])
+    return level
 }

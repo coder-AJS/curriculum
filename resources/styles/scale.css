@@ -1,0 +1,38 @@
+.scrollScale {
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 100vh;
+
+    --markHeight: 1px;
+    --fontSize: 12px;
+
+    .marksScale {
+        height: var(--markHeight);
+        background-color: rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 12px;
+    }
+
+    .littleMark {
+        width: 15%;
+    }
+
+    .mediumMark {
+        width: 25%;
+    }
+
+    .bigMark {
+        width: 45%;
+        height: var(--markHeight);
+
+        --value: "";
+
+        &::after {
+            position: absolute;
+            top: calc(var(--fontSize) / -2);
+            left: -14px;
+            content: var(--value);
+        }
+    }
+}

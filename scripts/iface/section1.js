@@ -3,15 +3,18 @@ import * as appLock from "../controls/appLock.js"
 export const init = (reactives, level) => {
     const section1 = level.helpers.reactive.newReactive()
     section1.add({
-        name: "stats",
+        name: "statsReady",
         value: false,
-        listeners: () => appLock.requestUnBlock(reactives)
+        listeners: (v) => {
+            if (v === "ready" && reactives.viewPort.onSection !== "section1") appLock.unBlock()
+        }
     })
     reactives["section1"] = section1
 
     const validateStatsReady = () => {
         if (Object.values(componentsReady).every(Boolean)) {
-            reactives.section1.stats = true
+            reactives.section1.statsReady = "ready"
+            return true
         }
     }
 
