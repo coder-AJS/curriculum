@@ -1,12 +1,14 @@
 const iface = {
-    scale: "./iface/scale.js",
-    section1: "./iface/section1.js"
+/*     scale: "./iface/scale.js",
+ */    section1: "./iface/section1.js"
 }
 
 const controls = {
-    appScroll: "./controls/appScroll.js",
+    scroll: "./controls/scroll.js",
+/*     appScroll: "./controls/appScroll.js",
+    scale: "./controls/scale.js",
     section1: "./controls/section1.js"
-}
+ */}
 
 const getModules = async (modules) => {
     return Object.fromEntries(await Promise.all(

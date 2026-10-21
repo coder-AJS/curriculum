@@ -1,7 +1,9 @@
-import * as lock from "./appLock.js"
+import * as lock from "./lock.js"
+import * as scale from "./scale.js"
 import * as section1Cards from "./section1.js"
 
 export const init = async (reactives, level) => {
+    console.log(reactives)
     const open = {
         section1: false
     }
@@ -9,8 +11,9 @@ export const init = async (reactives, level) => {
     updateVPsize()
     activeVPMonitor()
 
-    const viewPort = level.helpers.reactive.newReactive()
-    viewPort.add({
+    reactives["viewPort"] = level.helpers.reactive.newReactive()
+
+    reactives.viewPort.add({
         name: "onSection",
         value: "body",
         listeners: [
@@ -27,11 +30,23 @@ export const init = async (reactives, level) => {
             }
         ]
     })
-    reactives["viewPort"] = viewPort
+    
+    reactives.viewPort.add({
+        name: "bodyScroll",
+        value: getScrollValue(),
+/*         listeners: scale.updateTop
+ */    })
 
-    changeSection(viewPort, window.scrollY)
-    window.addEventListener("scroll", async () => await changeSection(viewPort, window.scrollY))
+    changeSection(reactives.viewPort, window.scrollY)
+    scale.updateTop(getScrollValue())
+
+    window.addEventListener("scroll", async () => {
+        reactives.viewPort.bodyScroll = getScrollValue()
+        changeSection(reactives.viewPort, window.scrollY)
+    })
 }
+
+const getScrollValue = () => window.scrollY
 
 const sections = {
     wellcome: document.querySelector("#wellcome"),
@@ -53,7 +68,7 @@ const updateVPsize = () => sizes.forEach(([key, value]) => {
 const activeVPMonitor = () => window.addEventListener("resize", () => updateVPsize())
 const identifySection = (scroll) => sizes.find(([key, value]) => scroll >= value[0] && scroll < value[1])?.[0] || "body"
 
-const changeSection = async (viewPort, scroll) => {
+const changeSection = (viewPort, scroll) => {
     const section = identifySection(scroll)
     section !== viewPort.onSection && (viewPort.onSection = section)
 }

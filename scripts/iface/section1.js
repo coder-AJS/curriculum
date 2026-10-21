@@ -1,4 +1,4 @@
-import * as appLock from "../controls/appLock.js"
+import * as lock from "../controls/lock.js"
 
 export const init = (reactives, level) => {
     const section1 = level.helpers.reactive.newReactive()
@@ -6,7 +6,7 @@ export const init = (reactives, level) => {
         name: "statsReady",
         value: false,
         listeners: (v) => {
-            if (v === "ready" && reactives.viewPort.onSection !== "section1") appLock.unBlock()
+            if (v === "ready" && reactives.viewPort.onSection !== "section1") lock.unBlock()
         }
     })
     reactives["section1"] = section1

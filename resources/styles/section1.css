@@ -1,5 +1,4 @@
 .section-1 {
-    top: 100vh;
     background-color: rgb(from var(--white) r g b / 0.10);
     backdrop-filter: blur(10px);
 

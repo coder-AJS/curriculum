@@ -2,37 +2,46 @@
     top: 0;
     right: 0;
     width: 60px;
-    height: 100vh;
+    height: 100%;
+    border: 1px solid red;
 
     --markHeight: 1px;
     --fontSize: 12px;
 
-    .marksScale {
-        height: var(--markHeight);
-        background-color: rgba(255, 255, 255, 0.5);
-        color: rgba(255, 255, 255, 0.5);
-        font-size: 12px;
-    }
+    .marksBox {
 
-    .littleMark {
-        width: 15%;
-    }
+        position: relative;
+        top: 0;
+        width: 60px;
+        height: 100%;
+        transition: 3s;
+        border: 1px solid green;
 
-    .mediumMark {
-        width: 25%;
-    }
-
-    .bigMark {
-        width: 45%;
-        height: var(--markHeight);
-
-        --value: "";
-
-        &::after {
-            position: absolute;
-            top: calc(var(--fontSize) / -2);
-            left: -14px;
-            content: var(--value);
+        .marks {
+            height: var(--markHeight);
+            background-color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
         }
+
+        .littleMark {
+            width: 15%;
+        }
+
+        .bigMark {
+            width: 45%;
+            --value: "";
+
+            &::after {
+                position: absolute;
+                top: calc(var(--fontSize) / -2);
+                left: -20px;
+                content: var(--value);
+            }
+        }
+    }
+
+    &:hover .marksBox {
+        height: 100vh;
     }
 }
