@@ -16,14 +16,14 @@ const prepareApp = async (reactives, level, app) => {
 }
 
 const loadControls = async (reactives, level, app) => {
-    await app.controls.scroll.init()
+    await app.controls.scroll.init(reactives, level)
 /*         app.controls.appScroll.init(reactives, level),
  */    
 }
 
 const init = async () => {
-    appLock.block()
-
+/*     appLock.block()
+ */
     const reactives = {}
     const [level, app] = await importModules()
 

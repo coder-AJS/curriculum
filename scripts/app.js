@@ -1,7 +1,8 @@
 const iface = {
 /*     scale: "./iface/scale.js",
- */    section1: "./iface/section1.js"
-}
+ */   
+/*  section1: "./iface/section1.js"
+ */}
 
 const controls = {
     scroll: "./controls/scroll.js",
