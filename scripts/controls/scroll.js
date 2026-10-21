@@ -1,3 +1,4 @@
+import { config } from "./../globalConf.js"
 let blockScroll = false
 
 export const block = () => blockScroll = true
@@ -5,7 +6,8 @@ export const unBlock = () => blockScroll = false
 
 export const init = (r, l) => {
     /* disable document scroll */
-    document.documentElement.style.overflow = "hidden" /* create global config for this */
+    if (!config.nativeScroll) document.documentElement.style.overflow = "hidden"
+
     const stepDistance = 100
     const sectionScroll = document.querySelector(".sectionScroll")
     const height = sectionScroll.offsetHeight
