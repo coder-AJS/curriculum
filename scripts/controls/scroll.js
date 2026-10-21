@@ -1,39 +1,33 @@
 import { config } from "./../globalConf.js"
-let blockScroll = false
 
-export const block = () => blockScroll = true
-export const unBlock = () => blockScroll = false
+export const block = (g) => g.static.scrollLock = true
+export const unBlock = (g) => g.static.scrollLock = false
 
-export const init = (r, l) => {
+export const init = (g, l) => {
     /* disable document scroll */
     if (!config.nativeScroll) document.documentElement.style.overflow = "hidden"
 
-    const stepDistance = 100
-    const sectionScroll = document.querySelector(".sectionScroll")
-    const height = sectionScroll.offsetHeight
+    const section = document.querySelector(".sectionScroll")
+    const stepDistance = 100 /* px */
     let top = 0
 
-    smoothScroll(top, sectionScroll)
+    smoothScroll(top, section, g)
 
-    r["vp"] = l.helpers.reactive.newReactive()
-    r.vp.add({
-        name: "dynamicScroll",
+    g.reactive["vp"] = l.helpers.reactive.newReactive()
+    g.reactive.vp.add({
+        name: "fakeScroll",
         value: null,
         listeners: [
-            (v) => smoothScroll(v, sectionScroll)
+            (v) => smoothScroll(v, section, g)
         ]
     })
 
     window.addEventListener("wheel", (e) => {
-        Math.sign(e.deltaY) === 1
-            ? top -= stepDistance
-            : top += stepDistance
-
-        if (top > 0) top = 0
-        if (top < height * -1) top = height * -1
-
-        r.vp.dynamicScroll = top
+        top += Math.sign(e.deltaY) === 1 ? -stepDistance : stepDistance
+        top > 0 && (top = 0)
+        top < -section.offsetHeight && (top = -section.offsetHeight)
+        g.reactive.vp.fakeScroll = top
     })
 }
 
-const smoothScroll = (top, sectionScroll) => !blockScroll && sectionScroll.style.setProperty("--scrollTop", top + "px")
+const smoothScroll = (top, section, g) => !g.static.scrollLock && section.style.setProperty("--scrollTop", top + "px")
