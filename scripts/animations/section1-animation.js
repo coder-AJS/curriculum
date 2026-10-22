@@ -5,9 +5,9 @@ export const animate = async (l) => {
 
     for (let i = 0; i < cards.length; i++) {
         cardsIntro(cards[i])
-        await l.helpers.tempo.sleep(350)
+        await l.helper.tempo.sleep(350)
     }
-    await l.helpers.tempo.sleepTempo(cards[0])
+    await l.helper.tempo.sleepTempo(cards[0])
 
     /* better rendering engine performace  */
     hiddeBackLayers(l)
@@ -16,7 +16,7 @@ export const animate = async (l) => {
         components[i].progress(progress[i])
     }
 
-    await l.helpers.tempo.sleep(2200)
+    await l.helper.tempo.sleep(2200)
     components.forEach(item => item.toggleExpand(true))
     return true
 }
@@ -28,7 +28,7 @@ const hiddeBackLayers = async (l) => {
     const bgLayers = document.querySelectorAll(".cardsCont .bgLayer")
     for (const item of bgLayers) {
         item.style.opacity = "0"
-        await l.helpers.tempo.sleep(500)
+        await l.helper.tempo.sleep(500)
         item.classList.add("hidden")
     }
 }

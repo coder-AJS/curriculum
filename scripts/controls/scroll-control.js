@@ -1,7 +1,8 @@
 import { config } from "./../globalConf.js"
 import * as control from "./../helper/scroll.js"
-import * as section1 from "./section1-control.js"
-
+import * as section1 from "./../animations/section1-animation.js"
+/* import * as section1 from "./section1-control.js"
+ */
 export const init = (g, l) => {
     control.block(g)
     control.disableNativeScroll()
@@ -25,9 +26,12 @@ export const init = (g, l) => {
         name: "onSection",
         value: "wellcome",
         listeners: [
-            () => alertSection(g)
+            () => alertSection(g),
+            () => activeSection1(g, l)
         ]
     })
+
+    g.static.section1_animated = false
 }
 
 /* dinamic scroll */
@@ -53,9 +57,17 @@ const sections = {
 
 const identifySection = (v) => Object.entries(sections).find(([key, value]) => v <= value[0] && v > value[1])?.[0] || "body"
 
+const alertSection = (g) => console.info(g.reactive.vp.onSection)
+
 const changeSection = (v, g) => {
     const section = identifySection(v)
     section !== g.reactive.vp.onSection && (g.reactive.vp.onSection = section)
 }
 
-const alertSection = (g) => console.info(g.reactive.vp.onSection)
+const activeSection1 = async (g, l) => {
+    if (!g.static.section1_animated && g.reactive.vp.onSection === "section1") {
+        control.block(g)
+        await section1.animate(l)
+        control.unBlock(g)
+    } 
+}
