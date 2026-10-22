@@ -1,4 +1,4 @@
-import * as scroll from "./controls/scroll.js"
+import * as scroll from "./scroll.js"
 
 const importModules = async () => {
     const [level, app] = await Promise.all([
@@ -8,17 +8,11 @@ const importModules = async () => {
     return [level, app]
 }
 
-const prepareApp = async (reactives, level, app) => {
-    await Promise.all([
-/*         app.iface.scale.init(level),
-        app.iface.section1.init(reactives, level)
- */    ])
-}
-
-const loadControls = async (global, level, app) => {
-    await app.controls.scroll.init(global, level)
-    /*         app.controls.appScroll.init(reactives, level),
-     */
+const prepareApp = (g, l, a) => {
+    a.scroll.init(g, l)
+    a.scroll_control.init(g, l)
+    a.section1_iface.init(l)
+    a.section1_control.init(g, l)
 }
 
 const init = async () => {
@@ -26,9 +20,7 @@ const init = async () => {
     scroll.block(global)
 
     const [level, app] = await importModules()
-
-    await prepareApp(global, level, app)
-    await loadControls(global, level, app)
+    prepareApp(global, level, app)
 }
 
 init()

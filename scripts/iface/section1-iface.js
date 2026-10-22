@@ -1,39 +1,3 @@
-import * as lock from "../controls/lock.js"
-
-export const init = (reactives, level) => {
-    const section1 = level.helpers.reactive.newReactive()
-    section1.add({
-        name: "statsReady",
-        value: false,
-        listeners: (v) => {
-            if (v === "ready" && reactives.viewPort.onSection !== "section1") lock.unBlock()
-        }
-    })
-    reactives["section1"] = section1
-
-    const validateStatsReady = () => {
-        if (Object.values(componentsReady).every(Boolean)) {
-            reactives.section1.statsReady = "ready"
-            return true
-        }
-    }
-
-    const componentsReady = {
-        html: false,
-        css: false,
-        js: false
-    }
-
-    document.addEventListener("component", (e) => {
-        componentsReady[e.detail.id] = e.detail.state
-        validateStatsReady()
-        e.detail.instance.init()
-    })
-
-    const stat3dBoxes = document.querySelectorAll(".stat3d")
-    Object.entries(config).forEach(([key, conf], index) => createComponent(level, stat3dBoxes[index], conf, nodes[key], level.components.statCard))
-}
-
 const config = {
     html: {
         css: {
@@ -118,12 +82,17 @@ const addnodesTemplate = async (nodeContent) => {
     return { "html": nodeTemplate, "style": nodeStyle }
 }
 
-const createComponent = async (level, box, config, node, module) => {
-    const component = await level.helpers.component.addComponent({
+const createComponent = async (l, box, config, node, module) => {
+    const component = await l.helper.component.addComponent({
         "module": module,
         parent: box,
         css: config.css,
         logic: config.logic,
         node: await addnodesTemplate(node)
     })
+}
+
+export const init = (l) => {
+    const stat3dBoxes = document.querySelectorAll(".stat3d")
+    Object.entries(config).forEach(([key, conf], index) => createComponent(l, stat3dBoxes[index], conf, nodes[key], l.component.statCard))
 }

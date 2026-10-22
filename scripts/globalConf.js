@@ -1,3 +1,4 @@
 export const config = {
-    nativeScroll: false
+    nativeScroll: false,
+    dynamicScrollDistance: 100 /* px */
 }

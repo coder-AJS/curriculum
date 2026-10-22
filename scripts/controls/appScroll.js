@@ -1,6 +1,6 @@
 import * as lock from "./lock.js"
 import * as scale from "./scale.js"
-import * as section1Cards from "./section1.js"
+import * as section1Cards from "./section1-control.js"
 
 export const init = async (reactives, level) => {
     console.log(reactives)

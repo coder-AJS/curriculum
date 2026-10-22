@@ -21,10 +21,10 @@ const getModules = async (modules) => {
 }
 
 export const init = async () => {
-    const level = { helpers, components }
+    const level = { "helper": helpers, "component": components }
     await Promise.all([
-        getModules(level.helpers),
-        getModules(level.components)
+        getModules(level.helper),
+        getModules(level.component)
     ])
     return level
 }
