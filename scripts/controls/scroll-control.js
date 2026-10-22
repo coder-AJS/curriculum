@@ -40,10 +40,13 @@ const activeWheelEvent = (g) => {
     let top = 0
 
     window.addEventListener("wheel", (e) => {
-        top = Math.sign(e.deltaY) === 1 ? -config.dynamicScrollDistance : config.dynamicScrollDistance
-        g.reactive.vp.dynamicScroll += top
-        g.reactive.vp.dynamicScroll > 0 && (g.reactive.vp.dynamicScroll = 0)
-        g.reactive.vp.dynamicScroll <= -500 && (g.reactive.vp.dynamicScroll = -500) /* temporal */
+        if (!g.static.scrollLock) {
+            console.log( g.reactive.vp.dynamicScroll)
+            top = Math.sign(e.deltaY) === 1 ? -config.dynamicScrollDistance : config.dynamicScrollDistance
+            g.reactive.vp.dynamicScroll += top
+            g.reactive.vp.dynamicScroll > 0 && (g.reactive.vp.dynamicScroll = 0)
+            g.reactive.vp.dynamicScroll <= -300 && (g.reactive.vp.dynamicScroll = -500) /* temporal */
+        }
     })
 }
 
@@ -69,5 +72,5 @@ const activeSection1 = async (g, l) => {
         control.block(g)
         await section1.animate(l)
         control.unBlock(g)
-    } 
+    }
 }
