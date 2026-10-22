@@ -18,6 +18,7 @@ export const animate = async (l) => {
 
     await l.helper.tempo.sleep(2200)
     components.forEach(item => item.toggleExpand(true))
+    await l.helper.tempo.sleep(350)
     return true
 }
 

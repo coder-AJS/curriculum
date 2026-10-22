@@ -115,7 +115,7 @@ globalStyle.replaceSync(`
         }
 
         &:has(.hiddenInput:checked) {
-            .backLayer { transform: scale(2); }
+            .backLayer { transform: scale(1.4); }
             
             & .bar {
                 color: rgb(60, 60, 60);
@@ -134,7 +134,6 @@ globalStyle.replaceSync(`
     .FCenter { display: flex; justify-content: center; align-items: center; }
     .FCol { display: flex; flex-direction: column; }
     .tempo350 { transition: 350ms ease-in-out; }
-    .tempo850 { transition: 850ms ease-in-out; }
 }
 `
 )
@@ -177,8 +176,8 @@ export default class AvancedProgressCard001 extends HTMLElement {
             <div class="mainBox max tempo350 relative">
                 <div class="backLayer max tempo350 absolute"></div>
                 <div class="bar barTop FCenter tempo350 absolute">${this.logic.title}</div>
-                <div id="node" class="bar barBottom tempo850 absolute">${this.node.html}</div>
-                <div class="statBox FCenter tempo850 absolute">
+                <div id="node" class="bar barBottom tempo350 absolute">${this.node.html}</div>
+                <div class="statBox FCenter tempo350 absolute">
                     <ul class="circleBox FCenter tempo350 relative">
                         <li class="circleExt"></li>
                         <li class="circleLine absolute"></li>

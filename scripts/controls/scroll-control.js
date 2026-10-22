@@ -45,7 +45,7 @@ const activeWheelEvent = (g) => {
             top = Math.sign(e.deltaY) === 1 ? -config.dynamicScrollDistance : config.dynamicScrollDistance
             g.reactive.vp.dynamicScroll += top
             g.reactive.vp.dynamicScroll > 0 && (g.reactive.vp.dynamicScroll = 0)
-            g.reactive.vp.dynamicScroll <= -300 && (g.reactive.vp.dynamicScroll = -500) /* temporal */
+            g.reactive.vp.dynamicScroll <= -300 && (g.reactive.vp.dynamicScroll = -300) /* temporal */
         }
     })
 }
@@ -69,6 +69,7 @@ const changeSection = (v, g) => {
 
 const activeSection1 = async (g, l) => {
     if (!g.static.section1_animated && g.reactive.vp.onSection === "section1") {
+        g.static.section1_animated = true
         control.block(g)
         await section1.animate(l)
         control.unBlock(g)
