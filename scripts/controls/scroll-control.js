@@ -14,7 +14,8 @@ export const init = (g, l) => {
         name: "dynamicScroll",
         value: 0,
         listeners: [
-            (v) => smoothScroll(v, sectionScroll, g)
+            (v) => smoothScroll(v, sectionScroll, g),
+            (v) => changeSection(v, g)
         ]
     })
 
@@ -22,15 +23,11 @@ export const init = (g, l) => {
 
     g.reactive.vp.add({
         name: "onSection",
-        value: "body",
+        value: "wellcome",
         listeners: [
-            alertSection
+            () => alertSection(g)
         ]
     })
-
-    getVPSize()
-    activeVPMonitor()
-    changeSection(g, window.scrollY)
 }
 
 /* dinamic scroll */
@@ -50,28 +47,15 @@ const smoothScroll = (v, section, g) => !g.static.scrollLock && section.style.se
 
 /* sections */
 const sections = {
-    wellcome: document.querySelector("#wellcome"),
-    section1: document.querySelector("#section-1"),
+    wellcome: [0, -100], /* start - end VH relative*/
+    section1: [-100, -300]
 }
 
-const sizes = [ /* start - end */
-    ["wellcome", [0, null]],
-    ["section1", [null, null]],
-]
+const identifySection = (v) => Object.entries(sections).find(([key, value]) => v <= value[0] && v > value[1])?.[0] || "body"
 
-const getVPSize = () => sizes.forEach(([key, value]) => {
-    const section = sections[key]
-    const top = section.offsetTop
-    value[0] = top
-    value[1] = section.offsetHeight + top
-})
-
-const activeVPMonitor = () => window.addEventListener("resize", () => getVPSize())
-const identifySection = (scroll) => sizes.find(([key, value]) => scroll >= value[0] && scroll < value[1])?.[0] || "body"
-
-const changeSection = (g, scroll) => {
-    const section = identifySection(scroll)
+const changeSection = (v, g) => {
+    const section = identifySection(v)
     section !== g.reactive.vp.onSection && (g.reactive.vp.onSection = section)
 }
 
-const alertSection = (section) => console.info(section)
+const alertSection = (g) => console.info(g.reactive.vp.onSection)
