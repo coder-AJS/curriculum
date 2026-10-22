@@ -1,4 +1,4 @@
-import * as scroll from "../scroll.js"
+import * as scroll from "../helper/scroll.js"
 
 export const init = (g, l) => {
     g.reactive.iface = {}

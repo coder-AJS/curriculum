@@ -5,7 +5,6 @@ const iface = {
 }
 
 const modules = {
-    scroll: "./scroll.js",
     scroll_control: "./controls/scroll-control.js",
     section1_iface: "./iface/section1-iface.js",
     section1_control: "./controls/section1-control.js"

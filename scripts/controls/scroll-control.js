@@ -1,7 +1,25 @@
-import * as control from "./../scroll.js"
+import { config } from "./../globalConf.js"
+import * as control from "./../helper/scroll.js"
 import * as section1 from "./section1-control.js"
 
 export const init = (g, l) => {
+    control.block(g)
+    control.disableNativeScroll()
+    const sectionScroll = document.querySelector("#sectionScroll")
+
+    /* vp reactive */
+    g.reactive.vp = l.helper.reactive.newReactive()
+
+    g.reactive.vp.add({
+        name: "dynamicScroll",
+        value: 0,
+        listeners: [
+            (v) => smoothScroll(v, sectionScroll, g)
+        ]
+    })
+
+    activeWheelEvent(g)
+
     g.reactive.vp.add({
         name: "onSection",
         value: "body",
@@ -13,13 +31,24 @@ export const init = (g, l) => {
     getVPSize()
     activeVPMonitor()
     changeSection(g, window.scrollY)
+}
 
-    window.addEventListener("scroll", async () => {
-        console.log("f")
-        changeSection(g, window.scrollY)
+/* dinamic scroll */
+
+const activeWheelEvent = (g) => {
+    let top = 0
+
+    window.addEventListener("wheel", (e) => {
+        top = Math.sign(e.deltaY) === 1 ? -config.dynamicScrollDistance : config.dynamicScrollDistance
+        g.reactive.vp.dynamicScroll += top
+        g.reactive.vp.dynamicScroll > 0 && (g.reactive.vp.dynamicScroll = 0)
+        g.reactive.vp.dynamicScroll <= -500 && (g.reactive.vp.dynamicScroll = -500) /* temporal */
     })
 }
 
+const smoothScroll = (v, section, g) => !g.static.scrollLock && section.style.setProperty("--scrollTop", v + "vh")
+
+/* sections */
 const sections = {
     wellcome: document.querySelector("#wellcome"),
     section1: document.querySelector("#section-1"),
