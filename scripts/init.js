@@ -25,12 +25,15 @@ const prepareApp = (global, level, control, iface) => {
 
 const init = async () => {
     const global = { static: {}, reactive: {} }
+    const level = framework.init()
 
-    const [level] = await Promise.all([
-        framework.init(),
+    await Promise.all([
+        getModules(level.helper),
+        getModules(level.component),
         getModules(controls),
         getModules(iface)
     ])
+    
     prepareApp(global, level, controls, iface)
 }
 
