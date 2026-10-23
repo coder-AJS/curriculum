@@ -1,21 +1,37 @@
-const importModules = async () => {
-    const [level, app] = await Promise.all([
-        import("./level.js").then(mod => mod.init()),
-        import("./app.js").then(mod => mod.init())
-    ])
-    return [level, app]
+import * as framework from "./level.js"
+
+const controls = {
+    scroll: "./controls/scroll-control.js",
+/*     scale: "./controls/scale-control.js",
+ */    section1: "./controls/section1-control.js"
 }
 
-const prepareApp = (g, l, a) => {
-    a.scroll_control.init(g, l)
-    a.section1_iface.init(l)
-    a.section1_control.init(g, l)
+const iface = {
+    scale: "./iface/scale-iface.js",
+    section1: "./iface/section1-iface.js"
+}
+
+const getModules = async (modules) => {
+    await Promise.all(Object.entries(modules).map(([key, value]) => import(value).then(mod => { modules[key] = mod })))
+}
+
+const prepareApp = (global, level, control, iface) => {
+    control.scroll.init(global, level)
+
+    /* parallel */
+    iface.scale.init(level)
+    control.section1.init(global, level, iface.section1)
 }
 
 const init = async () => {
     const global = { static: {}, reactive: {} }
-    const [level, app] = await importModules()
-    prepareApp(global, level, app)
+
+    const [level] = await Promise.all([
+        framework.init(),
+        getModules(controls),
+        getModules(iface)
+    ])
+    prepareApp(global, level, controls, iface)
 }
 
 init()

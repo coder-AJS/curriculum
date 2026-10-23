@@ -1,6 +1,7 @@
 import * as scroll from "../helper/scroll.js"
-
-export const init = (g, l) => {
+/* import * as iface from "./../iface/section1-iface.js"
+ */
+export const init = (g, l, i) => {
     g.reactive.iface = {}
     g.reactive.iface.section1 = l.helper.reactive.newReactive()
 
@@ -27,4 +28,6 @@ export const init = (g, l) => {
         validateStatsReady()
         e.detail.instance.init()
     })
+
+    i.init(l)
 }

@@ -15,8 +15,6 @@ export const init = (g, l) => {
         name: "dynamicScroll",
         value: 0,
         listeners: [
-                        (v) => console.log(v),
-
             (v) => smoothScroll(v, sectionScroll, g),
             (v) => changeSection(v, g)
         ]

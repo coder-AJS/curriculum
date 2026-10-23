@@ -2,18 +2,19 @@
     top: 0;
     right: 0;
     width: 60px;
-    height: 100%;
+    height: 100vh;
     border: 1px solid red;
 
     --markHeight: 1px;
     --fontSize: 12px;
 
     .marksBox {
+        --dynamicHeight: 0;
+        --dynamicTop: 0;
 
-        position: relative;
-        top: 0;
+        top: var(--dynamicTop);
         width: 60px;
-        height: 100%;
+        height: var(--dynamicHeight);
         transition: 3s;
         border: 1px solid green;
 
@@ -41,7 +42,8 @@
         }
     }
 
-    &:hover .marksBox {
+    /*     &:hover .marksBox {
         height: 100vh;
     }
+ */
 }

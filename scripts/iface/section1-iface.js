@@ -92,7 +92,7 @@ const createComponent = async (l, box, config, node, module) => {
     })
 }
 
-export const init = (l) => {
+export const init = async (l) => {
     const stat3dBoxes = document.querySelectorAll(".stat3d")
     Object.entries(config).forEach(([key, conf], index) => createComponent(l, stat3dBoxes[index], conf, nodes[key], l.component.statCard))
 }
