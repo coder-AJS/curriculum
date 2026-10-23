@@ -15,6 +15,8 @@ export const init = (g, l) => {
         name: "dynamicScroll",
         value: 0,
         listeners: [
+                        (v) => console.log(v),
+
             (v) => smoothScroll(v, sectionScroll, g),
             (v) => changeSection(v, g)
         ]
@@ -41,11 +43,11 @@ const activeWheelEvent = (g) => {
 
     window.addEventListener("wheel", (e) => {
         if (!g.static.scrollLock) {
-            console.log( g.reactive.vp.dynamicScroll)
             top = Math.sign(e.deltaY) === 1 ? -config.dynamicScrollDistance : config.dynamicScrollDistance
-            g.reactive.vp.dynamicScroll += top
-            g.reactive.vp.dynamicScroll > 0 && (g.reactive.vp.dynamicScroll = 0)
-            g.reactive.vp.dynamicScroll <= -300 && (g.reactive.vp.dynamicScroll = -300) /* temporal */
+            let nextScroll = g.reactive.vp.dynamicScroll + top
+            nextScroll > 0 && (nextScroll = 0)
+            nextScroll <= -300 && (nextScroll = -300) /* temporal */
+            g.reactive.vp.dynamicScroll = nextScroll
         }
     })
 }

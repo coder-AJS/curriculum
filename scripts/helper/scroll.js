@@ -2,9 +2,11 @@ export const block = (g) => {
     g.static.scrollLock = true
     console.info("scroll blocked")
 }
-export const unBlock = (g) => {
+export const unBlock = (g, request = null) => {
     g.static.scrollLock = false
-    console.info("scroll unBlocked")
+    request
+        ? console.info("unBlock request")
+        : console.info("scroll unBlocked")
 }
 
 export const requestUnblock = (g) => {
@@ -15,9 +17,8 @@ export const requestUnblock = (g) => {
     ]
     const validate = components.every(item => item)
     if (validate) {
-        console.log("components loaded")
         alertTitle.textContent = "components loaded"
-        unBlock(g)
+        unBlock(g, true)
     }
 }
 

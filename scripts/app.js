@@ -1,6 +1,5 @@
 const iface = {
-    /*     scale: "./iface/scale.js",
-     */
+    scale: "./iface/scale.js",
     section1Iface: "./iface/section1-iface.js"
 }
 
