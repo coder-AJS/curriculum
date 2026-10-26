@@ -17,8 +17,8 @@ export const init = (g, l) => {
         listeners: [
             (v) => smoothScroll(v, sectionScroll, g),
             (v) => changeSection(v, g),
-            () => scale.updateScalePos(g, l),
-            () => scale.pointerMovement(g, l)
+            () => scale.scalePos(g, l),
+            () => scale.infoBoxPos(g, l)
         ]
     })
 

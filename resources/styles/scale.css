@@ -11,7 +11,9 @@
     --dynamicTop: 0vh;
     --markHeight: 1px;
     --fontSize: 12px;
-    --dynamicPointerTop: 0%;
+    --dynamicTopInfo: 0%;
+    --dynamicTopLine: 0%;
+    --dynamicTopOpacity: 0;
 
     .scrollScale {
         top: calc(var(--dynamicTop) + var(--scaleMargin));
@@ -56,23 +58,31 @@
         }
     }
 
-    .pointerBox {
+    .scrollInfoBox {
         top: calc(var(--dynamicTop) + var(--scaleMargin));
         width: 100%;
         height: calc(100% - 2 * var(--scaleMargin));
 
-        .scrollPointer {
-            top: calc(var(--dynamicPointerTop) - 10px);
+        .scrollInfo {
+            top: calc(var(--dynamicTopInfo) - 10px);
             width: 100%;
             height: 20px;
             background-color: rgba(0, 0, 0, 0.171);
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(2px);
             font-size: 12px;
             color: white;
             transition: var(--scrollTransition);
         }
     }
 
+    .scrollLine {
+        top: var(--dynamicTopLine);
+        width: 100%;
+        height: 3px;
+        background-color: white;
+        box-shadow: 0 0 5px cyan, 0 0 20px cyan;
+        opacity: var(--dynamicTopOpacity);
+    }
 
     .interactiveLayer {
         top: 0;
@@ -94,13 +104,21 @@
             }
 
             .marksBox {
+                & .bigMark {
+                    opacity: 0.5;
+                }
 
                 & .mediumMark,
                 .littleMark {
                     color: transparent;
-                    opacity: 0.4;
+                    opacity: 0.2;
                 }
             }
+        }
+
+        .scrollInfoBox .scrollInfo {
+            background-color: rgba(255, 255, 255, 0.75);
+            color: rgb(60, 60, 60);
         }
     }
 }
