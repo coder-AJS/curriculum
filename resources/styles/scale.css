@@ -3,20 +3,18 @@
     right: 0;
     width: 60px;
     height: 100vh;
-    border: 1px solid red;
+    padding-right: 2px;
 
+    --dynamicHeight: 0;
+    --dynamicTop: 0vh;
     --markHeight: 1px;
     --fontSize: 12px;
 
     .marksBox {
-        --dynamicHeight: 0;
-        --dynamicTop: 0;
-
-        top: var(--dynamicTop);
-        width: 60px;
-        height: var(--dynamicHeight);
-        transition: 3s;
-        border: 1px solid green;
+        top: calc(var(--dynamicTop) + 10px);
+        width: calc(100% - 15px);
+        height: calc(var(--dynamicHeight) - 20px);
+        transition: var(--scrollTransition);
 
         .marks {
             height: var(--markHeight);
@@ -29,8 +27,15 @@
             width: 15%;
         }
 
+        .mediumMark {
+            width: 25%;
+        }
+
         .bigMark {
-            width: 45%;
+            width: 40%;
+        }
+
+        .numberMark {
             --value: "";
 
             &::after {
@@ -42,8 +47,24 @@
         }
     }
 
-    /*     &:hover .marksBox {
-        height: 100vh;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.4);
+        transition: 800ms cubic-bezier(0.25, 1, 0.75, 1);
+
+        * {
+            transition: 800ms cubic-bezier(0.25, 1, 0.75, 1);
+        }
+
+        .marksBox {
+            top: 10px;
+            height: calc(100% - 20px);
+            cursor: crosshair;
+
+            & .mediumMark,
+            .littleMark {
+                color: transparent;
+                opacity: 0.4;
+            }
+        }
     }
- */
 }

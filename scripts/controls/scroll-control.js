@@ -1,8 +1,8 @@
 import { config } from "./../globalConf.js"
 import * as control from "./../helper/scroll.js"
+import * as scale from "./scale-control.js"
 import * as section1 from "./../animations/section1-animation.js"
-/* import * as section1 from "./section1-control.js"
- */
+
 export const init = (g, l) => {
     control.block(g)
     control.disableNativeScroll()
@@ -16,7 +16,8 @@ export const init = (g, l) => {
         value: 0,
         listeners: [
             (v) => smoothScroll(v, sectionScroll, g),
-            (v) => changeSection(v, g)
+            (v) => changeSection(v, g),
+            () => scale.updatePos(g)
         ]
     })
 
@@ -44,10 +45,10 @@ const activeWheelEvent = (g) => {
             top = Math.sign(e.deltaY) === 1 ? -config.dynamicScrollDistance : config.dynamicScrollDistance
             let nextScroll = g.reactive.vp.dynamicScroll + top
             nextScroll > 0 && (nextScroll = 0)
-            nextScroll <= -300 && (nextScroll = -300) /* temporal */
+            nextScroll <= -300 && (nextScroll = -300) /* limit wellcome height + scroollayer height */
             g.reactive.vp.dynamicScroll = nextScroll
         }
-    })
+    }) 
 }
 
 const smoothScroll = (v, section, g) => !g.static.scrollLock && section.style.setProperty("--scrollTop", v + "vh")

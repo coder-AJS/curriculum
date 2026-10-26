@@ -11,7 +11,13 @@ const helpers = {
 
 const components = {
 /*     statCard: `${serverUrl}/components/avancedProgressCard001.js`,
- */    statCard: `./../card.js`,
+ */    statCard: `/../card.js`,
 }
 
-export const init = () => { return { "helper": helpers, "component": components } }
+export const init = async (resolver) => {
+    await Promise.all([
+        resolver.getModules(helpers),
+        resolver.getModules(components)
+    ])
+    return { "helper": helpers, "component": components }
+}

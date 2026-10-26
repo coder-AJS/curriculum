@@ -1,7 +1,6 @@
 import * as scroll from "../helper/scroll.js"
-/* import * as iface from "./../iface/section1-iface.js"
- */
-export const init = (g, l, i) => {
+
+export const init = (g, l, iface) => {
     g.reactive.iface = {}
     g.reactive.iface.section1 = l.helper.reactive.newReactive()
 
@@ -29,5 +28,5 @@ export const init = (g, l, i) => {
         e.detail.instance.init()
     })
 
-    i.init(l)
+    iface.init(l)
 }
