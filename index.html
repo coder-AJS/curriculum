@@ -16,7 +16,7 @@
 <body class="relative">
     <section id="wellcome" class="wellcome bg-cover maxVP FCenter fixed z1">
         <div class="filterLayer max absolute"></div>
-        <div id ="alertTitle" class="titlesLayer max FCenter absolute">LOADING</div>
+        <div id="alertTitle" class="titlesLayer max FCenter absolute">LOADING</div>
     </section>
 
     <section id="sectionScroll" class="sectionScroll relative z2">
@@ -38,7 +38,14 @@
         </section>
     </section>
 
-    <div id="scrollScale" class="scrollScale FRow FJ_right tempo300 absolute z3"></div>
+
+    <div id="scale" class="scale absolute tempo500 z3">
+        <div id="scrollScale" class="scrollScale FRow FJ_right tempo300 absolute"></div>
+        <div class="pointerBox relative">
+            <div id="scrollPointer" class="scrollPointer FCenter absolute"></div>
+        </div>
+        <div id="scrollInteractiveLayer" class="interactiveLayer maxVP absolute"></div>
+    </div>
 
     <script type="module" src="./scripts/init.js"></script>
 </body>

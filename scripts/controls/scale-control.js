@@ -1,12 +1,22 @@
 export const init = (g, l, iface) => {
     iface.init(l)
 
-    console.log(g, l)
+    const scrollInteractiveLayer = document.querySelector("#scrollInteractiveLayer")
+
+
+
 }
 
-export const updatePos = (g) => {
-    const marksBox = document.querySelector(".marksBox")
-        console.log(document.body.offsetHeight, marksBox.offsetHeight)
+export const updateScalePos = (g, l) => {
+    const scrollScale = document.querySelector(".scrollScale")
+    l.helper.style.setVar("dynamicTop", g.reactive.vp.dynamicScroll + "vh", scrollScale)
+}
 
-    marksBox.style.setProperty("--dynamicTop", g.reactive.vp.dynamicScroll + "vh") 
+export const pointerMovement = (g, l) => {
+    const scale = document.querySelector("#scale")
+    const scrollPointer = document.querySelector("#scrollPointer")
+    const pointerTop = (((g.reactive.vp.dynamicScroll * -1) / 300) * 100)
+    l.helper.style.setVar("dynamicPointerTop", pointerTop + "%", scale)
+    const number = pointerTop >= 100 ? 100 : pointerTop.toFixed(0)
+    scrollPointer.textContent = String(number).padStart(3, "0") + " %"
 }

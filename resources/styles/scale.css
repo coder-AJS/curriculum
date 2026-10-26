@@ -1,69 +1,105 @@
-.scrollScale {
+.scale {
     top: 0;
-    right: 0;
-    width: 60px;
+    left: calc(100vw - var(--scrollScaleWidth));
+    width: var(--scrollScaleWidth);
     height: 100vh;
-    padding-right: 2px;
 
-    --dynamicHeight: 0;
+    --scaleHeight: 400vh;
+    /* la altura de body + sectionScroll */
+    --scaleMargin: 20px;
+    --scrollScaleWidth: 60px;
     --dynamicTop: 0vh;
     --markHeight: 1px;
     --fontSize: 12px;
+    --dynamicPointerTop: 0%;
 
-    .marksBox {
-        top: calc(var(--dynamicTop) + 10px);
-        width: calc(100% - 15px);
-        height: calc(var(--dynamicHeight) - 20px);
+    .scrollScale {
+        top: calc(var(--dynamicTop) + var(--scaleMargin));
+        width: 100%;
+        height: calc(var(--scaleHeight) - var(--scaleMargin) * 2);
+        padding-right: 2px;
         transition: var(--scrollTransition);
 
-        .marks {
-            height: var(--markHeight);
-            background-color: rgba(255, 255, 255, 0.5);
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 12px;
-        }
+        .marksBox {
+            width: calc(100% - 15px);
+            height: 100%;
 
-        .littleMark {
-            width: 15%;
-        }
+            .marks {
+                height: var(--markHeight);
+                background-color: rgba(255, 255, 255, 0.5);
+                color: rgba(255, 255, 255, 0.5);
+                font-size: 12px;
+            }
 
-        .mediumMark {
-            width: 25%;
-        }
+            .littleMark {
+                width: 10%;
+            }
 
-        .bigMark {
-            width: 40%;
-        }
+            .mediumMark {
+                width: 25%;
+            }
 
-        .numberMark {
-            --value: "";
+            .bigMark {
+                width: 40%;
+            }
 
-            &::after {
-                position: absolute;
-                top: calc(var(--fontSize) / -2);
-                left: -20px;
-                content: var(--value);
+            .numberMark {
+                --value: "";
+
+                &::after {
+                    position: absolute;
+                    top: calc(var(--fontSize) / -2);
+                    left: -20px;
+                    content: var(--value);
+                }
             }
         }
     }
 
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.4);
-        transition: 800ms cubic-bezier(0.25, 1, 0.75, 1);
+    .pointerBox {
+        top: calc(var(--dynamicTop) + var(--scaleMargin));
+        width: 100%;
+        height: calc(100% - 2 * var(--scaleMargin));
 
-        * {
-            transition: 800ms cubic-bezier(0.25, 1, 0.75, 1);
+        .scrollPointer {
+            top: calc(var(--dynamicPointerTop) - 10px);
+            width: 100%;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.171);
+            backdrop-filter: blur(4px);
+            font-size: 12px;
+            color: white;
+            transition: var(--scrollTransition);
         }
+    }
 
-        .marksBox {
-            top: 10px;
-            height: calc(100% - 20px);
-            cursor: crosshair;
 
-            & .mediumMark,
-            .littleMark {
-                color: transparent;
-                opacity: 0.4;
+    .interactiveLayer {
+        top: 0;
+        pointer-events: auto;
+        cursor: crosshair;
+    }
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.6);
+
+        .scrollScale {
+            top: var(--scaleMargin);
+            height: calc(100% - var(--scaleMargin) * 2);
+            backdrop-filter: blur(4px);
+            transition: 800ms cubic-bezier(0.25, 1, 0.75, 1);
+
+            * {
+                transition: 800ms cubic-bezier(0.25, 1, 0.75, 1);
+            }
+
+            .marksBox {
+
+                & .mediumMark,
+                .littleMark {
+                    color: transparent;
+                    opacity: 0.4;
+                }
             }
         }
     }

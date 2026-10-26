@@ -13,7 +13,7 @@
 
 body {
     width: 100vw;
-    height: fit-content;
+    height: 100vh;
 
     .wellcome {
         background-image: url("./../images/bg-mountains.webp");

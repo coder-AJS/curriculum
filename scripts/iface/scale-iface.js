@@ -7,17 +7,10 @@ export const init = async (l) => {
         className: "marksBox FCol FA_end FJ_between absolute"
     })
 
-    /* scale */
     drawMarks(l, scale)
-    applyHeight(l, scale)
-    window.addEventListener("resize", () => applyHeight(l, scale))
 }
 
-const applyHeight = (l, scale) => {
-    const bodyHeight = document.querySelector("#wellcome").offsetHeight + document.querySelector("#sectionScroll").offsetHeight
-    l.helper.style.setVar("dynamicHeight", bodyHeight + "px", scale)
-}
-
+/* scale */
 const drawMarks = (l, scale) => {
     for (let i = 0; i <= 100; i++) {
         const newMark = l.helper.dom.addToDom({ tag: "li", parent: scale })
@@ -32,6 +25,6 @@ const drawMarks = (l, scale) => {
         newMark.className = `marks ${markType} numberMark relative`
         if (markType === "bigMark" || markType === "mediumMark") newMark.style.setProperty("--value", `"${i}"`)
     }
-} 
+}
 
 /* selector */
