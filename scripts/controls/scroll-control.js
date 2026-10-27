@@ -18,8 +18,7 @@ export const init = (g, l) => {
             (v) => smoothScroll(v, sectionScroll, g),
             (v) => changeSection(v, g),
             () => scale.scalePos(g, l),
-            () => scale.infoBoxPos(g, l),
-            () => console.log(g.reactive.vp.dynamicScroll)
+            (v) => scale.infoBoxPos(v, l),
         ]
     })
 
