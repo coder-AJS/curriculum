@@ -1,12 +1,4 @@
 export const init = async (l) => {
-    const scrollScale = document.querySelector("#scrollScale")
-
-/*     const scale = l.helper.dom.addToDom({
-        tag: "ul",
-        parent: scrollScale,
-        className: "marksBox FCol FA_end FJ_between absolute"
-    })
- */
     const marksBox = document.querySelector("#marksBox")
     drawMarks(l, marksBox)
 }
@@ -27,5 +19,3 @@ const drawMarks = (l, marksBox) => {
         if (markType === "bigMark" || markType === "mediumMark") newMark.style.setProperty("--value", `"${i}"`)
     }
 }
-
-/* selector */

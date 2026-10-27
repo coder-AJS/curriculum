@@ -1,30 +1,12 @@
 import { totalScroll } from "./scroll-control.js"
 
-export const init = (g, l, iface) => {
-    iface.init(l)
-
+const addEvents = (g, l) => {
     const inter = document.querySelector("#scrollInteractiveLayer")
     const scale = document.querySelector("#scale")
     const scaleMargin = parseFloat(l.helper.style.getVar("scaleMargin", scale))
+
     let over = false
     let globalPos = null
-
-    updateCounter(lastValue, l)
-
-    const linePos = (e, l, inter, scale, scaleMargin) => {
-        const posPX = e.clientY - scaleMargin
-        const boxHeightPX = inter.offsetHeight - 2 * scaleMargin
-        let pos = (posPX / boxHeightPX) * 100
-
-        pos < 0 && (pos = 0)
-        pos > 100 && (pos = 100)
-        l.helper.style.setVar("lineTop", pos + "%", scale)
-        return pos
-    }
-
-    const updateReactive = (g, newScroll) => g.reactive.vp.dynamicScroll = -Math.round(newScroll)
-
-    infoBoxPos(g.reactive.vp.dynamicScroll, l)
 
     inter.addEventListener("mouseenter", () => {
         over = true
@@ -46,6 +28,19 @@ export const init = (g, l, iface) => {
         updateReactive(g, newScroll)
     })
 }
+
+const linePos = (e, l, inter, scale, scaleMargin) => {
+    const posPX = e.clientY - scaleMargin
+    const boxHeightPX = inter.offsetHeight - 2 * scaleMargin
+    let pos = (posPX / boxHeightPX) * 100
+
+    pos < 0 && (pos = 0)
+    pos > 100 && (pos = 100)
+    l.helper.style.setVar("lineTop", `calc(${pos}% - 1px )`, scale) /* -1px line center */
+    return pos
+}
+
+const updateReactive = (g, newScroll) => g.reactive.vp.dynamicScroll = -Math.round(newScroll)
 
 let lastValue = null
 let contID = 0
@@ -94,4 +89,11 @@ export const infoBoxPos = async (scroll, l) => {
 
     l.helper.style.setVar("dynamicTopInfo", percent + "%", scale)
     updateCounter(percent, l)
+}
+
+export const init = (g, l, iface) => {
+    iface.init(l)
+    addEvents(g, l)
+    updateCounter(lastValue, l)
+    infoBoxPos(g.reactive.vp.dynamicScroll, l)
 }
