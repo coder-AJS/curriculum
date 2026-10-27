@@ -1,19 +1,20 @@
 export const init = async (l) => {
     const scrollScale = document.querySelector("#scrollScale")
 
-    const scale = l.helper.dom.addToDom({
+/*     const scale = l.helper.dom.addToDom({
         tag: "ul",
         parent: scrollScale,
         className: "marksBox FCol FA_end FJ_between absolute"
     })
-
-    drawMarks(l, scale)
+ */
+    const marksBox = document.querySelector("#marksBox")
+    drawMarks(l, marksBox)
 }
 
 /* scale */
-const drawMarks = (l, scale) => {
+const drawMarks = (l, marksBox) => {
     for (let i = 0; i <= 100; i++) {
-        const newMark = l.helper.dom.addToDom({ tag: "li", parent: scale })
+        const newMark = l.helper.dom.addToDom({ tag: "li", parent: marksBox })
 
         const getType = (i) => {
             if (i % 10 === 0) return "bigMark"

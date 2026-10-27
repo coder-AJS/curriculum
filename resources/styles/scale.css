@@ -4,8 +4,8 @@
     width: var(--scrollScaleWidth);
     height: 100vh;
 
-    --scaleHeight: 400vh;
-    /* la altura de body + sectionScroll */
+    --scaleHeight: calc(var(--nonScrollHeight) * 2 + var(--scrollHeight));
+    /* la altura de scroll + 2 * nonScroll */
     --scaleMargin: 20px;
     --scrollScaleWidth: 60px;
     --dynamicTop: 0vh;
@@ -69,6 +69,7 @@
             height: 20px;
             background-color: rgba(0, 0, 0, 0.171);
             backdrop-filter: blur(2px);
+            border-radius: 4px;
             font-size: 12px;
             color: white;
             transition: var(--scrollTransition);

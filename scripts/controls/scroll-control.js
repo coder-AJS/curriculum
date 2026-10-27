@@ -18,11 +18,12 @@ export const init = (g, l) => {
             (v) => smoothScroll(v, sectionScroll, g),
             (v) => changeSection(v, g),
             () => scale.scalePos(g, l),
-            () => scale.infoBoxPos(g, l)
+            () => scale.infoBoxPos(g, l),
+            () => console.log(g.reactive.vp.dynamicScroll)
         ]
     })
 
-    activeWheelEvent(g)
+    activeWheelEvent(g, l)
 
     g.reactive.vp.add({
         name: "onSection",
@@ -36,9 +37,13 @@ export const init = (g, l) => {
     g.static.section1_animated = false
 }
 
+export let totalScroll = null
 /* dinamic scroll */
 
-const activeWheelEvent = (g) => {
+const activeWheelEvent = (g, l) => {
+    const nonScrollHeight = parseFloat(l.helper.style.getVar("nonScrollHeight"))
+    const scrollHeight = parseFloat(l.helper.style.getVar("scrollHeight"))
+    totalScroll = scrollHeight + nonScrollHeight
     let top = 0
 
     window.addEventListener("wheel", (e) => {
@@ -46,10 +51,10 @@ const activeWheelEvent = (g) => {
             top = Math.sign(e.deltaY) === 1 ? -config.dynamicScrollDistance : config.dynamicScrollDistance
             let nextScroll = g.reactive.vp.dynamicScroll + top
             nextScroll > 0 && (nextScroll = 0)
-            nextScroll <= -300 && (nextScroll = -300) /* limit wellcome height + scroollayer height */
+            nextScroll <= -totalScroll && (nextScroll = -totalScroll) /* limit scroollayer height */
             g.reactive.vp.dynamicScroll = nextScroll
         }
-    }) 
+    })
 }
 
 const smoothScroll = (v, section, g) => !g.static.scrollLock && section.style.setProperty("--scrollTop", v + "vh")
