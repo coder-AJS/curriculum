@@ -10,14 +10,12 @@ export const unBlock = (g, request = null) => {
 }
 
 export const requestUnblock = (g) => {
-    const alertTitle = document.querySelector("#alertTitle")
 
     const components = [
         g.reactive.iface.section1.cards
     ]
     const validate = components.every(item => item)
     if (validate) {
-        alertTitle.textContent = "components loaded"
         unBlock(g, true)
     }
 }

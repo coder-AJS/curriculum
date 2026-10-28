@@ -3,6 +3,7 @@
     left: calc(100vw - var(--scrollScaleWidth));
     width: var(--scrollScaleWidth);
     height: 100vh;
+    transition: background-color 1000ms;
 
     --scaleHeight: calc(var(--nonScrollHeight) * 2 + var(--scrollHeight));
     /* la altura de scroll + 2 * nonScroll */
@@ -85,8 +86,8 @@
             font-size: 12px;
             color: var(--white);
             letter-spacing: 2px;
-            border-top: 3px solid transparent;
-            border-bottom: 3px solid transparent;
+            border: 3px solid transparent;
+            border-radius: 6px;
             transition: var(--scrollTransition);
         }
     }
@@ -95,8 +96,7 @@
         top: var(--viewTop);
         width: 100%;
         height: var(--viewHeight);
-        background-color: rgba(255, 255, 255, 0.1);
-
+        background-color: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(2px);
         border-top: 2px solid rgba(255, 255, 255, 0.4);
         border-bottom: 2px solid rgba(255, 255, 255, 0.4);
@@ -109,9 +109,9 @@
         width: 100%;
         height: 3px;
         background-color: white;
-        box-shadow: 0 0 5px cyan, 0 0 20px cyan;
+        box-shadow: 0 0 5px SteelBlue, 0 0 20px SteelBlue, 0 0 20px SteelBlue;
         opacity: var(--lineOpacity);
-        transition: 150ms ease-out;
+        transition: top 150ms ease-out, opacity 1000ms;
     }
 
     .interLayer {

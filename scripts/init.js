@@ -4,6 +4,7 @@ import * as resolver from "./helper/resolver.js"
 const controls = {
     scroll: "/scripts/controls/scroll-control.js",
     scale: "/scripts/controls/scale-control.js",
+    wellcome: "/scripts/controls/wellcome-control.js",
     section1: "/scripts/controls/section1-control.js"
 }
 
@@ -14,6 +15,7 @@ const iface = {
 
 const prepareApp = (global, level, control, iface) => {
     control.scroll.init(global, level)
+    control.wellcome.init(level)
 
     /* parallel */
     control.scale.init(global, level, iface.scale)

@@ -8,7 +8,7 @@
 :root {
     --black: rgb(28, 28, 28);
     --white: rgb(220, 220, 220);
-    --scrollTransition: 600ms cubic-bezier(0.25, 1, 0.75, 1);
+    --scrollTransition: 800ms cubic-bezier(0.5, 1, 0.5, 1);
     /* sections */
     --nonScrollHeight: 100vh;
     --scrollHeight: 200vh;
@@ -17,22 +17,6 @@
 body {
     width: 100vw;
     height: auto;
-
-    .wellcome {
-        width: 100%;
-        height: var(--nonScrollHeight);
-        background-image: url("./../images/bg-mountains.webp");
-
-        .filterLayer {
-            backdrop-filter: grayscale(0.6);
-        }
-
-        .titlesLayer {
-            width: fit-content;
-            height: 300px;
-            font-size: 60px;
-        }
-    }
 
     .footer {
         width: 100%;

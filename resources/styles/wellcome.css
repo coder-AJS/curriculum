@@ -1,0 +1,71 @@
+.wellcome {
+    width: 100%;
+    height: var(--nonScrollHeight);
+    background-image: url("./../images/bg-mountains.webp");
+
+    --sceneDepth: 600px;
+    --rotateX: 0;
+    --rotateY: 0;
+
+    .filterLayer {
+        backdrop-filter: grayscale(0.6);
+    }
+
+    .cubeBox {
+        width: 1200px;
+        aspect-ratio: 19/10;
+        perspective: 800px;
+
+        .scene3d {
+            border: 1px solid white;
+            transform-style: preserve-3d;
+            transform-origin: center;
+            transform: rotateX(var(--rotateX)) rotateY(var(--rotateY));
+
+            .side {
+                border: 2px solid red;
+                font-size: 300px;
+                color: white;
+            }
+
+            .back {
+                transform: translateZ(calc(var(--sceneDepth) * -1));
+            }
+
+            .top {
+                transform-origin: top;
+                transform: rotateX(-90deg);
+            }
+
+            .bottom {
+                transform-origin: bottom;
+                transform: rotateX(90deg);
+            }
+
+            .left,
+            .right {
+                width: var(--sceneDepth);
+                height: 100%;
+            }
+
+            .left {
+                transform-origin: left;
+                transform: rotateY(90deg);
+            }
+
+            .right {
+                right: 0;
+                transform-origin: right;
+                transform: rotateY(-90deg);
+            }
+        }
+    }
+
+    .inputsBox {
+        bottom: 40px;
+        right: 40px;
+        width: 300px;
+        height: 60px;
+        border: 2px solid gray;
+    }
+}
