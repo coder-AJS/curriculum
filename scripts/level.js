@@ -11,7 +11,8 @@ const helpers = {
 
 const components = {
 /*     statCard: `${serverUrl}/components/avancedProgressCard001.js`,
- */    statCard: `/../card.js`,
+ */    statCard: `/scripts/components/card.js`,
+ cube3d : "/scripts/components/cube.js"
 }
 
 export const init = async (resolver) => {

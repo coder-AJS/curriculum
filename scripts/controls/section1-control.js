@@ -1,9 +1,6 @@
 import * as scroll from "../helper/scroll.js"
 
 export const init = (g, l, iface) => {
-    g.reactive.iface = {}
-    g.reactive.iface.section1 = l.helper.reactive.newReactive()
-
     g.reactive.iface.section1.add({
         name: "cards",
         value: false,

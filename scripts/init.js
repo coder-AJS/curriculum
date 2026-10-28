@@ -9,13 +9,14 @@ const controls = {
 }
 
 const iface = {
+    wellcome: "/scripts/iface/wellcome-iface.js",
     scale: "/scripts/iface/scale-iface.js",
     section1: "/scripts/iface/section1-iface.js"
 }
 
 const prepareApp = (global, level, control, iface) => {
     control.scroll.init(global, level)
-    control.wellcome.init(level)
+    control.wellcome.init(global, level, iface.wellcome)
 
     /* parallel */
     control.scale.init(global, level, iface.scale)
@@ -23,14 +24,22 @@ const prepareApp = (global, level, control, iface) => {
 }
 
 const init = async () => {
-    const global = { static: {}, reactive: {} }
-
     const [level] = await Promise.all([
         framework.init(resolver),
         resolver.getModules(controls),
         resolver.getModules(iface)
     ])
-    
+
+    const global = {
+        static: {},
+        reactive: {
+            iface: {
+                wellcome: level.helper.reactive.newReactive(),
+                section1: level.helper.reactive.newReactive()
+            }
+        }
+    }
+
     prepareApp(global, level, controls, iface)
 }
 

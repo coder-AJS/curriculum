@@ -11,52 +11,55 @@
         backdrop-filter: grayscale(0.6);
     }
 
-    .cubeBox {
+    .cubeContainer {
         width: 1200px;
         aspect-ratio: 19/10;
-        perspective: 800px;
 
-        .scene3d {
-            border: 1px solid white;
-            transform-style: preserve-3d;
-            transform-origin: center;
-            transform: rotateX(var(--rotateX)) rotateY(var(--rotateY));
+        .cube {
+            perspective: 800px;
 
-            .side {
-                border: 2px solid red;
-                font-size: 300px;
-                color: white;
-            }
+            .scene3d {
+                border: 1px solid white;
+                transform-style: preserve-3d;
+                transform-origin: center;
+                transform: rotateX(var(--rotateX)) rotateY(var(--rotateY));
 
-            .back {
-                transform: translateZ(calc(var(--sceneDepth) * -1));
-            }
+                .side {
+                    border: 2px solid red;
+                    font-size: 300px;
+                    color: white;
+                }
 
-            .top {
-                transform-origin: top;
-                transform: rotateX(-90deg);
-            }
+                .back {
+                    transform: translateZ(calc(var(--sceneDepth) * -1));
+                }
 
-            .bottom {
-                transform-origin: bottom;
-                transform: rotateX(90deg);
-            }
+                .top {
+                    transform-origin: top;
+                    transform: rotateX(-90deg);
+                }
 
-            .left,
-            .right {
-                width: var(--sceneDepth);
-                height: 100%;
-            }
+                .bottom {
+                    transform-origin: bottom;
+                    transform: rotateX(90deg);
+                }
 
-            .left {
-                transform-origin: left;
-                transform: rotateY(90deg);
-            }
+                .left,
+                .right {
+                    width: var(--sceneDepth);
+                    height: 100%;
+                }
 
-            .right {
-                right: 0;
-                transform-origin: right;
-                transform: rotateY(-90deg);
+                .left {
+                    transform-origin: left;
+                    transform: rotateY(90deg);
+                }
+
+                .right {
+                    right: 0;
+                    transform-origin: right;
+                    transform: rotateY(-90deg);
+                }
             }
         }
     }

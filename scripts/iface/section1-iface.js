@@ -84,7 +84,7 @@ const addnodesTemplate = async (nodeContent) => {
 
 const createComponent = async (l, box, config, node, module) => {
     const component = await l.helper.component.addComponent({
-        "module": module,
+        'module': module,
         parent: box,
         css: config.css,
         logic: config.logic,
