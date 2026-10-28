@@ -19,7 +19,10 @@ classStyle.replaceSync(`
     }
 
     .main {
+        perspective: var(--perspective);
         border: 4px solid green;
+
+
     }
 
     .max { width: 100%; height: 100% }
@@ -63,7 +66,9 @@ export default class Cube3d extends HTMLElement {
 
     #draw() {
         this.dom.innerHTML = `
-            <div class="main max relative"></div>
+            <ul class="main max relative">
+                <li class="side absolute"></li>
+            </ul>
         `
 
     }
