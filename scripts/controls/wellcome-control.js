@@ -1,10 +1,5 @@
 export const init = async (g, l, iface) => {
-    /* recoger el aviso del componente desde reactivo */
-    g.reactive.iface.wellcome.add({
-        name: "cube3d",
-        value: false,
-        reactives: null
-    })
+
 
 
 

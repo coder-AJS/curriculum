@@ -82,7 +82,7 @@ const addnodesTemplate = async (nodeContent) => {
     return { "html": nodeTemplate, "style": nodeStyle }
 }
 
-const createComponent = async (l, box, config, node, module) => {
+const addComponents = async (l, box, config, node, module) => {
     const component = await l.helper.component.addComponent({
         'module': module,
         parent: box,
@@ -94,5 +94,5 @@ const createComponent = async (l, box, config, node, module) => {
 
 export const init = async (l) => {
     const stat3dBoxes = document.querySelectorAll(".stat3d")
-    Object.entries(config).forEach(([key, conf], index) => createComponent(l, stat3dBoxes[index], conf, nodes[key], l.component.statCard))
+    Object.entries(config).forEach(([key, conf], index) => addComponents(l, stat3dBoxes[index], conf, nodes[key], l.component.statCard))
 }

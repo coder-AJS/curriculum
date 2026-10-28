@@ -36,7 +36,8 @@ const init = async () => {
             iface: {
                 wellcome: level.helper.reactive.newReactive(),
                 section1: level.helper.reactive.newReactive()
-            }
+            },
+            vp: level.helper.reactive.newReactive()
         }
     }
 

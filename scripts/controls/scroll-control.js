@@ -4,12 +4,10 @@ import * as scale from "./scale-control.js"
 import * as section1 from "./../animations/section1-animation.js"
 
 export const init = (g, l) => {
-    control.block(g)
-    control.disableNativeScroll()
     const sectionScroll = document.querySelector("#sectionScroll")
 
-    /* vp reactive */
-    g.reactive.vp = l.helper.reactive.newReactive()
+    control.disableNativeScroll()
+    control.block(g)
 
     g.reactive.vp.add({
         name: "dynamicScroll",

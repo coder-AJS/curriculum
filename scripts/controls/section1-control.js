@@ -4,26 +4,32 @@ export const init = (g, l, iface) => {
     g.reactive.iface.section1.add({
         name: "cards",
         value: false,
-        listeners: () => scroll.requestUnblock(g)
+        listeners: [
+            () => scroll.requestUnblock(g),
+            initCards
+        ]
     })
 
-    const componentsReady = {
-        html: false,
-        css: false,
-        js: false
-    }
-
-    const validateStatsReady = () => {
-        if (Object.values(componentsReady).every(Boolean)) {
-            g.reactive.iface.section1.cards = true
-        }
-    }
-
     document.addEventListener("component", (e) => {
-        componentsReady[e.detail.id] = e.detail.state
-        validateStatsReady()
-        e.detail.instance.init()
+        if (e.detail.id in components) components[e.detail.id] = e.detail.instance
+        validateComponents(g)
     })
 
     iface.init(l)
+}
+
+const components = {
+    html: null,
+    css: null,
+    js: null
+}
+
+const validateComponents = (g) => {
+    if (Object.values(components).every(Boolean)) {
+        g.reactive.iface.section1.cards = true
+    }
+}
+
+const initCards = () => {
+    Object.values(components).forEach(item => item.init())
 }

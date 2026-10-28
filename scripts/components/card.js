@@ -22,7 +22,7 @@ globalStyle.replaceSync(`
         --nodeOpenedHeight: 40%;
     }
 
-    .mainBox {
+    .main {
         overflow: hidden;
 
         .backLayer {
@@ -139,12 +139,24 @@ globalStyle.replaceSync(`
 )
 
 export default class AvancedProgressCard001 extends HTMLElement {
-    #configuredCss = false
-    #configuredLogic = false
-    #configureImage = false
-    #configuredNode = false
     #initialized = false
     #ready = false
+    #state = new Proxy({
+        css: false,
+        logic: false,
+        node: false,
+        image: false
+    }, {
+        set: (target, property, value) => {
+            target[property] = value
+            if (Object.values(target).every(Boolean)) {
+                this.#ready = true
+                this.#alertDom()
+            }
+            return true
+        }
+    })
+
     #progress = 0
 
     constructor() {
@@ -173,7 +185,7 @@ export default class AvancedProgressCard001 extends HTMLElement {
     async #draw() {
         this.dom.innerHTML = `
             <style>${this.node.style}</style>
-            <div class="mainBox max tempo350 relative">
+            <div class="main max tempo350 relative">
                 <div class="backLayer max tempo350 absolute"></div>
                 <div class="bar barTop FCenter tempo350 absolute">${this.logic.title}</div>
                 <div id="node" class="bar barBottom tempo350 absolute">${this.node.html}</div>
@@ -205,8 +217,7 @@ export default class AvancedProgressCard001 extends HTMLElement {
                 .catch((e) => reject(e))
         })
             .then(() => {
-                this.#configureImage = true
-                this.#alertDom()
+                this.#state.image = true
             })
             .catch((e) => {
                 console.error("component error: failed lo get image", this)
@@ -214,12 +225,7 @@ export default class AvancedProgressCard001 extends HTMLElement {
             })
     }
 
-    #alertDom() {
-        if (this.#configuredCss && this.#configuredLogic && this.#configureImage && this.#configuredNode) {
-            this.#ready = true
-            this.logic.dom.dispatchEvent(new CustomEvent("component", { detail: { id: this.logic.id, state: true, instance: this } }))
-        }
-    }
+    #alertDom() { this.logic.dom.dispatchEvent(new CustomEvent("component", { detail: { id: this.logic.id, state: true, instance: this } })) }
 
     async configure(type, config) {
         if (type !== "css" && type !== "logic" && type !== "node") {
@@ -228,7 +234,6 @@ export default class AvancedProgressCard001 extends HTMLElement {
         }
 
         const configObj = this[type]
-
         for (const key of Object.keys(config)) {
             if (!(key in configObj)) {
                 console.error(`component error: ${key} is not valid prop`, this)
@@ -236,16 +241,20 @@ export default class AvancedProgressCard001 extends HTMLElement {
             }
         }
 
-        if (type === "logic") {
-            Object.assign(configObj, config)
-            this.#configuredLogic = true
-        }
+        type !== "node" && Object.assign(configObj, config)
 
         if (type === "css") {
-            Object.assign(configObj, config)
             this.update()
-            this.#configuredCss = true
+            this.#state.css = true
             configObj.backgroundImage && this.#unloadImg(configObj.backgroundImage)
+        }
+
+        if (type === "logic") {
+            if (!configObj.id) {
+                console.error("component error: logic ID not configured", this)
+                return
+            }
+            this.#state.logic = true
         }
 
         if (type === "node") {
@@ -256,16 +265,12 @@ export default class AvancedProgressCard001 extends HTMLElement {
                 }
             })
 
-            if (!this.#configuredNode && !this.#initialized) {
+            if (!this.#state.node) {
                 this.node.style = config.style
                 this.node.html = config.html
-                this.#configuredNode = true
-                this.#alertDom()
+                this.#state.node = true
             }
-
         }
-
-        if (this.#configuredCss && this.#configuredLogic && this.#configuredNode && this.#configureImage) this.#alertDom()
     }
 
     update() {
@@ -316,26 +321,25 @@ export default class AvancedProgressCard001 extends HTMLElement {
         console.log(obj)
         if (!obj?.html || !obj?.style) {
             console.error("component error: addToNode error parameters", this)
-            return null
-        }
-
-        if (!this.#configuredNode && !this.#initialized) {
-            this.node.style = obj.style
-            this.node.html = obj.html
-            this.#configuredNode = true
-            this.#alertDom()
+            return
         }
     }
 
     async init() {
-        if (this.#ready) {
-            this.#initialized = true
-            this.#draw()
-            this.style.opacity = "1"
-            this.logic.autoInit && this.updateProgress(this.logic.progress)
-        } else {
-            console.error("component error: not ready", this)
+        if (!this.#ready) {
+            console.error("component error: not ready", `state: ${this.#state}`, this)
+            return
         }
+
+        if (this.#initialized) {
+            console.trace("component error: previously initialited", this)
+            return
+        }
+
+        this.#initialized = true
+        this.#draw()
+        this.style.opacity = "1"
+        this.logic.autoInit && this.updateProgress(this.logic.progress)
     }
 }
 
