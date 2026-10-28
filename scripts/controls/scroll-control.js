@@ -18,7 +18,7 @@ export const init = (g, l) => {
             (v) => smoothScroll(v, sectionScroll, g),
             (v) => changeSection(v, g),
             () => scale.scalePos(g, l),
-            (v) => scale.infoBoxPos(v, l),
+            (v) => scale.posVisuals(v, l),
         ]
     })
 

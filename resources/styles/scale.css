@@ -11,9 +11,12 @@
     --dynamicTop: 0vh;
     --markHeight: 1px;
     --fontSize: 12px;
-    --dynamicTopInfo: 0%;
+    --infoTop: 0%;
     --lineTop: 0%;
     --lineOpacity: 0;
+    --viewTop: 0;
+    --viewHeight: 24%;
+    --viewOpacity: 0;
 
     .scrollScale {
         top: calc(var(--dynamicTop) + var(--scaleMargin));
@@ -44,6 +47,11 @@
 
             .bigMark {
                 width: 40%;
+
+                &:first-of-type,
+                &:last-of-type {
+                    color: transparent;
+                }
             }
 
             .numberMark {
@@ -59,37 +67,54 @@
         }
     }
 
-    .scrollInfoBox {
+    .dynamicLayer {
         top: calc(var(--dynamicTop) + var(--scaleMargin));
         width: 100%;
         height: calc(100% - var(--scaleMargin) * 2);
 
-        .scrollInfo {
-            top: calc(var(--dynamicTopInfo) - 10px);
-            width: calc(100% - 4px);
-            height: 20px;
-            background-color: rgba(0, 0, 0, 0.3);
+        .info {
+            top: var(--infoTop);
+            width: 100%;
+            height: 24px;
+            background-color: rgba(0, 0, 0, 0.2);
+            background-clip: padding-box;
             backdrop-filter: blur(2px);
             padding-top: 2px;
             /* font bad alignment */
             font-family: "oxanium";
             font-size: 12px;
+            color: var(--white);
             letter-spacing: 2px;
-            color: white;
+            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
             transition: var(--scrollTransition);
         }
     }
 
-    .scrollLine {
+    .view {
+        top: var(--viewTop);
+        width: 100%;
+        height: var(--viewHeight);
+        background-color: rgba(255, 255, 255, 0.1);
+
+        backdrop-filter: blur(2px);
+        border-top: 2px solid rgba(255, 255, 255, 0.4);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+        opacity: var(--viewOpacity);
+        transition: var(--scrollTransition);
+    }
+
+    .line {
         top: var(--lineTop);
         width: 100%;
         height: 3px;
         background-color: white;
         box-shadow: 0 0 5px cyan, 0 0 20px cyan;
         opacity: var(--lineOpacity);
+        transition: 150ms ease-out;
     }
 
-    .interactiveLayer {
+    .interLayer {
         top: 0;
         pointer-events: auto;
         cursor: crosshair;
@@ -121,7 +146,7 @@
             }
         }
 
-        .scrollInfoBox .scrollInfo {
+        .dynamicLayer .info {
             background-color: rgba(255, 255, 255, 0.8);
             color: rgb(40, 40, 40);
         }

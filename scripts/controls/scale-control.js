@@ -1,31 +1,50 @@
 import { totalScroll } from "./scroll-control.js"
 
 const addEvents = (g, l) => {
-    const inter = document.querySelector("#scrollInteractiveLayer")
+    const inter = document.querySelector("#interLayer")
     const scale = document.querySelector("#scale")
     const scaleMargin = parseFloat(l.helper.style.getVar("scaleMargin", scale))
 
     let over = false
-    let globalPos = null
+    let dragging = false
+    let globalPos = 0
 
+    /* detect mouse enter/out */
     inter.addEventListener("mouseenter", () => {
         over = true
         l.helper.style.setVar("lineOpacity", 1, scale)
+        l.helper.style.setVar("viewOpacity", 1, scale)
     })
 
     inter.addEventListener("mouseleave", () => {
         over = false
-        l.helper.style.setVar("lineOpacity", '0', scale) /* fix in level '0' !== null */
+        l.helper.style.setVar("lineOpacity", 0, scale)
+        l.helper.style.setVar("viewOpacity", 0, scale)
     })
 
-    inter.addEventListener("mousemove", (e) => {
-        if (!over) return
+    /* detect pointer dragging */
+    inter.addEventListener("pointerdown", (e) => {
+        dragging = true
+        inter.setPointerCapture(e.pointerId)
         globalPos = linePos(e, l, inter, scale, scaleMargin)
-    })
-
-    inter.addEventListener("click", () => {
         const newScroll = (globalPos / 100) * (totalScroll)
         updateReactive(g, newScroll)
+    })
+
+    inter.addEventListener("pointerup", (e) => {
+        dragging = false
+        inter.releasePointerCapture(e.pointerId)
+        const newScroll = (globalPos / 100) * (totalScroll)
+        updateReactive(g, newScroll)
+    })
+
+    /* detect movement */
+    inter.addEventListener("pointermove", (e) => {
+        over && (globalPos = linePos(e, l, inter, scale, scaleMargin))
+        if (dragging) {
+            const newScroll = (globalPos / 100) * (totalScroll)
+            updateReactive(g, newScroll)
+        }
     })
 }
 
@@ -42,39 +61,43 @@ const linePos = (e, l, inter, scale, scaleMargin) => {
 
 const updateReactive = (g, newScroll) => g.reactive.vp.dynamicScroll = -Math.round(newScroll)
 
-let lastValue = null
+let lastInfoValue = 0
 let contID = 0
 const updateCounter = async (value, l) => {
-    const scrollInfo = document.querySelector("#scrollInfo")
-
-    if (lastValue === null) {
-        scrollInfo.textContent = String(0).padStart(3, "0")
-        lastValue = 0
+    const info = document.querySelector("#info")
+    if (!info.textContent) {
+        info.textContent = "000"
         return
     }
 
-    if (lastValue === value || lastValue - value === 0) return
+    if ((lastInfoValue === value || lastInfoValue - value === 0) && lastInfoValue !== 0) {
+        return
+    }
 
-    const tempo = parseFloat(l.helper.tempo.getTempo(scrollInfo))
-    const steps = (tempo * 0.7) / Math.abs(lastValue - value) || 0
+    const tempo = parseFloat(l.helper.tempo.getTempo(info))
+    const steps = (tempo * 0.7) / Math.abs(lastInfoValue - value) || 0
     contID++
     const thisContID = contID
 
-    if (lastValue < value)
-        for (let i = lastValue; i <= value; i++) {
-            if (thisContID !== contID) return
-            scrollInfo.textContent = String(i).padStart(3, "0")
-            await l.helper.tempo.sleep(steps)
+    if (lastInfoValue < value) for (let i = lastInfoValue; i <= value; i++) {
+        if (thisContID !== contID) {
+            lastInfoValue = value
+            return
         }
+        info.textContent = String(i).padStart(3, "0")
+        await l.helper.tempo.sleep(steps)
+    }
 
-    if (lastValue > value)
-        for (let i = lastValue; i >= value; i--) {
-            if (thisContID !== contID) return
-            scrollInfo.textContent = String(i).padStart(3, "0")
-            await l.helper.tempo.sleep(steps)
+    if (lastInfoValue > value) for (let i = lastInfoValue; i >= value; i--) {
+        if (thisContID !== contID) {
+            lastInfoValue = value
+            return
         }
+        info.textContent = String(i).padStart(3, "0")
+        await l.helper.tempo.sleep(steps)
+    }
 
-    lastValue = value
+    lastInfoValue = value
 }
 
 export const scalePos = (g, l) => {
@@ -82,18 +105,25 @@ export const scalePos = (g, l) => {
     l.helper.style.setVar("dynamicTop", g.reactive.vp.dynamicScroll + "%", scrollScale)
 }
 
-export const infoBoxPos = async (scroll, l) => {
+export const posVisuals = async (dynamicScroll, l) => {
     const scale = document.querySelector("#scale")
-    const pointerTop = (((scroll * -1) / totalScroll) * 100)
-    const percent = pointerTop >= 100 ? 100 : Math.round(pointerTop)
+    const infoHeight = document.querySelector("#info").offsetHeight
+    const interHeight = document.querySelector("#interLayer").offsetHeight
+    const viewHeight = parseFloat(l.helper.style.getVar("viewHeight", scale))
 
-    l.helper.style.setVar("dynamicTopInfo", percent + "%", scale)
-    updateCounter(percent, l)
+    const infoDistance = ((interHeight - infoHeight - 1) / (interHeight)) * 100 /* -1 css calc error */
+    const infoTop = (((dynamicScroll * -1) / totalScroll) * infoDistance)
+    const infoValue = (((dynamicScroll * -1) / totalScroll) * 100)
+    l.helper.style.setVar("infoTop", infoTop + "%", scale)
+    updateCounter(Math.round(infoValue), l)
+
+    const viewTop = (((dynamicScroll * -1) / totalScroll) * (100 - viewHeight)) /* 80 = 100% - 20% view height*/
+    l.helper.style.setVar("viewTop", viewTop + "%", scale)
 }
 
 export const init = (g, l, iface) => {
     iface.init(l)
     addEvents(g, l)
-    updateCounter(lastValue, l)
-    infoBoxPos(g.reactive.vp.dynamicScroll, l)
+    updateCounter()
+    posVisuals(g.reactive.vp.dynamicScroll, l)
 }
