@@ -134,7 +134,6 @@ globalStyle.replaceSync(`
     .FCenter { display: flex; justify-content: center; align-items: center; }
     .FCol { display: flex; flex-direction: column; }
     .tempo350 { transition: 350ms ease-in-out; }
-}
 `
 )
 
@@ -157,7 +156,6 @@ export default class AvancedProgressCard001 extends HTMLElement {
         }
     })
 
-    #progress = 0
 
     constructor() {
         super()
@@ -174,7 +172,8 @@ export default class AvancedProgressCard001 extends HTMLElement {
             event: null,
             title: "title",
             autoInit: false,
-            autoExpand: false
+            autoExpand: false,
+            progress: 0
         }
 
         this.node = { html: null, style: null }
@@ -196,7 +195,7 @@ export default class AvancedProgressCard001 extends HTMLElement {
                         <li class="circleLine absolute"></li>
                         <li class="circleInt FCol absolute">
                             <ul class="containerBox absolute">
-                                <li class="numberBox FCenter">${this.#progress}</li>
+                                <li class="numberBox FCenter">${this.logic.progress}</li>
                             </ul>
                             <div class="symbolLayer absolute">%</div>
                         </li>
@@ -231,46 +230,44 @@ export default class AvancedProgressCard001 extends HTMLElement {
     async configure(type, config) {
         if (type !== "css" && type !== "logic" && type !== "node") {
             console.error("component error: configure type not valid", this)
-            return null
+            return
         }
 
-        const configObj = this[type]
+        if (type === "logic" && ((!config.id || !config.event) && (!this.logic.id || !this.logic.event))) {
+            console.error("component error: logic id/event not configured", this)
+            return
+        }
+
         for (const key of Object.keys(config)) {
-            if (!(key in configObj)) {
+            if (!(key in this[type])) {
                 console.error(`component error: ${key} is not valid prop`, this)
-                return null
+                return
             }
         }
 
-        type !== "node" && Object.assign(configObj, config)
+        type !== "node" && Object.entries(config).forEach(([key, value]) => this[type][key] = value)
 
         if (type === "css") {
             this.update()
             this.#state.css = true
-            configObj.backgroundImage && this.#unloadImg(configObj.backgroundImage)
+            config.backgroundImage ? this.#unloadImg(config.backgroundImage) : this.#state.image = true
         }
 
         if (type === "logic") {
-            if (!configObj.id || !configObj.event) {
-                console.error("component error: logic id/event not configured", this)
-                return
-            }
             this.#state.logic = true
         }
 
         if (type === "node") {
-            Object.values(configObj).forEach(item => {
-                if (!(item in configObj) && item !== null) {
+            for (const item of Object.keys(config)) {
+                if (!(item in this.node)) {
                     console.error("component error: configure node error parameters", this)
-                    return null
+                    this.#state.node = false
+                    return
                 }
-            })
-
-            if (!this.#state.node) {
-                this.node.style = config.style
-                this.node.html = config.html
-                this.#state.node = true
             }
+            this.node.style = config.style
+            this.node.html = config.html
+            this.#state.node = true
         }
     }
 
@@ -281,28 +278,28 @@ export default class AvancedProgressCard001 extends HTMLElement {
         })
     }
 
-    async progress(progress) {
-        if (progress <= this.#progress) {
+    async updateProgress(progress) {
+        if (progress <= this.logic.progress) {
             console.error(`component error: updateProgress can't be less than or equal to acumulated progress`,
-                "\nacumulated progress: ", this.#progress, "\nrequest update: ", progress, "\ncomponent", this
+                "\nacumulated progress: ", this.logic.progress, "\nrequest update: ", progress, "\ncomponent", this
             )
-            return null
+            return
         }
         const containerBox = this.dom.querySelector(".containerBox")
         const numberBox = Array.from(this.dom.querySelectorAll(".numberBox"))
 
         for (let i = 0; i < progress; i++) {
-            if (this.#progress >= 100) return
-            this.#progress += 1
+            if (this.logic.progress >= 100) return
+            this.logic.progress += 1
 
-            if (this.#progress === 10 || this.#progress === 100) {
+            if (this.logic.progress === 10 || this.logic.progress === 100) {
                 const newBox = containerBox.appendChild(document.createElement("li"))
                 newBox.className = "numberBox FCenter"
                 numberBox.push(newBox)
             }
 
-            this.#progress === 100 && (numberBox[0].style.width = "fit-content")
-            numberBox.forEach((item, index) => item.textContent = String(this.#progress)[index])
+            this.logic.progress === 100 && (numberBox[0].style.width = "fit-content")
+            numberBox.forEach((item, index) => item.textContent = String(this.logic.progress)[index])
             await this.#sleep(20)
         }
 
@@ -328,7 +325,7 @@ export default class AvancedProgressCard001 extends HTMLElement {
 
     async init() {
         if (!this.#ready) {
-            console.error("component error: not ready", `state: ${this.#state}`, this)
+            console.error("component error: not ready", this, { ...this.#state })
             return
         }
 

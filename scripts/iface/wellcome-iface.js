@@ -16,4 +16,5 @@ export const init = async (l, box) => {
     component.configure("logic", logic)
 
     component.init()
+    return component
 }

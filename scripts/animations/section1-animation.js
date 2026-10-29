@@ -13,7 +13,7 @@ export const animate = async (g, l) => {
     hiddeBackLayers(l)
 
     for (let i = 0; i < progress.length; i++) {
-        instances[i].progress(progress[i])
+        instances[i].updateProgress(progress[i])
     }
 
     await l.helper.tempo.sleep(2200)

@@ -20,21 +20,25 @@ classStyle.replaceSync(`
 
     .main {
         perspective: var(--perspective);
-        border: 1px solid white;
-        transform-style: preserve-3d;
-        transform-origin: center;
-        transform: rotateX(var(--rotateX)) rotateY(var(--rotateY));
 
-        .side {
-            border: 2px solid red;
-            font-size: 300px;
-            color: rgba(255, 255, 255, 0.5);
+        .cube {
+            border: 1px solid white;
+            transform-style: preserve-3d;
+            transform-origin: var(--X) var(--Y) calc( var(--perspective) / ((100 / var(--Z) * -1)) );
+            transform: rotateX(var(--rotateX)) rotateY(var(--rotateY));
+            transition: var(--transition);
+
+            .side {
+                border: 2px solid red;
+                font-size: 300px;
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            .top { width: 100%; height: var(--perspective); }
+            .bottom { width: 100%; height: var(--perspective); }
+            .left { width: var(--perspective); height: 100%; }
+            .right { width: var(--perspective); height: 100%; }
         }
-
-        .top { width: 100%; height: var(--perspective); }
-        .bottom { width: 100%; height: var(--perspective); }
-        .left { width: var(--perspective); height: 100%; }
-        .right { width: var(--perspective); height: 100%; }
     }
 
     .max { width: 100%; height: 100% }
@@ -76,27 +80,22 @@ export default class Cube3d extends HTMLElement {
         }
     })
 
-    #mode = null
+    sideMode = null
 
-    /* 
-                 
-                
-                
-                
-
-    */
     constructor() {
         super()
 
         this.css = {
             perspective: "400px",
+            transition: "250ms ease-in-out"
         }
 
         this.logic = {
             id: null,
             dom: document,
             event: null,
-            mode: "outside" /* front / outside */
+            sideMode: "front", /* front / outside */
+            rotateOrigin: { x: 50, y: 50, z: 50 } /* 0 - 100 axis positions */
         }
 
         this.dom = this.attachShadow({ mode: "open" })
@@ -105,64 +104,89 @@ export default class Cube3d extends HTMLElement {
 
     #draw() {
         this.dom.innerHTML = `
-            <ul class="main max relative mode-${this.#mode}">
-                <li class="side FCenter front max absolute">1</li>
-                <li class="side FCenter back max absolute">2</li>
-                <li class="side FCenter top absolute">3</li>
-                <li class="side FCenter bottom absolute">4</li>
-                <li class="side FCenter left absolute">5</li>
-                <li class="side FCenter right absolute">6</li>
-            </ul>
+            <div class="main max">
+                <ul class="cube max relative mode-${this.logic.sideMode}">
+                    <li class="side front FCenter max absolute">1</li>
+                    <li class="side back FCenter max absolute">2</li>
+                    <li class="side top FCenter absolute">3</li>
+                    <li class="side bottom FCenter absolute">4</li>
+                    <li class="side left FCenter absolute">5</li>
+                    <li class="side right FCenter absolute">6</li>
+                </ul>
+            </div>
         `
     }
 
     #alertDom() { this.logic.dom.dispatchEvent(new CustomEvent(this.logic.event, { detail: { id: this.logic.id, state: true, instance: this } })) }
 
     #validateMode() {
-        if (this.logic.mode !== "front" && this.logic.mode !== "outside") {
+        if (this.logic.sideMode !== "front" && this.logic.sideMode !== "outside") {
             console.error("component error: mode not valid", this)
             return
         }
     }
 
-    #setMode() { this.#mode = this.logic.mode }
+    #setRotateOrigin() {
+        for (const [key, value] of Object.entries(this.logic.rotateOrigin)) {
+            if (typeof value !== "number") {
+                console.log("component error: rotateOrigin only admits number format", this)
+                this.#state.logic = false
+                return false
+            }
 
-    async configure(type, config) {
+            key === "z" || key === "Z"
+                ? this.update({ [key.toUpperCase()]: value })
+                : this.update({ [key.toUpperCase()]: `${value}%` })
+        }
+        return true
+    }
+
+    configure(type, config) {
         if (type !== "css" && type !== "logic") {
             console.error("component error: configure type not valid", this)
             return
         }
 
-        const configObj = this[type]
+        if (type === "logic" && ((!config.id || !config.event) && (!this.logic.id || !this.logic.event))) {
+            console.error("component error: logic id/event not configured", this)
+            return
+        }
+
         for (const key of Object.keys(config)) {
-            if (!(key in configObj)) {
+            if (!(key in this[type])) {
                 console.error(`component error: ${key} is not valid prop`, this)
                 return
             }
         }
 
-        Object.assign(configObj, config)
+        Object.entries(config).forEach(([key, value]) => this[type][key] = value)
 
         if (type === "css") {
-            this.update(configObj)
+            this.update(this.css)
             this.#state.css = true
         }
 
         if (type === "logic") {
-            if (!configObj.id || !configObj.event) {
-                console.error("component error: logic id/event not configured", this)
-                return
-            }
+            if (!this.#setRotateOrigin()) return
             this.#state.logic = true
         }
     }
 
     update(obj) { Object.entries(obj).forEach(([key, value]) => this.style.setProperty(`--${key}`, value)) }
 
+    rotate(axis, value) {
+        const permitedAxis = ["x", "X", "y", "Y"]
+        if (!(permitedAxis.includes(axis))) {
+            console.error("component error: rotate only in X or Y axis", this)
+            return
+        }
+        this.style.setProperty(`--rotate${axis}`, `${value}deg`)
+    }
+
     init() {
         if (!this.#ready) {
-            console.error("component error: not ready", this)
-            return null
+            console.error("component error: not ready", this, { ...this.#state })
+            return
         }
 
         if (this.#initialized) {
@@ -172,7 +196,6 @@ export default class Cube3d extends HTMLElement {
 
         this.#initialized = true
         this.#validateMode()
-        this.#setMode()
         this.#draw()
     }
 }
