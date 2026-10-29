@@ -11,11 +11,7 @@ classStyle.replaceSync(`
     :host {
         display: flex;
         width: 100%;
-        max-width: 1200px;
-        min-width: 200px;
         height: 100%;
-        max-height: 1200px;
-        min-height: 200px;
     }
 
     .main {
@@ -87,7 +83,7 @@ export default class Cube3d extends HTMLElement {
 
         this.css = {
             perspective: "400px",
-            transition: "250ms ease-in-out"
+            transition: "350ms ease-out"
         }
 
         this.logic = {
@@ -95,7 +91,7 @@ export default class Cube3d extends HTMLElement {
             dom: document,
             event: null,
             sideMode: "front", /* front / outside */
-            rotateOrigin: { x: 50, y: 50, z: 50 } /* 0 - 100 axis positions */
+            rotateOrigin: { x: 50, y: 50, z: 50 }, /* 0 - 100 axis positions */
         }
 
         this.dom = this.attachShadow({ mode: "open" })
@@ -175,12 +171,14 @@ export default class Cube3d extends HTMLElement {
     update(obj) { Object.entries(obj).forEach(([key, value]) => this.style.setProperty(`--${key}`, value)) }
 
     rotate(axis, value) {
-        const permitedAxis = ["x", "X", "y", "Y"]
-        if (!(permitedAxis.includes(axis))) {
-            console.error("component error: rotate only in X or Y axis", this)
-            return
+        if (!this.logic.autoControl) {
+            const permitedAxis = ["x", "X", "y", "Y"]
+            if (!(permitedAxis.includes(axis))) {
+                console.error("component error: rotate only in X or Y axis", this)
+                return
+            }
+            this.style.setProperty(`--rotate${axis}`, `${value}deg`)
         }
-        this.style.setProperty(`--rotate${axis}`, `${value}deg`)
     }
 
     init() {

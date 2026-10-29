@@ -17,6 +17,7 @@ export const init = (g, l) => {
             (v) => changeSection(v, g),
             () => scale.scalePos(g, l),
             (v) => scale.posVisuals(v, l),
+            (v) => console.log(v)
         ]
     })
 

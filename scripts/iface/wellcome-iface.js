@@ -1,7 +1,7 @@
 export const init = async (l, box) => {
     const cubeContainer = document.querySelector("#cubeContainer")
 
-    const css = {}
+    const css = {perspective: "1000px"}
     const logic = {
         id: "cube3d",
         event: "wellcome-cube"
@@ -12,7 +12,7 @@ export const init = async (l, box) => {
         parent: cubeContainer
     })
 
-    component.configure("css", {})
+    component.configure("css", css)
     component.configure("logic", logic)
 
     component.init()
