@@ -5,7 +5,7 @@ export const init = (g, l) => {
         name: "section1_cards",
         value: false,
         listeners: [
-            () => scroll.unBlock(g),
+            () => scroll.unBlock(g), /* only codding for section1 */
             () => section1Cards(g)
         ]
     })

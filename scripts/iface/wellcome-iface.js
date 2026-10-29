@@ -3,7 +3,8 @@ export const init = async (l, box) => {
 
     const css = {}
     const logic = {
-        id: "cube3d"
+        id: "cube3d",
+        event: "wellcome-cube"
     }
 
     const component = await l.helper.component.addComponent({

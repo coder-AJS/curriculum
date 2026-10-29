@@ -1,22 +1,26 @@
 export const init = async (g, l, iface) => {
 
 
+    const cubeContainer = document.querySelector("#cubeContainer")
 
-
+    const range = document.querySelector("#range")
     const rangeH = document.querySelector("#rangeH")
-    const rangeV = document.querySelector("#rangeV")
+    const rangeW = document.querySelector("#rangeW")
+
+    range.addEventListener("input", (e) => {
+        cubeContainer.style.transform = `rotateY(${e.target.value}deg)`
+    })
 
     rangeH.addEventListener("input", (e) => {
-        l.helper.style.setVar("rotateY", e.target.value + "deg", wellcome)
+        cubeContainer.style.width = `${e.target.value}px`
     })
 
-    rangeV.addEventListener("input", (e) => {
-        l.helper.style.setVar("rotateX", e.target.value + "deg", wellcome)
+    rangeW.addEventListener("input", (e) => {
+        cubeContainer.style.height = `${e.target.value}px`
     })
 
 
 
-    const cubeContainer = document.querySelector("#cubeContainer")
     await iface.init(l, cubeContainer)
 
 

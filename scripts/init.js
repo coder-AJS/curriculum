@@ -18,8 +18,8 @@ const iface = {
 const prepareApp = (global, level, control, iface) => {
     control.scroll.init(global, level)
     control.components.init(global, level)
-/*     control.wellcome.init(global, level, iface.wellcome)
- */
+    control.wellcome.init(global, level, iface.wellcome)
+
     /* parallel */
 
     control.scale.init(global, level, iface.scale)
