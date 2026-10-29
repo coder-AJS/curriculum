@@ -1,29 +1,29 @@
-export const animate = async (l) => {
-    const cards = document.querySelectorAll(".stat3d")
-    const components = document.querySelectorAll("avanced-progress-card-001")
+export const animate = async (g, l) => {
+    const cardBox = document.querySelectorAll(".cardBox")
+    const instances = Object.values(g.static.components.section1)
     const progress = [98, 96, 94]
 
-    for (let i = 0; i < cards.length; i++) {
-        cardsIntro(cards[i])
+    for (let i = 0; i < cardBox.length; i++) {
+        cardsIntro(cardBox[i])
         await l.helper.tempo.sleep(350)
     }
-    await l.helper.tempo.sleepTempo(cards[0])
+    await l.helper.tempo.sleepTempo(cardBox[0])
 
     /* better rendering engine performace  */
     hiddeBackLayers(l)
 
     for (let i = 0; i < progress.length; i++) {
-        components[i].progress(progress[i])
+        instances[i].progress(progress[i])
     }
 
     await l.helper.tempo.sleep(2200)
-    components.forEach(item => item.toggleExpand(true))
+    instances.forEach(item => item.toggleExpand(true))
     await l.helper.tempo.sleep(350)
     return true
 }
 
 
-const cardsIntro = async (card) => card.classList.remove("stat3dHidden")
+const cardsIntro = async (card) => card.classList.remove("cardBoxHidden")
 
 const hiddeBackLayers = async (l) => {
     const bgLayers = document.querySelectorAll(".cardsCont .bgLayer")

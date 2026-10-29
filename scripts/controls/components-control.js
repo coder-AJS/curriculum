@@ -1,15 +1,16 @@
+import * as scroll from "../helper/scroll.js"
+
 export const init = (g, l) => {
     g.reactive.components.add({
-        name: "section1-cards",
+        name: "section1_cards",
         value: false,
         listeners: [
-            section1Cards
+            () => scroll.unBlock(g),
+            () => section1Cards(g)
         ]
     })
-
-    console.log(g.reactive)
 }
 
-const section1Cards = () => {
-    const cards = document.querySelectorAll(".stat3d") 
+const section1Cards = (g) => {
+    Object.values(g.static.components.section1).forEach(item => item.init())
 }

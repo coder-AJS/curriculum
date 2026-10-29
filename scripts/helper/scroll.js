@@ -2,22 +2,9 @@ export const block = (g) => {
     g.static.scrollLock = true
     console.info("scroll blocked")
 }
-export const unBlock = (g, request = null) => {
+export const unBlock = (g) => {
     g.static.scrollLock = false
-    request
-        ? console.info("unBlock request")
-        : console.info("scroll unBlocked")
-}
-
-export const requestUnblock = (g) => {
-
-    const components = [
-        g.reactive.iface.section1.cards
-    ]
-    const validate = components.every(item => item)
-    if (validate) {
-        unBlock(g, true)
-    }
+    console.info("scroll unBlocked")
 }
 
 export const disableNativeScroll = (g, l) => document.documentElement.style.overflow = "hidden"

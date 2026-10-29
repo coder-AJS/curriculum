@@ -1,35 +1,26 @@
-import * as scroll from "../helper/scroll.js"
-
 export const init = (g, l, iface) => {
-    g.reactive.iface.section1.add({
-        name: "cards",
-        value: false,
-        listeners: [
-            () => scroll.requestUnblock(g),
-            initCards
-        ]
-    })
+    g.static.components ??= {}
+    g.static.components.section1 = {
+        "html-card": null,
+        "css-card": null,
+        "js-card": null
+    }
 
-    document.addEventListener("component", (e) => {
-        if (e.detail.id in components) components[e.detail.id] = e.detail.instance
+    document.addEventListener("section1-card", (e) => {
+        if (!e.detail.state) {
+            console.trace("component not ready", e.detail)
+            return
+        }
+
+        g.static.components.section1[e.detail.id] = e.detail.instance
         validateComponents(g)
     })
 
-    iface.init(l)
-}
-
-const components = {
-    html: null,
-    css: null,
-    js: null
-}
-
-const validateComponents = (g) => {
-    if (Object.values(components).every(Boolean)) {
-        g.reactive.iface.section1.cards = true
+    const validateComponents = (g) => {
+        if (Object.values(g.static.components.section1).every(Boolean)) {
+            g.reactive.components.section1_cards = true
+        }
     }
-}
 
-const initCards = () => {
-    Object.values(components).forEach(item => item.init())
+    iface.init(l)
 }

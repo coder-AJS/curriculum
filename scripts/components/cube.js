@@ -58,6 +58,7 @@ export default class Cube3d extends HTMLElement {
         this.logic = {
             id: null,
             dom: document,
+            event: null
         }
 
         this.dom = this.attachShadow({ mode: "open" })
@@ -73,7 +74,7 @@ export default class Cube3d extends HTMLElement {
 
     }
 
-    #alertDom() { this.logic.dom.dispatchEvent(new CustomEvent("component", { detail: { id: this.logic.id, state: true, instance: this } })) }
+    #alertDom() { this.logic.dom.dispatchEvent(new CustomEvent(this.logic.event, { detail: { id: this.logic.id, state: true, instance: this } })) }
 
     async configure(type, config) {
         if (type !== "css" && type !== "logic") {
@@ -97,8 +98,8 @@ export default class Cube3d extends HTMLElement {
         }
 
         if (type === "logic") {
-            if (!configObj.id) {
-                console.error("component error: logic ID not configured", this)
+            if (!configObj.id || !configObj.event) {
+                console.error("component error: logic id/event not configured", this)
                 return
             }
             this.#state.logic = true

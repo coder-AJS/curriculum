@@ -6,7 +6,8 @@ const config = {
             fontFamily_2: "conthrax",
         },
         logic: {
-            id: "html",
+            id: "html-card",
+            event: "section1-card",
             title: "HTML",
         }
     },
@@ -17,7 +18,8 @@ const config = {
             fontFamily_2: "conthrax",
         },
         logic: {
-            id: "css",
+            id: "css-card",
+            event: "section1-card",
             title: "CSS",
         }
     },
@@ -28,7 +30,8 @@ const config = {
             fontFamily_2: "conthrax",
         },
         logic: {
-            id: "js",
+            id: "js-card",
+            event: "section1-card",
             title: "JAVASCRIPT",
         },
     }
@@ -93,6 +96,6 @@ const addComponents = async (l, box, config, node, module) => {
 }
 
 export const init = async (l) => {
-    const stat3dBoxes = document.querySelectorAll(".stat3d")
-    Object.entries(config).forEach(([key, conf], index) => addComponents(l, stat3dBoxes[index], conf, nodes[key], l.component.statCard))
+    const cardBox = document.querySelectorAll(".cardBox")
+    Object.entries(config).forEach(([key, conf], index) => addComponents(l, cardBox[index], conf, nodes[key], l.component.statCard))
 }

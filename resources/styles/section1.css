@@ -2,13 +2,13 @@
     background-color: rgb(from var(--white) r g b / 0.10);
     backdrop-filter: blur(10px);
 
-    .cardsCont {
+    .cardsContainer {
         display: grid;
         grid-template-columns: repeat(3, min-content);
         justify-content: space-between;
         height: 100%;
 
-        .statBox {
+        .statiticBox {
             width: 320px;
             height: 500px;
             perspective: 900px;
@@ -23,19 +23,14 @@
                 opacity: 0.5;
             }
 
-            .stat3d {
-                transform-style: preserve-3d;
-                transform: rotateY(var(--rotateY)) scale(1);
-                --rotateY: 20deg;
-                --rotateY: 0;
+            .cardBox {
                 border-radius: 6px;
                 box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.8);
                 opacity: 1;
                 overflow: hidden;
             }
 
-            .stat3dHidden {
-                transform: rotateY(var(--rotateY)) scale(1.1);
+            .cardBoxHidden {
                 opacity: 0;
                 filter: blur(15px) grayscale(1);
             }

@@ -75,7 +75,7 @@ const activeSection1 = async (g, l) => {
     if (!g.static.section1_animated && g.reactive.vp.onSection === "section1") {
         g.static.section1_animated = true
         control.block(g)
-        await section1.animate(l)
+        await section1.animate(g, l)
         control.unBlock(g)
     }
 }
