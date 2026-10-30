@@ -27,11 +27,17 @@ export const init = (g, l) => {
         value: false,
         listeners: [
             (v) => console.log(v),
-        ],
+            () => alertComplete(g)
+        ]
     })
+}
 
-
-
+const alertComplete = (g) => {
+    let complete = true
+    Object.values(g.static.components).forEach(item => {
+        Object.values(item).forEach(item => !item && (complete = false))
+    })
+    console.log("components ready:", complete)
 }
 
 const checkInit = (instance) => {
