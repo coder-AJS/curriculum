@@ -6,8 +6,8 @@ const config = {
             fontFamily_2: "conthrax",
         },
         logic: {
-            id: "html-card",
-            event: "section1-card",
+            id: "html_card",
+            event: "section1_card",
             title: "HTML",
         }
     },
@@ -18,8 +18,8 @@ const config = {
             fontFamily_2: "conthrax",
         },
         logic: {
-            id: "css-card",
-            event: "section1-card",
+            id: "css_card",
+            event: "section1_card",
             title: "CSS",
         }
     },
@@ -30,8 +30,8 @@ const config = {
             fontFamily_2: "conthrax",
         },
         logic: {
-            id: "js-card",
-            event: "section1-card",
+            id: "js_card",
+            event: "section1_card",
             title: "JAVASCRIPT",
         },
     }

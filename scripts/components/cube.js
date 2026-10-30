@@ -148,6 +148,11 @@ export default class Cube3d extends HTMLElement {
             return
         }
 
+        if (config.id && config.id.includes("-")) {
+            console.error("component error: id can't contains - (hyphen)", this)
+            return
+        }
+
         for (const key of Object.keys(config)) {
             if (!(key in this[type])) {
                 console.error(`component error: ${key} is not valid prop`, this)
@@ -164,6 +169,7 @@ export default class Cube3d extends HTMLElement {
 
         if (type === "logic") {
             if (!this.#setRotateOrigin()) return
+            if (!this.id && config.id) this.id = config.id
             this.#state.logic = true
         }
     }

@@ -238,6 +238,11 @@ export default class AvancedProgressCard001 extends HTMLElement {
             return
         }
 
+        if (config.id && config.id.includes("-")) {
+            console.error("component error: id can't contains - (hyphen)", this)
+            return
+        }
+
         for (const key of Object.keys(config)) {
             if (!(key in this[type])) {
                 console.error(`component error: ${key} is not valid prop`, this)
@@ -254,6 +259,7 @@ export default class AvancedProgressCard001 extends HTMLElement {
         }
 
         if (type === "logic") {
+            if (!this.id && config.id) this.id = config.id
             this.#state.logic = true
         }
 

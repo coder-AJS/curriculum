@@ -17,13 +17,14 @@ const iface = {
 
 const prepareApp = (global, level, control, iface) => {
     control.scroll.init(global, level)
-    control.components.init(global, level)
+    control.components.init(global, level) /* here init devMode */
     control.wellcome.init(global, level, iface.wellcome)
 
     /* parallel */
 
     control.scale.init(global, level, iface.scale)
     control.section1.init(global, level, iface.section1)
+
 }
 
 const init = async () => {
@@ -41,8 +42,8 @@ const init = async () => {
                 section1: level.helper.reactive.newReactive()
             },
             vp: level.helper.reactive.newReactive(),
-            components: level.helper.reactive.newReactive()
-        }
+/*             components: level.helper.reactive.newReactive()
+ */        }
     }
 
     prepareApp(global, level, controls, iface)

@@ -54,10 +54,6 @@ body {
     max-width: 1400px;
 }
 
-.hidden {
-    display: none;
-}
-
 /* transitions */
 .tempo300 {
     transition: 300ms ease-in-out;
@@ -141,4 +137,9 @@ body {
 
 .z3 {
     z-index: 3;
+}
+
+/* max specifity */
+.hidden {
+    display: none;
 }

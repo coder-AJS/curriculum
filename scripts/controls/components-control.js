@@ -1,16 +1,46 @@
-import * as scroll from "../helper/scroll.js"
+/* import * as devMode from "../controls/devMode.js"
+ */import * as scroll from "../helper/scroll.js"
 
 export const init = (g, l) => {
-    g.reactive.components.add({
+/*     g.reactive.components.add({
         name: "section1_cards",
         value: false,
         listeners: [
-            () => scroll.unBlock(g), /* only codding for section1 */
-            () => section1Cards(g)
+            () => scroll.unBlock(g),
+            () => section1Cards(g),
+            () => devMode.init(g)
         ]
     })
+ */
+
+
+    g.components = {}
+    g.components.wellcome = l.helper.reactive.newReactive()
+    g.components.wellcome.add({
+        name: "wellcome_cube",
+        value: false,
+        listeners: (v) => v.init(),
+    })
+}
+
+
+const checkInit = (instance) => {
+    const wait = delayed[instance.id]
+    if (!wait) instance.init()
 }
 
 const section1Cards = (g) => {
     Object.values(g.static.components.section1).forEach(item => item.init())
+}
+
+
+
+
+
+
+
+
+
+export const react = (component, instance) => {
+    console.log(component. instance)
 }
