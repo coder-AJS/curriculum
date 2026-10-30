@@ -21,7 +21,7 @@ classStyle.replaceSync(`
             border: 1px solid white;
             transform-style: preserve-3d;
             transform-origin: var(--X) var(--Y) calc( var(--perspective) / ((100 / var(--Z) * -1)) );
-            transform: rotateX(var(--rotateX)) rotateY(var(--rotateY));
+            transform: rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
             transition: var(--transition);
 
             .side {
@@ -171,14 +171,12 @@ export default class Cube3d extends HTMLElement {
     update(obj) { Object.entries(obj).forEach(([key, value]) => this.style.setProperty(`--${key}`, value)) }
 
     rotate(axis, value) {
-        if (!this.logic.autoControl) {
-            const permitedAxis = ["x", "X", "y", "Y"]
-            if (!(permitedAxis.includes(axis))) {
-                console.error("component error: rotate only in X or Y axis", this)
-                return
-            }
-            this.style.setProperty(`--rotate${axis}`, `${value}deg`)
+        const permitedAxis = ["x", "X", "y", "Y"]
+        if (!(permitedAxis.includes(axis))) {
+            console.error("component error: rotate only in X or Y axis", this)
+            return
         }
+        this.style.setProperty(`--rotate${axis.toUpperCase()}`, `${value}deg`)
     }
 
     init() {
