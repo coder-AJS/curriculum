@@ -13,7 +13,6 @@ export const init = (g, l) => {
         })
      */
 
-
     g.components = {}
     g.components.wellcome = l.helper.reactive.newReactive()
     g.components.wellcome.add({
@@ -26,13 +25,14 @@ export const init = (g, l) => {
     g.components.section1.add({
         name: "components",
         value: false,
-        listeners: [],
+        listeners: [
+            (v) => console.log(v),
+        ],
     })
 
 
 
 }
-
 
 const checkInit = (instance) => {
     const wait = delayed[instance.id]

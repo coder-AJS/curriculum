@@ -1,23 +1,20 @@
 export const init = async (g, l, iface) => {
     g.static["components"] = {}
-    g.static.components["wellcome"] = {}
-
-    const wellcomeComponents = {
-       wellcome_cube: null 
+    const wellcome = g.static.components["wellcome"] = {
+        cube: null
     }
 
     let sectionChecked = false
     document.addEventListener("component", (e) => {
-        if (e.detail.id in wellcomeComponents) g.static.components.wellcome[e.detail.id] = e.detail.instance
-        wellcomeComponents[e.detail.id] = e.detail.state
+        if (e.detail.id in wellcome) wellcome[e.detail.id] = e.detail.instance
         !sectionChecked && checkComponents()
     })
 
     const checkComponents = () => {
-        Object.values(wellcomeComponents).every(Boolean => {
+        if (Object.values(wellcome).every(Boolean)) {
             sectionChecked = true
-            g.components.wellcome.components = true
-        })
+            g.components.wellcome.components = "ready"
+        }
     }
 
     const cube = await iface.init(l)

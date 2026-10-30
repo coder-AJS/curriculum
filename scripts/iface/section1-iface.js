@@ -74,8 +74,8 @@ const addnodesTemplate = async (nodeContent) => {
             color: var(--black);
 
             .listItem { 
-            padding-left: 12px;
-            text-indent: -12px;
+                padding-left: 12px;
+                text-indent: -12px;
             }
         }
     `

@@ -1,26 +1,23 @@
 export const init = (g, l, iface) => {
-    g.static.components ??= {}
-    g.static.components.section1 = {
-        "html-card": null,
-        "css-card": null,
-        "js-card": null
+    const section1 = g.static.components.section1 = {
+        "html_card": null,
+        "css_card": null,
+        "js_card": null
     }
 
-    document.addEventListener("section1_card", (e) => {
-        if (!e.detail.state) {
-            console.trace("component not ready", e.detail)
-            return
-        }
-
-        g.static.components.section1[e.detail.id] = e.detail.instance
-        validateComponents(g)
+    let sectionChecked = false
+    document.addEventListener("component", (e) => {
+        if (e.detail.id in section1) section1[e.detail.id] = e.detail.instance
+        !sectionChecked && checkComponents()
     })
 
-    const validateComponents = (g) => {
-        if (Object.values(g.static.components.section1).every(Boolean)) {
-            g.reactive.components.section1_cards = true
+    const checkComponents = () => {
+        if (Object.values(section1).every(Boolean)) {
+            sectionChecked = true
+            g.components.section1.components = "ready"
         }
     }
+
 
     iface.init(l)
 }
