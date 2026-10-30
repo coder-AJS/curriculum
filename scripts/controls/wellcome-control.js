@@ -1,14 +1,31 @@
-import * as components from "../controls/components-control.js" 
-
 export const init = async (g, l, iface) => {
+    g.static["components"] = {}
+    g.static.components["wellcome"] = {}
 
-    document.addEventListener("wellcome_cube", (e)=> {
-        g.components.wellcome.wellcome_cube = e.detail.instance
+    const wellcomeComponents = {
+       wellcome_cube: null 
+    }
+
+    let sectionChecked = false
+    document.addEventListener("component", (e) => {
+        if (e.detail.id in wellcomeComponents) g.static.components.wellcome[e.detail.id] = e.detail.instance
+        wellcomeComponents[e.detail.id] = e.detail.state
+        !sectionChecked && checkComponents()
     })
 
-    const section = document.querySelector("#wellcome")
-    const cube = await iface.init(l, cubeContainer)
+    const checkComponents = () => {
+        Object.values(wellcomeComponents).every(Boolean => {
+            sectionChecked = true
+            g.components.wellcome.components = true
+        })
+    }
 
+    const cube = await iface.init(l)
+
+
+    /*     const section = document.querySelector("#wellcome")
+        const cube = await iface.init(l, cubeContainer)
+     */
     /*     const rangeX = document.querySelector("#rangeX")
         const rangeY = document.querySelector("#rangeY")
         rangeX.value = 0

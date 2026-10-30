@@ -1,12 +1,12 @@
 export const init = (g, l, iface) => {
-/*     g.static.components ??= {}
+    g.static.components ??= {}
     g.static.components.section1 = {
         "html-card": null,
         "css-card": null,
         "js-card": null
     }
 
- */    document.addEventListener("section1_card", (e) => {
+    document.addEventListener("section1_card", (e) => {
         if (!e.detail.state) {
             console.trace("component not ready", e.detail)
             return

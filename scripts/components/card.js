@@ -169,7 +169,6 @@ export default class AvancedProgressCard001 extends HTMLElement {
         this.logic = {
             id: null,
             dom: document,
-            event: null,
             title: "title",
             autoInit: false,
             autoExpand: false,
@@ -225,7 +224,7 @@ export default class AvancedProgressCard001 extends HTMLElement {
             })
     }
 
-    #alertDom() { this.logic.dom.dispatchEvent(new CustomEvent(this.logic.event, { detail: { id: this.logic.id, state: true, instance: this } })) }
+    #alertDom() { this.logic.dom.dispatchEvent(new CustomEvent("component", { detail: { id: this.logic.id, state: true, instance: this } })) }
 
     async configure(type, config) {
         if (type !== "css" && type !== "logic" && type !== "node") {
@@ -233,7 +232,7 @@ export default class AvancedProgressCard001 extends HTMLElement {
             return
         }
 
-        if (type === "logic" && ((!config.id || !config.event) && (!this.logic.id || !this.logic.event))) {
+        if (type === "logic" && (!config.id && !this.logic.id)) {
             console.error("component error: logic id/event not configured", this)
             return
         }

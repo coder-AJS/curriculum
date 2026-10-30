@@ -2,25 +2,35 @@
  */import * as scroll from "../helper/scroll.js"
 
 export const init = (g, l) => {
-/*     g.reactive.components.add({
-        name: "section1_cards",
-        value: false,
-        listeners: [
-            () => scroll.unBlock(g),
-            () => section1Cards(g),
-            () => devMode.init(g)
-        ]
-    })
- */
+    /*     g.reactive.components.add({
+            name: "section1_cards",
+            value: false,
+            listeners: [
+                () => scroll.unBlock(g),
+                () => section1Cards(g),
+                () => devMode.init(g)
+            ]
+        })
+     */
 
 
     g.components = {}
     g.components.wellcome = l.helper.reactive.newReactive()
     g.components.wellcome.add({
-        name: "wellcome_cube",
+        name: "components",
         value: false,
-        listeners: (v) => v.init(),
+        listeners: () => Object.values(g.static.components.wellcome).forEach(item => item.init()),
     })
+
+    g.components.section1 = l.helper.reactive.newReactive()
+    g.components.section1.add({
+        name: "components",
+        value: false,
+        listeners: [],
+    })
+
+
+
 }
 
 
@@ -42,5 +52,5 @@ const section1Cards = (g) => {
 
 
 export const react = (component, instance) => {
-    console.log(component. instance)
+    console.log(component.instance)
 }

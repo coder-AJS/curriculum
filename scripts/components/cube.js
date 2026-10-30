@@ -62,7 +62,8 @@ classStyle.replaceSync(`
 export default class Cube3d extends HTMLElement {
     #initialized = false
     #ready = false
-    #state = new Proxy({
+
+    #config = new Proxy({
         css: false,
         logic: false,
     }, {
@@ -76,8 +77,6 @@ export default class Cube3d extends HTMLElement {
         }
     })
 
-    sideMode = null
-
     constructor() {
         super()
 
@@ -89,13 +88,13 @@ export default class Cube3d extends HTMLElement {
         this.logic = {
             id: null,
             dom: document,
-            event: null,
             sideMode: "front", /* front / outside */
             rotateOrigin: { x: 50, y: 50, z: 50 }, /* 0 - 100 axis positions */
         }
 
         this.dom = this.attachShadow({ mode: "open" })
         this.dom.adoptedStyleSheets = [classStyle]
+        return this
     }
 
     #draw() {
@@ -113,7 +112,7 @@ export default class Cube3d extends HTMLElement {
         `
     }
 
-    #alertDom() { this.logic.dom.dispatchEvent(new CustomEvent(this.logic.event, { detail: { id: this.logic.id, state: true, instance: this } })) }
+    #alertDom() { this.logic.dom.dispatchEvent(new CustomEvent("component", { detail: { id: this.logic.id, state: true, instance: this } })) }
 
     #validateMode() {
         if (this.logic.sideMode !== "front" && this.logic.sideMode !== "outside") {
@@ -126,7 +125,7 @@ export default class Cube3d extends HTMLElement {
         for (const [key, value] of Object.entries(this.logic.rotateOrigin)) {
             if (typeof value !== "number") {
                 console.log("component error: rotateOrigin only admits number format", this)
-                this.#state.logic = false
+                this.#config.logic = false
                 return false
             }
 
@@ -143,8 +142,8 @@ export default class Cube3d extends HTMLElement {
             return
         }
 
-        if (type === "logic" && ((!config.id || !config.event) && (!this.logic.id || !this.logic.event))) {
-            console.error("component error: logic id/event not configured", this)
+        if (type === "logic" && (!config.id && !this.logic.id)) {
+            console.error("component error: logic id not configured", this)
             return
         }
 
@@ -164,13 +163,13 @@ export default class Cube3d extends HTMLElement {
 
         if (type === "css") {
             this.update(this.css)
-            this.#state.css = true
+            this.#config.css = true
         }
 
         if (type === "logic") {
             if (!this.#setRotateOrigin()) return
             if (!this.id && config.id) this.id = config.id
-            this.#state.logic = true
+            this.#config.logic = true
         }
     }
 
@@ -187,7 +186,7 @@ export default class Cube3d extends HTMLElement {
 
     init() {
         if (!this.#ready) {
-            console.error("component error: not ready", this, { ...this.#state })
+            console.error("component error: not ready", this, { ...this.#config })
             return
         }
 

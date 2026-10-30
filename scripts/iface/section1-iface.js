@@ -7,7 +7,6 @@ const config = {
         },
         logic: {
             id: "html_card",
-            event: "section1_card",
             title: "HTML",
         }
     },
@@ -19,7 +18,6 @@ const config = {
         },
         logic: {
             id: "css_card",
-            event: "section1_card",
             title: "CSS",
         }
     },
@@ -31,7 +29,6 @@ const config = {
         },
         logic: {
             id: "js_card",
-            event: "section1_card",
             title: "JAVASCRIPT",
         },
     }
