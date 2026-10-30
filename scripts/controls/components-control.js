@@ -13,31 +13,56 @@ export const init = (g, l) => {
         })
      */
 
-    g.components = {}
-    g.components.wellcome = l.helper.reactive.newReactive()
-    g.components.wellcome.add({
+    g.reactive.components = {}
+    g.reactive.components.wellcome = l.helper.reactive.newReactive()
+    g.reactive.components.wellcome.add({
         name: "components",
         value: false,
-        listeners: () => Object.values(g.static.components.wellcome).forEach(item => item.init()),
+        listeners: [
+            () => checkComplete(g, l),
+        ]
     })
 
-    g.components.section1 = l.helper.reactive.newReactive()
-    g.components.section1.add({
+    g.reactive.components.section1 = l.helper.reactive.newReactive()
+    g.reactive.components.section1.add({
         name: "components",
         value: false,
         listeners: [
             (v) => console.log(v),
-            () => alertComplete(g)
+            () => checkComplete(g, l)
         ]
     })
 }
 
-const alertComplete = (g) => {
+let componentsChecked = false
+const checkComplete = async (g, l) => {
+    if (componentsChecked) return
     let complete = true
-    Object.values(g.static.components).forEach(item => {
-        Object.values(item).forEach(item => !item && (complete = false))
-    })
-    console.log("components ready:", complete)
+
+    for (const group of Object.values(g.static.components)) {
+        for (const item of Object.values(group)) {
+            if (!item) {
+                complete = false
+                break
+            }
+        }
+        if (!complete) break
+    }
+
+    if (complete) {
+        componentsChecked = true
+        await l.helper.tempo.sleep(1000)
+        initWellcome(g, l)
+        scroll.unBlock(g)
+    }
+}
+
+const initWellcome = (g, l) => {
+    const cubeContainer = document.querySelector("#cubeContainer")
+    cubeContainer.innerHTML = ""
+    const cube = g.static.components.wellcome.cube
+    cubeContainer.appendChild(cube)
+    g.static.components.wellcome.cube.init()
 }
 
 const checkInit = (instance) => {

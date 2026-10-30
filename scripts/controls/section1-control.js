@@ -14,7 +14,7 @@ export const init = (g, l, iface) => {
     const checkComponents = () => {
         if (Object.values(section1).every(Boolean)) {
             sectionChecked = true
-            g.components.section1.components = "ready"
+            g.reactive.components.section1.components = "ready"
         }
     }
 

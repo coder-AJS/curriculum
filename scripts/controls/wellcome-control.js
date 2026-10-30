@@ -13,11 +13,11 @@ export const init = async (g, l, iface) => {
     const checkComponents = () => {
         if (Object.values(wellcome).every(Boolean)) {
             sectionChecked = true
-            g.components.wellcome.components = "ready"
+            g.reactive.components.wellcome.components = "ready"
         }
     }
 
-    const cube = await iface.init(l)
+    await iface.init(l)
 
 
     /*     const section = document.querySelector("#wellcome")

@@ -9,7 +9,8 @@ export const init = (g, l) => {
     control.disableNativeScroll()
     control.block(g)
 
-    g.reactive.vp.add({
+    const scroll = g.reactive.scroll = l.helper.reactive.newReactive()
+    const dynamicScroll = g.reactive.scroll.add({
         name: "dynamicScroll",
         value: 0,
         listeners: [
@@ -23,7 +24,7 @@ export const init = (g, l) => {
 
     activeWheelEvent(g, l)
 
-    g.reactive.vp.add({
+    const onSection = g.reactive.scroll.add({
         name: "onSection",
         value: "wellcome",
         listeners: [

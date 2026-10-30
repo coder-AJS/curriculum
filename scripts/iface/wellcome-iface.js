@@ -5,13 +5,11 @@ export const init = async (l) => {
 }
 
 const addCube = async (l) => {
-    const cubeContainer = document.querySelector("#cubeContainer")
     const css = { perspective: "1000px" }
     const logic = { id: "cube" }
 
-    const cube = await l.helper.component.add({
+    const cube = await l.helper.component.prepare({
         module: l.component.cube3d,
-        parent: cubeContainer,
         css: css,
         logic: logic
     })
