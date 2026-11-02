@@ -40,13 +40,13 @@ export let totalScroll = null
 /* dinamic scroll */
 
 const activeWheelEvent = (g, l) => {
-    const nonScrollHeight = parseFloat(l.helper.style.getVar("nonScrollHeight"))
-    const scrollHeight = parseFloat(l.helper.style.getVar("scrollHeight"))
+    const nonScrollHeight = parseFloat(l.helper.css.get("nonScrollHeight"))
+    const scrollHeight = parseFloat(l.helper.css.get("scrollHeight"))
     totalScroll = scrollHeight + nonScrollHeight
     let top = 0
 
     window.addEventListener("wheel", (e) => {
-        if (!g.static.scrollLock) {
+        if (!g.static.dynamicScroll) {
             top = Math.sign(e.deltaY) === 1 ? -config.dynamicScrollDistance : config.dynamicScrollDistance
             let nextScroll = g.reactive.vp.dynamicScroll + top
             nextScroll > 0 && (nextScroll = 0)
@@ -56,7 +56,7 @@ const activeWheelEvent = (g, l) => {
     })
 }
 
-const smoothScroll = (v, section, g) => !g.static.scrollLock && section.style.setProperty("--scrollTop", v + "vh")
+const smoothScroll = (v, section, g) => !g.static.dynamicScroll && section.style.setProperty("--scrollTop", v + "vh")
 
 /* sections */
 const sections = {

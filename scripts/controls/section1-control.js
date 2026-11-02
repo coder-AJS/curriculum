@@ -1,20 +1,23 @@
-export const init = (g, l, iface) => {
-    const section1 = g.static.components.section1 = {
-        "html_card": null,
-        "css_card": null,
-        "js_card": null
-    }
+const components = {
+    "htmlCard": null,
+    "cssCard": null,
+    "jsCard": null
+}
 
-    let sectionChecked = false
+export const init = (g, l, iface) => {
+    let componentsReady = false
+
     document.addEventListener("component", (e) => {
-        if (e.detail.id in section1) section1[e.detail.id] = e.detail.instance
-        !sectionChecked && checkComponents()
+        if (e.detail.id in components) {
+            components[e.detail.id] = e.detail.instance
+            !componentsReady && checkComponents()
+        }
     })
 
     const checkComponents = () => {
-        if (Object.values(section1).every(Boolean)) {
-            sectionChecked = true
-            g.reactive.components.section1.components = "ready"
+        if (Object.values(components).every(Boolean)) {
+            componentsReady = true
+            g.reactive.section1.state = true
         }
     }
 

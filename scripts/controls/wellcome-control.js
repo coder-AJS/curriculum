@@ -1,21 +1,15 @@
+export const components = {
+    cube: false
+}
+
 export const init = async (g, l, iface) => {
-    g.static["components"] = {}
-    const wellcome = g.static.components["wellcome"] = {
-        cube: null
-    }
 
-    let sectionChecked = false
     document.addEventListener("component", (e) => {
-        if (e.detail.id in wellcome) wellcome[e.detail.id] = e.detail.instance
-        !sectionChecked && checkComponents()
-    })
-
-    const checkComponents = () => {
-        if (Object.values(wellcome).every(Boolean)) {
-            sectionChecked = true
-            g.reactive.components.wellcome.components = "ready"
+        if (e.detail.id in components) {
+            components.cube = e.detail.instance
+            g.reactive.wellcome.state = true
         }
-    }
+    })
 
     await iface.init(l)
 
@@ -48,4 +42,11 @@ export const init = async (g, l, iface) => {
         })
      */
 
+}
+
+export const initComponents = () => {
+    const cubeContainer = document.querySelector("#cubeContainer")
+    cubeContainer.innerHTML = ""
+    cubeContainer.appendChild(components.cube)
+    components.cube.init()
 }
