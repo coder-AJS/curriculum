@@ -1,7 +1,7 @@
 import { config } from "./../globalConf.js"
 import * as control from "./../helper/scroll.js"
 import * as scale from "./scale-control.js"
-import * as section1 from "./../animations/section1-animation.js"
+import * as section1 from "./section1-control.js"
 
 export const init = (g, l) => {
     const sectionScroll = document.querySelector("#sectionScroll")
@@ -29,11 +29,10 @@ export const init = (g, l) => {
         value: "wellcome",
         listeners: [
             () => alertSection(g),
-            () => activeSection1(g, l)
+            (v) => console.log(v),
+            () => section1.activeCards(g, l)
         ]
     })
-
-    g.static.section1_animated = false
 }
 
 export let permitedScroll = null
@@ -66,18 +65,9 @@ const sections = {
 
 const identifySection = (v) => Object.entries(sections).find(([key, value]) => v <= value[0] && v > value[1])?.[0] || "body"
 
-const alertSection = (g) => console.info(g.reactive.vp.onSection)
+const alertSection = (g) => console.info(g.reactive.scroll.onSection)
 
 const changeSection = (v, g) => {
     const section = identifySection(v)
-    section !== g.reactive.vp.onSection && (g.reactive.vp.onSection = section)
-}
-
-const activeSection1 = async (g, l) => {
-    if (!g.static.section1_animated && g.reactive.vp.onSection === "section1") {
-        g.static.section1_animated = true
-        control.block(g)
-        await section1.animate(g, l)
-        control.unBlock(g)
-    }
+    section !== g.reactive.scroll.onSection && (g.reactive.scroll.onSection = section)
 }

@@ -64,6 +64,10 @@ body {
     transition: 500ms ease-in-out;
 }
 
+.tempo700 {
+    transition: 700ms ease-in-out;
+}
+
 .tempo1000 {
     transition: 1000ms ease-in-out
 }

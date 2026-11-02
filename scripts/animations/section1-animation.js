@@ -1,35 +1,27 @@
-export const animate = async (g, l) => {
-    const cardBox = document.querySelectorAll(".cardBox")
-    const instances = Object.values(g.static.components.section1)
+export const animate = async (scenes, l) => {
     const progress = [98, 96, 94]
 
-    for (let i = 0; i < cardBox.length; i++) {
-        cardsIntro(cardBox[i])
-        await l.helper.tempo.sleep(350)
+    await l.helper.tempo.sleep(500)
+    for (let i = 0; i < scenes.length; i++) {
+        l.helper.css.set("opacity", 1, scenes[i])
+        l.helper.css.set("blur", 0, scenes[i])
+        l.helper.css.set("scale", 1, scenes[i])
+        await l.helper.tempo.sleep(500)
     }
-    await l.helper.tempo.sleepTempo(cardBox[0])
 
-    /* better rendering engine performace  */
+    await l.helper.tempo.sleepTempo(scenes[0].querySelector(".cardBox"))
+
     hiddeBackLayers(l)
+    for (let i = 0; i < progress.length; i++) scenes[i].querySelector(".card-component").updateProgress(progress[i])
+    await l.helper.tempo.sleep(2000)
 
-    for (let i = 0; i < progress.length; i++) {
-        instances[i].updateProgress(progress[i])
-    }
-
-    await l.helper.tempo.sleep(2200)
-    instances.forEach(item => item.toggleExpand(true))
+    for (let i = 0; i < progress.length; i++) scenes[i].querySelector(".card-component").toggleExpand(true)
     await l.helper.tempo.sleep(350)
     return true
 }
 
-
-const cardsIntro = async (card) => card.classList.remove("cardBoxHidden")
-
+    /* better rendering engine performace  */
 const hiddeBackLayers = async (l) => {
-    const bgLayers = document.querySelectorAll(".cardsCont .bgLayer")
-    for (const item of bgLayers) {
-        item.style.opacity = "0"
-        await l.helper.tempo.sleep(500)
-        item.classList.add("hidden")
-    }
+    const bgLayers = document.querySelectorAll(".bgLayer")
+    bgLayers.forEach(item => item.classList.add("hidden"))
 }

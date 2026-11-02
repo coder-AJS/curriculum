@@ -90,6 +90,7 @@ const addComponents = async (l, box, config, node, module) => {
         logic: config.logic,
         node: await addnodesTemplate(node)
     })
+    component.classList.add("card-component")
 }
 
 export const init = async (l) => {

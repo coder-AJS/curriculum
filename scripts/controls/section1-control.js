@@ -1,3 +1,6 @@
+import * as scroll from "./../helper/scroll.js"
+import { animate } from "./../animations/section1-animation.js"
+
 const components = {
     "htmlCard": null,
     "cssCard": null,
@@ -5,22 +8,33 @@ const components = {
 }
 
 export const init = (g, l, iface) => {
+    g.static.section1_animated = false
     let componentsReady = false
 
     document.addEventListener("component", (e) => {
         if (e.detail.id in components) {
             components[e.detail.id] = e.detail.instance
-            !componentsReady && checkComponents()
+            !componentsReady && validateComponents()
         }
     })
 
-    const checkComponents = () => {
+    const validateComponents = () => {
         if (Object.values(components).every(Boolean)) {
             componentsReady = true
             g.reactive.section1.state = true
+            Object.values(components).forEach(item => item.init())
         }
     }
 
-
     iface.init(l)
+}
+
+export const activeCards = async (g, l) => {
+    if (!g.static.section1_animated && g.reactive.scroll.onSection === "section1") {
+        const scenes = document.querySelectorAll(".cardScene")
+        g.static.section1_animated = true
+        scroll.block(g)
+        await animate(scenes, l)
+        scroll.unBlock(g)
+    }
 }

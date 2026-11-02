@@ -134,6 +134,7 @@ globalStyle.replaceSync(`
     .FCenter { display: flex; justify-content: center; align-items: center; }
     .FCol { display: flex; flex-direction: column; }
     .tempo350 { transition: 350ms ease-in-out; }
+    .tempo500 { transition: 500ms ease-in-out; }
 `
 )
 
@@ -185,11 +186,11 @@ export default class AvancedProgressCard001 extends HTMLElement {
         this.dom.innerHTML = `
             <style>${this.node.style}</style>
             <div class="main max tempo350 relative">
-                <div class="backLayer max tempo350 absolute"></div>
+                <div class="backLayer max tempo500 absolute"></div>
                 <div class="bar barTop FCenter tempo350 absolute">${this.logic.title}</div>
-                <div id="node" class="bar barBottom tempo350 absolute">${this.node.html}</div>
-                <div class="statBox FCenter tempo350 absolute">
-                    <ul class="circleBox FCenter tempo350 relative">
+                <div id="node" class="bar barBottom tempo500 absolute">${this.node.html}</div>
+                <div class="statBox FCenter tempo500 absolute">
+                    <ul class="circleBox FCenter relative">
                         <li class="circleExt"></li>
                         <li class="circleLine absolute"></li>
                         <li class="circleInt FCol absolute">

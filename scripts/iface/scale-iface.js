@@ -5,7 +5,6 @@ export const init = async (l) => {
 
 /* scale */
 const drawMarks = (l, marksBox) => {
-    console.log(marksBox)
     for (let i = 0; i <= 100; i++) {
         const newMark = l.helper.dom.inject({ tag: "li", parent: marksBox })
 
