@@ -1,4 +1,4 @@
-import { totalScroll } from "./scroll-control.js"
+import { permitedScroll } from "./scroll-control.js"
 
 const addEvents = (g, l) => {
     const inter = document.querySelector("#interLayer")
@@ -27,14 +27,14 @@ const addEvents = (g, l) => {
         dragging = true
         inter.setPointerCapture(e.pointerId)
         globalPos = linePos(e, l, inter, scale, scaleMargin)
-        const newScroll = (globalPos / 100) * (totalScroll)
+        const newScroll = (globalPos / 100) * (permitedScroll)
         updateReactive(g, newScroll)
     })
 
     inter.addEventListener("pointerup", (e) => {
         dragging = false
         inter.releasePointerCapture(e.pointerId)
-        const newScroll = (globalPos / 100) * (totalScroll)
+        const newScroll = (globalPos / 100) * (permitedScroll)
         updateReactive(g, newScroll)
     })
 
@@ -42,7 +42,7 @@ const addEvents = (g, l) => {
     inter.addEventListener("pointermove", (e) => {
         over && (globalPos = linePos(e, l, inter, scale, scaleMargin))
         if (dragging) {
-            const newScroll = (globalPos / 100) * (totalScroll)
+            const newScroll = (globalPos / 100) * (permitedScroll)
             updateReactive(g, newScroll)
         }
     })
@@ -59,7 +59,7 @@ const linePos = (e, l, inter, scale, scaleMargin) => {
     return pos
 }
 
-const updateReactive = (g, newScroll) => g.reactive.vp.dynamicScroll = -Math.round(newScroll)
+const updateReactive = (g, newScroll) => g.reactive.scroll.dynamicScroll = -Math.round(newScroll)
 
 let lastInfoValue = 0
 let contID = 0
@@ -102,22 +102,22 @@ const updateCounter = async (value, l) => {
 
 export const scalePos = (g, l) => {
     const scrollScale = document.querySelector(".scrollScale")
-    l.helper.css.set("dynamicTop", g.reactive.vp.dynamicScroll + "%", scrollScale)
+    l.helper.css.set("dynamicTop", g.reactive.scroll.dynamicScroll + "%", scrollScale)
 }
 
-export const posVisuals = async (dynamicScroll, l) => {
+export const viewPos = async (dynamicScroll, l) => {
     const scale = document.querySelector("#scale")
     const infoHeight = document.querySelector("#info").offsetHeight
     const interHeight = document.querySelector("#interLayer").offsetHeight
     const viewHeight = parseFloat(l.helper.css.get("viewHeight", scale))
 
     const infoDistance = ((interHeight - infoHeight - 1) / (interHeight)) * 100 /* -1 css calc error */
-    const infoTop = (((dynamicScroll * -1) / totalScroll) * infoDistance)
-    const infoValue = (((dynamicScroll * -1) / totalScroll) * 100)
+    const infoTop = (((dynamicScroll * -1) / permitedScroll) * infoDistance)
+    const infoValue = (((dynamicScroll * -1) / permitedScroll) * 100)
     l.helper.css.set("infoTop", infoTop + "%", scale)
     updateCounter(Math.round(infoValue), l)
 
-    const viewTop = (((dynamicScroll * -1) / totalScroll) * (100 - viewHeight)) /* 80 = 100% - 20% view height*/
+    const viewTop = (((dynamicScroll * -1) / permitedScroll) * (100 - viewHeight)) /* 80 = 100% - 20% view height*/
     l.helper.css.set("viewTop", viewTop + "%", scale)
 }
 
@@ -125,5 +125,4 @@ export const init = (g, l, iface) => {
     iface.init(l)
     addEvents(g, l)
     updateCounter()
-    posVisuals(g.reactive.vp.dynamicScroll, l)
 }

@@ -1,10 +1,10 @@
 export const disableNativeScroll = (g, l) => document.documentElement.style.overflow = "hidden"
 
 export const block = (g) => {
-    g.static.dynamicScroll = true
+    g.static.scrollLock = false
     console.info("scroll blocked")
 }
 export const unBlock = (g) => {
-    g.static.dynamicScroll = false
+    g.static.scrollLock = true
     console.info("scroll unBlocked")
 }

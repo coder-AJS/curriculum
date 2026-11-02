@@ -35,6 +35,7 @@ body {
     height: var(--scrollHeight);
     transform: translateY(var(--scrollTop));
     transition: var(--scrollTransition);
+    border: 1px solid blue;
 
     .section {
         width: 100%;

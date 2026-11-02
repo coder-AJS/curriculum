@@ -5,8 +5,9 @@ export const init = async (l) => {
 
 /* scale */
 const drawMarks = (l, marksBox) => {
+    console.log(marksBox)
     for (let i = 0; i <= 100; i++) {
-        const newMark = l.helper.dom.add({ tag: "li", parent: marksBox })
+        const newMark = l.helper.dom.inject({ tag: "li", parent: marksBox })
 
         const getType = (i) => {
             if (i % 10 === 0) return "bigMark"

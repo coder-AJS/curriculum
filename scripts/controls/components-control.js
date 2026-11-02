@@ -43,7 +43,6 @@ export const init = (g, l) => {
 
 let allReady = false
 const areReady = async (sectionsState, components) => {
-    console.log(components)
     if (allReady) return
     allReady = Object.values(sectionsState).every(Boolean)
     components.state = true

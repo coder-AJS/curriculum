@@ -9,15 +9,15 @@ export const init = (g, l) => {
     control.disableNativeScroll()
     control.block(g)
 
-    const scroll = g.reactive.scroll = l.helper.reactive.newReactive()
-    const dynamicScroll = g.reactive.scroll.add({
+    g.reactive.scroll = l.helper.reactive.newReactive()
+    g.reactive.scroll.add({
         name: "dynamicScroll",
         value: 0,
         listeners: [
             (v) => smoothScroll(v, sectionScroll, g),
             (v) => changeSection(v, g),
             () => scale.scalePos(g, l),
-            (v) => scale.posVisuals(v, l),
+            (v) => scale.viewPos(v, l),
 /*             (v) => console.log(v)
  */        ]
     })
@@ -36,22 +36,22 @@ export const init = (g, l) => {
     g.static.section1_animated = false
 }
 
-export let totalScroll = null
+export let permitedScroll = null
 /* dinamic scroll */
 
 const activeWheelEvent = (g, l) => {
     const nonScrollHeight = parseFloat(l.helper.css.get("nonScrollHeight"))
     const scrollHeight = parseFloat(l.helper.css.get("scrollHeight"))
-    totalScroll = scrollHeight + nonScrollHeight
+    permitedScroll = scrollHeight + nonScrollHeight
     let top = 0
 
     window.addEventListener("wheel", (e) => {
         if (!g.static.dynamicScroll) {
             top = Math.sign(e.deltaY) === 1 ? -config.dynamicScrollDistance : config.dynamicScrollDistance
-            let nextScroll = g.reactive.vp.dynamicScroll + top
+            let nextScroll = g.reactive.scroll.dynamicScroll + top
             nextScroll > 0 && (nextScroll = 0)
-            nextScroll <= -totalScroll && (nextScroll = -totalScroll) /* limit scroollayer height */
-            g.reactive.vp.dynamicScroll = nextScroll
+            nextScroll <= -permitedScroll && (nextScroll = -permitedScroll) /* limit scroollayer height */
+            g.reactive.scroll.dynamicScroll = nextScroll
         }
     })
 }
