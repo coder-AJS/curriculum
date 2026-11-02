@@ -1,17 +1,17 @@
 /* import * as devMode from "../controls/devMode.js"
- */import * as scroll from "../helper/scroll.js"
+ */import * as scroll from "../helper/scroll.js"
 import * as wellcome from "./wellcome-control.js"
 
 
 export const init = (g, l) => {
     const sectionsState = {
+        wellcome: false,
         section1: false
     }
-    let allReady = false
 
-    const components = g.reactive.allComponents = l.helper.reactive.newReactive()
-    g.reactive.allComponents.add({
-        name: "componentsReady",
+    g.reactive.allComponents = l.helper.reactive.newReactive()
+    const components = g.reactive.allComponents.add({
+        name: "state",
         value: false,
         listeners: () => {
             console.log("componentes ready")
@@ -24,7 +24,9 @@ export const init = (g, l) => {
         name: "state",
         value: false,
         listeners: [
-            () => wellcome.initComponents(g, l)
+            () => sectionsState.wellcome = true,
+            () => wellcome.initComponents(g, l),
+            () => areReady(sectionsState, components)
         ]
     })
 
@@ -33,15 +35,16 @@ export const init = (g, l) => {
         name: "state",
         value: false,
         listeners: [
-            (v) => {
-                areReady()
-            }
+            () => sectionsState.section1 = true,
+            () => areReady(sectionsState, components)
         ]
     })
+}
 
-    const areReady = async () => {
-        if (allReady) return
-        allReady = Object.values(allReady).every(Boolean)
-        components.componentsReady = true
-    }
+let allReady = false
+const areReady = async (sectionsState, components) => {
+    console.log(components)
+    if (allReady) return
+    allReady = Object.values(sectionsState).every(Boolean)
+    components.state = true
 }
