@@ -32,9 +32,9 @@ export const init = async (g, l, iface) => {
 
     const wellcome = document.querySelector("#wellcome")
     wellcome.addEventListener("mousemove", (e) => {
-        const limitPercent = 60
-        const percentPos = ((e.clientX - wellcome.offsetLeft) / wellcome.offsetWidth) * limitPercent
-        const rotatePercent = Math.round(percentPos - limitPercent / 2)
+        const multipliquer = 200
+        const percentPos = ((e.clientX - wellcome.offsetLeft) / wellcome.offsetWidth) * multipliquer
+        const rotatePercent = Math.round(percentPos - multipliquer / 2)
         cube.rotate("Y", rotatePercent)
     })
 

@@ -24,9 +24,10 @@ globalStyle.replaceSync(`
             transition: var(--transition);
 
             .side {
+                transform-style: preserve-3d;
                 border: 2px solid red;
-                font-size: 300px;
-/*                 color: rgba(255, 255, 255, 0.0);
+/*                 font-size: 300px;
+                color: rgba(255, 255, 255, 0.0);
  */            }
 
             .top { width: 100%; height: var(--perspective); }
