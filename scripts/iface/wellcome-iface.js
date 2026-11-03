@@ -13,13 +13,14 @@ const addCube = async (l, cubePerspective) => {
         module: l.component.cube3d,
         css: css,
         logic: logic,
-        node: addNodes(cubePerspective)
+        node: addNodes(l, cubePerspective)
     })
 
     return cube
 }
 
-const addNodes = (cubePerspective) => {
+const addNodes = (l, cubePerspective) => {
+    const layers = ["layer0", "layer1", "layer2", "layer3"]
     const layer1_pos = 40
     const scale1 = 0.9
     const layer2_pos = 80
@@ -27,19 +28,31 @@ const addNodes = (cubePerspective) => {
     const layer3_pos = 120
     const scale3 = 0.7
 
+    const addTextBoxes = (l, text, container) => {
+        for (const layer of layers) {
+            const newLayer = l.helper.dom.inject({ tag: "li", parent: container, className: `${layer} FCenter max relative` })
+
+            Array.from(text).forEach(item => {
+                const charBox = l.helper.dom.inject({ tag: "li", parent: newLayer })
+                const char = l.helper.dom.inject({ tag: "div", parent: charBox })
+                char.textContent = item
+            })
+        }
+        return container.outerHTML
+    }
+
+    let mainBox = l.helper.dom.add({ tag: "ul", className: "parallax FCenter max relative" })
+    mainBox = addTextBoxes(l, "FRONT-END", mainBox)
+
+    console.log(mainBox)
+
     const nodes = {
         back: {
-            html: `
-                <div class="main FCenter max relative">
-                    <div class="text absolute">FRONT-END</div>
-                    <div class="scene-3d absolute"><div class="text">FRONT-END</div></div>
-                    <div class="scene-3d absolute"><div class="text">FRONT-END</div></div>
-                    <div class="scene-3d absolute"><div class="text">FRONT-END</div></div>
-                </div>
-            `,
+            html: mainBox,
             style: `
-                .main {
+                .parallax {
                     transform-style: preserve-3d;
+                    border: 11px solid red;
 
                     .scene-3d {
                         perspective: ${cubePerspective}px;
@@ -60,6 +73,7 @@ const addNodes = (cubePerspective) => {
             `
         }
     }
+    
     return nodes
 }
 
