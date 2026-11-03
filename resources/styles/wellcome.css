@@ -1,9 +1,7 @@
 .wellcome {
-    width: 100%;
-    height: var(--nonScrollHeight);
     background-image: url("./../images/bg-mountains.webp");
-    perspective: 600px;
-
+    /*     perspective: 600px;
+ */
     --rotateX: 0;
 
     .filterLayer {
@@ -11,7 +9,7 @@
     }
 
     .cubeContainer {
-        width: 1200px;
+        width: 100%;
         aspect-ratio: 19/10;
         border: 1px solid black;
         transform: rotateX(var(--rotateX));
@@ -25,13 +23,13 @@
         border: 2px solid gray;
         background-color: rgba(0, 0, 0, 0.315);
         padding: 10px 20px;
-        
+
         label {
             width: 100%;
             height: 40px;
             font-size: 20px;
             color: white;
-            
+
             input {
                 flex: 1;
                 margin-left: 20px;

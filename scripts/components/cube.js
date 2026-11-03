@@ -1,5 +1,5 @@
-const classStyle = new CSSStyleSheet()
-classStyle.replaceSync(`
+const globalStyle = new CSSStyleSheet()
+globalStyle.replaceSync(`
     * {
         margin: 0;
         padding: 0;
@@ -18,7 +18,6 @@ classStyle.replaceSync(`
         perspective: var(--perspective);
 
         .cube {
-            border: 1px solid white;
             transform-style: preserve-3d;
             transform-origin: var(--X) var(--Y) calc( var(--perspective) / ((100 / var(--Z) * -1)) );
             transform: rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
@@ -27,8 +26,8 @@ classStyle.replaceSync(`
             .side {
                 border: 2px solid red;
                 font-size: 300px;
-                color: rgba(255, 255, 255, 0.5);
-            }
+/*                 color: rgba(255, 255, 255, 0.0);
+ */            }
 
             .top { width: 100%; height: var(--perspective); }
             .bottom { width: 100%; height: var(--perspective); }
@@ -63,9 +62,10 @@ export default class Cube3d extends HTMLElement {
     #initialized = false
     #ready = false
 
-    #config = new Proxy({
+    #state = new Proxy({
         css: false,
         logic: false,
+        node: false
     }, {
         set: (target, property, value) => {
             target[property] = value
@@ -92,17 +92,22 @@ export default class Cube3d extends HTMLElement {
             rotateOrigin: { x: 50, y: 50, z: 50 }, /* 0 - 100 axis positions */
         }
 
+        this.node = {
+            back: { html: null, style: null }
+        }
+
         this.dom = this.attachShadow({ mode: "open" })
-        this.dom.adoptedStyleSheets = [classStyle]
+        this.dom.adoptedStyleSheets = [globalStyle]
         return this
     }
 
     #draw() {
         this.dom.innerHTML = `
+            <style>${this.node.back.style}</style>
             <div class="main max">
                 <ul class="cube max relative mode-${this.logic.sideMode}">
-                    <li class="side front FCenter max absolute">1</li>
-                    <li class="side back FCenter max absolute">2</li>
+                    <li class="side front FCenter max absolute"></li>
+                    <li class="side back FCenter max absolute">${this.node.back.html}</li>
                     <li class="side top FCenter absolute">3</li>
                     <li class="side bottom FCenter absolute">4</li>
                     <li class="side left FCenter absolute">5</li>
@@ -125,7 +130,7 @@ export default class Cube3d extends HTMLElement {
         for (const [key, value] of Object.entries(this.logic.rotateOrigin)) {
             if (typeof value !== "number") {
                 console.log("component error: rotateOrigin only admits number format", this)
-                this.#config.logic = false
+                this.#state.logic = false
                 return false
             }
 
@@ -137,7 +142,7 @@ export default class Cube3d extends HTMLElement {
     }
 
     configure(type, config) {
-        if (type !== "css" && type !== "logic") {
+        if (type !== "css" && type !== "logic" && type !== "node") {
             console.error("component error: configure type not valid", this)
             return
         }
@@ -163,13 +168,28 @@ export default class Cube3d extends HTMLElement {
 
         if (type === "css") {
             this.update(this.css)
-            this.#config.css = true
+            this.#state.css = true
         }
 
         if (type === "logic") {
             if (!this.#setRotateOrigin()) return
             if (!this.id && config.id) this.id = config.id
-            this.#config.logic = true
+            this.#state.logic = true
+        }
+
+        if (type === "node") {
+            for (const item of Object.keys(config)) {
+
+                if (!(item in this.node)) {
+                    console.error("component error: configure node error parameters", this)
+                    this.#state.node = false
+                    return
+                }
+
+                this.node[item].style = config[item].style
+                this.node[item].html = config[item].html
+            }
+            this.#state.node = true
         }
     }
 
@@ -186,7 +206,7 @@ export default class Cube3d extends HTMLElement {
 
     init() {
         if (!this.#ready) {
-            console.error("component error: not ready", this, { ...this.#config })
+            console.error("component error: not ready", this, { ...this.#state })
             return
         }
 

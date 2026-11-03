@@ -119,7 +119,7 @@ globalStyle.replaceSync(`
             
             & .bar {
                 color: rgb(60, 60, 60);
-                background-color: rgba(255, 255, 255, 0.5);
+                background-color: rgba(255, 255, 255, 0.8);
             }
 
             & .barBottom { top: calc(100% - var(--nodeOpenedHeight)); }
@@ -133,8 +133,7 @@ globalStyle.replaceSync(`
     .max { width: 100%; height: 100%; }
     .FCenter { display: flex; justify-content: center; align-items: center; }
     .FCol { display: flex; flex-direction: column; }
-    .tempo350 { transition: 350ms ease-in-out; }
-    .tempo500 { transition: 500ms ease-in-out; }
+    .tempo350 { transition: 350ms ease-out; }
 `
 )
 
@@ -186,10 +185,10 @@ export default class AvancedProgressCard001 extends HTMLElement {
         this.dom.innerHTML = `
             <style>${this.node.style}</style>
             <div class="main max tempo350 relative">
-                <div class="backLayer max tempo500 absolute"></div>
+                <div class="backLayer max tempo350 absolute"></div>
                 <div class="bar barTop FCenter tempo350 absolute">${this.logic.title}</div>
-                <div id="node" class="bar barBottom tempo500 absolute">${this.node.html}</div>
-                <div class="statBox FCenter tempo500 absolute">
+                <div id="node" class="bar barBottom tempo350 absolute">${this.node.html}</div>
+                <div class="statBox FCenter tempo350 absolute">
                     <ul class="circleBox FCenter relative">
                         <li class="circleExt"></li>
                         <li class="circleLine absolute"></li>
@@ -322,7 +321,6 @@ export default class AvancedProgressCard001 extends HTMLElement {
     }
 
     addToNode(obj) {
-        console.log(obj)
         if (!obj?.html || !obj?.style) {
             console.error("component error: addToNode error parameters", this)
             return

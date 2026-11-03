@@ -2,44 +2,55 @@
     background-color: rgb(from var(--white) r g b / 0.10);
     backdrop-filter: blur(10px);
 
-    .cardsContainer {
-        display: grid;
-        grid-template-columns: repeat(3, min-content);
-        justify-content: space-between;
-        height: 100%;
+    .vpBox {
+        border: 1px solid green;
 
-        .cardScene {
-            width: 320px;
-            height: 500px;
-            perspective: 900px;
-            border-radius: 6px;
-            perspective: 800px;
-            opacity: 1;
+        .hard {
+            font-family: "dune";
+            font-weight: bolder;
+            font-size: 32px;
+            color: rgb(40, 40, 40);
+            margin-bottom: 30px;
+        }
 
-            --blur: 80px;
-            --scale: 1.2;
-            --opacity: 0;
+        .cardsContainer {
+            width: 100%;
+            height: auto;
+            border: 1px solid red;
 
-            &>.bgLayer,
-            &>.cardBox {
-                border-radius: 8px;
-                overflow: hidden;
-            }
+            .cardScene {
+                width: 320px;
+                height: 500px;
+                perspective: 900px;
+                border-radius: 6px;
+                perspective: 800px;
+                opacity: 1;
 
-            .bgLayer {
-                background-color: rgba(255, 255, 255, 0.2);
-                background-image: url("./../images/stats.png");
-                background-size: 40%;
-                background-repeat: no-repeat;
-                background-position: center;
-                opacity: 0.5;
-            }
+                --blur: 80px;
+                --scale: 1.2;
+                --opacity: 0;
 
-            .cardBox {
-                box-shadow: 6px 6px 6px rgb(0, 0, 0);
-                opacity: var(--opacity);
-                filter: blur(var(--blur));
-                transform: scale(var(--scale));
+                &>.bgLayer,
+                &>.cardBox {
+                    border-radius: 8px;
+                    overflow: hidden;
+                }
+
+                .bgLayer {
+                    background-color: rgba(255, 255, 255, 0.2);
+                    background-image: url("./../images/stats.png");
+                    background-size: 40%;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    opacity: 0.5;
+                }
+
+                .cardBox {
+                    box-shadow: 6px 6px 6px rgb(0, 0, 0);
+                    opacity: var(--opacity);
+                    filter: blur(var(--blur));
+                    transform: scale(var(--scale));
+                }
             }
         }
     }

@@ -59,12 +59,12 @@ const nodes = {
 }
 
 const addnodesTemplate = async (nodeContent) => {
-    const nodeTemplate = `
+    const html = `
         <ul class="nodeList absolute">
             ${nodeContent.map(item => `<li class="listItem">* ${item}</li>`).join("")}
         </ul>`
 
-    const nodeStyle = `
+    const style = `
         .nodeList {
             bottom: 0;
             width: 100%;
@@ -79,7 +79,7 @@ const addnodesTemplate = async (nodeContent) => {
             }
         }
     `
-    return { "html": nodeTemplate, "style": nodeStyle }
+    return { "html": html, "style": style }
 }
 
 const addComponents = async (l, box, config, node, module) => {
