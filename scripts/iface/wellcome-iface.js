@@ -20,31 +20,49 @@ const addCube = async (l, cubePerspective) => {
 }
 
 const addNodes = (l, cubePerspective) => {
-    const layers = ["layer0", "layer1", "layer2", "layer3"]
-    const layer1_pos = 40
-    const scale1 = 0.9
-    const layer2_pos = 80
-    const scale2 = 0.8
-    const layer3_pos = 120
-    const scale3 = 0.7
+    const layers = [
+        { pos: 0, scale: 1 },
+        { pos: 50, scale: 0.925 },
+        { pos: 100, scale: 0.85 },
+        { pos: 150, scale: 0.775 }
+    ]
+
+    const visible = {
+        0: [3, 7],
+        1: [2, 4],
+        2: [0, 6],
+        3: [1, 8]
+    }
 
     const addTextBoxes = (l, text, container) => {
-        for (const layer of layers) {
-            const newLayer = l.helper.dom.inject({ tag: "li", parent: container, className: `${layer} FCenter max relative` })
 
-            Array.from(text).forEach(item => {
-                const charBox = l.helper.dom.inject({ tag: "li", parent: newLayer })
-                const char = l.helper.dom.inject({ tag: "div", parent: charBox })
+        layers.forEach((layer, layerIndex) => {
+            const newLayer = l.helper.dom.inject({ tag: "li", parent: container, className: `scene-3d FCenter max absolute` })
+
+
+            Array.from(text).forEach((item, charIndex) => {
+                const char = l.helper.dom.inject({ tag: "div", parent: newLayer, className: "text hiddenText" })
                 char.textContent = item
+                if (visible[layerIndex].includes(charIndex)) {
+                    const index = visible[layerIndex].indexOf(charIndex)
+                    visible[layerIndex][index] = char
+                }
             })
-        }
+
+        })
+        distributeChars()
         return container.outerHTML
+    }
+
+    const distributeChars = () => {
+        Object.values(visible).forEach(item => {
+            item.forEach(item => item.classList.remove("hiddenText"))
+            
+        })
     }
 
     let mainBox = l.helper.dom.add({ tag: "ul", className: "parallax FCenter max relative" })
     mainBox = addTextBoxes(l, "FRONT-END", mainBox)
-
-    console.log(mainBox)
 
     const nodes = {
         back: {
@@ -52,28 +70,30 @@ const addNodes = (l, cubePerspective) => {
             style: `
                 .parallax {
                     transform-style: preserve-3d;
-                    border: 11px solid red;
+                    perspective: ${cubePerspective}px;
 
                     .scene-3d {
-                        perspective: ${cubePerspective}px;
                         transform-style: preserve-3d;
 
-                        &:nth-child(2) .text { transform: translateZ(${layer1_pos}px) scale(${scale1}); }
-                        &:nth-child(3) .text { transform: translateZ(${layer2_pos}px) scale(${scale2}); color: red; }
-                        &:nth-child(4) .text { transform: translateZ(${layer3_pos}px) scale(${scale3}); color: blue; }
+                        &:nth-child(1) { transform: translateZ(${layers[0].pos}px) scale(${layers[0].scale}); }
+                        &:nth-child(2) { transform: translateZ(${layers[1].pos}px) scale(${layers[1].scale}); }
+                        &:nth-child(3) { transform: translateZ(${layers[2].pos}px) scale(${layers[2].scale}); }
+                        &:nth-child(4) { transform: translateZ(${layers[3].pos}px) scale(${layers[3].scale}); }
                     }
                 }
 
                 .text {
-                    font-family: "oxanium";
+                    font-family: "anarchy";
                     font-size: 16cqi;
                     transform-style: preserve-3d;
                 }
 
+                .hiddenText {
+                    opacity: 0;
+                }
             `
         }
     }
-    
+
     return nodes
 }
-
