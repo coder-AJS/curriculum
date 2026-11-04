@@ -123,6 +123,17 @@ export const viewPos = async (dynamicScroll, l) => {
 
 export const init = (g, l, iface) => {
     iface.init(l)
+    g.static.scaleVisibility = 0
+
     addEvents(g, l)
     updateCounter()
+}
+
+export const visibility = async (g, v) => {
+    if (g.static.scaleVisibility === 1) return
+    if (v <= -100) {
+        const scale = document.querySelector("#scale")
+        g.static.scaleVisibility = 1
+        scale.classList.remove("scaleHidden")
+    }
 }

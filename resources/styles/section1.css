@@ -1,6 +1,6 @@
 .section-1 {
-    background-color: rgb(from var(--white) r g b / 0.10);
-    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
 
     .vpBox {
         border: 1px solid green;
@@ -9,7 +9,7 @@
             font-family: "dune";
             font-weight: bolder;
             font-size: 32px;
-            color: rgb(40, 40, 40);
+            color: var(--white);
             margin-bottom: 30px;
         }
 

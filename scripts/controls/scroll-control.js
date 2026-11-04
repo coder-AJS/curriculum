@@ -18,8 +18,8 @@ export const init = (g, l) => {
             (v) => changeSection(v, g),
             () => scale.scalePos(g, l),
             (v) => scale.viewPos(v, l),
-/*             (v) => console.log(v)
- */        ]
+            (v) => scale.visibility(g, v)
+        ]
     })
 
     activeWheelEvent(g, l)

@@ -6,7 +6,11 @@ export const init = async (l) => {
 }
 
 const addCube = async (l, cubePerspective) => {
-    const css = { perspective: cubePerspective + "px" }
+    const css = {
+        perspective: cubePerspective + "px",
+        transition: "500ms ease-out"
+
+    }
     const logic = { id: "cube" }
 
     const cube = await l.helper.component.prepare({
@@ -20,55 +24,12 @@ const addCube = async (l, cubePerspective) => {
 }
 
 const addNodes = (l, cubePerspective) => {
-    const layers = [
-        { pos: 0, scale: 1 },
-        { pos: 50, scale: 0.85 },
-        { pos: 100, scale: 0.7 },
-/*         { pos: 150, scale: 0.55 }
- */    ]
-
-    const visible = {
-        0: [3, 7],
-        1: [2, 4, 8],
-        2: [0, 6, 1],
-/*         3: [1, 8]
- */    }
-
-    const addTextBoxes = (l, text, container) => {
-
-        layers.forEach((layer, layerIndex) => {
-            const newLayer = l.helper.dom.inject({ tag: "li", parent: container, className: `scene-3d FCenter max absolute` })
-
-
-            Array.from(text).forEach((item, charIndex) => {
-                const char = l.helper.dom.inject({ tag: "div", parent: newLayer, className: "text hiddenText" })
-/*                 const char = l.helper.dom.inject({ tag: "div", parent: newLayer, className: "text" })
- */                char.textContent = item
-                if (visible[layerIndex].includes(charIndex)) {
-                    const index = visible[layerIndex].indexOf(charIndex)
-                    visible[layerIndex][index] = char
-                }
-            })
-
-        })
-        distributeChars()
-        return container.outerHTML
-    }
-
-    const distributeChars = () => {
-        Object.values(visible).forEach(item => {
-            item.forEach(item => item.classList.remove("hiddenText"))
-            
-        })
-    }
+    const layers = [ { pos: 0, scale: 1 }, { pos: 100, scale: 0.7 } ]
+    const visible = { 0: [1, 3, 5, 7], 1: [0, 2, 4, 6, 8] }
 
     let mainBox = l.helper.dom.add({ tag: "ul", className: "parallax FCenter max relative" })
-    mainBox = addTextBoxes(l, "FRONT-END", mainBox)
+    mainBox = addTextBoxes(l, layers, "FRONT-END", mainBox, visible)
 
-    /*                         &:nth-child(2) { transform: translateZ(${layers[1].pos}px) scale(${layers[1].scale}); }
-                        &:nth-child(3) { transform: translateZ(${layers[2].pos}px) scale(${layers[2].scale}); }
-                        &:nth-child(4) { transform: translateZ(${layers[3].pos}px) scale(${layers[3].scale}); }
- */
     const nodes = {
         back: {
             html: mainBox,
@@ -82,13 +43,14 @@ const addNodes = (l, cubePerspective) => {
 
                         &:nth-child(1) { transform: translateZ(${layers[0].pos}px) scale(${layers[0].scale}); }
                         &:nth-child(2) { transform: translateZ(${layers[1].pos}px) scale(${layers[1].scale}); }
-                        &:nth-child(3) { transform: translateZ(${layers[2].pos}px) scale(${layers[2].scale}); }
                     }
                 }
 
                 .text {
-                    font-family: "anarchy";
-                    font-size: 16cqi;
+                    font-family: "letter";
+                    font-size: 24cqi;
+                    color: var(--white);
+                    overflow: hidden;
                     transform-style: preserve-3d;
                 }
 
@@ -100,4 +62,30 @@ const addNodes = (l, cubePerspective) => {
     }
 
     return nodes
+}
+
+const addTextBoxes = (l, layers, text, container, visible) => {
+    layers.forEach((layer, layerIndex) => {
+        const newLayer = l.helper.dom.inject({ tag: "li", parent: container, className: `scene-3d FCenter absolute` })
+
+
+        Array.from(text).forEach((item, charIndex) => {
+            const char = l.helper.dom.inject({ tag: "div", parent: newLayer, className: "text fontAdjust hiddenText" })
+            char.textContent = item
+            if (visible[layerIndex].includes(charIndex)) {
+                const index = visible[layerIndex].indexOf(charIndex)
+                visible[layerIndex][index] = char
+            }
+        })
+
+    })
+    distributeChars(visible)
+    return container.outerHTML
+}
+
+const distributeChars = (visible) => {
+    Object.values(visible).forEach(item => {
+        item.forEach(item => item.classList.remove("hiddenText"))
+
+    })
 }

@@ -3,7 +3,7 @@
     left: calc(100vw - var(--scrollScaleWidth));
     width: var(--scrollScaleWidth);
     height: 100vh;
-    transition: background-color 1000ms;
+    transition: background-color 1000ms, left 500ms;
 
     --scaleHeight: calc(var(--nonScrollHeight) * 2 + var(--scrollHeight));
     /* la altura de scroll + 2 * nonScroll */
@@ -126,7 +126,6 @@
         .scrollScale {
             top: var(--scaleMargin);
             height: calc(100% - var(--scaleMargin) * 2);
-            backdrop-filter: blur(8px);
             transition: 800ms cubic-bezier(0.25, 1, 0.75, 1);
 
             * {
@@ -135,7 +134,7 @@
 
             .marksBox {
                 & .bigMark {
-                    opacity: 0.5;
+                    opacity: 1;
                 }
 
                 & .mediumMark,
@@ -151,4 +150,8 @@
             color: rgb(40, 40, 40);
         }
     }
+}
+
+.scaleHidden {
+    left: 100%;
 }
