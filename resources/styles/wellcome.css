@@ -1,11 +1,16 @@
 .wellcome {
-    background-image: url("./../images/bg-mountains.webp");
-    /*     perspective: 600px;
- */
-    --rotateX: 0;
+    overflow: hidden;
 
-    .filterLayer {
-        backdrop-filter: grayscale(0.6);
+    --rotateX: 0;
+    --bg-size: 1;
+
+    .bg {
+        filter: grayscale(0.6);
+        background-image: url("./../images/bg-mountains.webp");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        transform: scale(var(--bg-size));
     }
 
     .cubeContainer {

@@ -38,12 +38,6 @@ body {
 /*     border: 1px solid blue;
  */}
 
-.bg-cover {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
 .horLimit {
     width: 100%;
     max-width: 1200px;

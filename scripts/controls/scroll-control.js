@@ -1,15 +1,14 @@
 import { config } from "./../globalConf.js"
-import * as control from "./../helper/scroll.js"
 import * as scale from "./scale-control.js"
 import * as section1 from "./section1-control.js"
 
 export const init = (g, l) => {
-    const sectionScroll = document.querySelector("#sectionScroll")
-
-    control.disableNativeScroll()
+    document.documentElement.style.overflow = "hidden"
     block(g, true)
 
+    const sectionScroll = document.querySelector("#sectionScroll")
     g.reactive.scroll = l.helper.reactive.newReactive()
+
     g.reactive.scroll.add({
         name: "dynamicScroll",
         value: 0,
@@ -21,12 +20,11 @@ export const init = (g, l) => {
         ]
     })
 
-    activeWheelEvent(g, l)
-
     const onSection = g.reactive.scroll.add({
         name: "onSection",
         value: "wellcome",
         listeners: [
+            alertSection,
             /* section1 first time */
             async () => {
                 if (!g.static.section1_animated) {
@@ -39,6 +37,8 @@ export const init = (g, l) => {
             }
         ]
     })
+
+    activeWheelEvent(g, l)
 }
 
 export const block = (g, boolean) => {
@@ -75,8 +75,8 @@ const sections = {
 
 const identifySection = (v) => Object.entries(sections).find(([key, value]) => v <= value[0] && v > value[1])?.[0] || "body"
 
-/* const alertSection = (g) => console.info(g.reactive.scroll.onSection)
- */
+const alertSection = (v) => console.info(v)
+
 const changeSection = (v, g) => {
     const section = identifySection(v)
     section !== g.reactive.scroll.onSection && (g.reactive.scroll.onSection = section)
