@@ -4,6 +4,7 @@
     width: var(--scrollScaleWidth);
     height: 100vh;
     transition: background-color 1000ms, left 500ms;
+    pointer-events: var(--events);
 
     --scaleHeight: calc(var(--nonScrollHeight) * 2 + var(--scrollHeight));
     /* la altura de scroll + 2 * nonScroll */
@@ -18,6 +19,7 @@
     --viewTop: 0;
     --viewHeight: 24%;
     --viewOpacity: 0;
+    --events: auto;
 
     .scrollScale {
         top: calc(var(--dynamicTop) + var(--scaleMargin));
@@ -96,10 +98,10 @@
         top: var(--viewTop);
         width: 100%;
         height: var(--viewHeight);
-        background-color: rgba(255, 255, 255, 0.08);
+        background-color: rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(2px);
-        border-top: 2px solid rgba(255, 255, 255, 0.4);
-        border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+        border-top: 1px solid rgba(255, 255, 255, 0.4);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.4);
         opacity: var(--viewOpacity);
         transition: var(--scrollTransition);
     }
@@ -116,13 +118,14 @@
 
     .interLayer {
         top: 0;
-        pointer-events: auto;
         cursor: crosshair;
+        pointer-events: var(--events);
     }
 
     &:hover {
-        background-color: rgba(0, 0, 0, 0.6);
 
+        /*         background-color: rgba(0, 0, 0, 0.6);
+ */
         .scrollScale {
             top: var(--scaleMargin);
             height: calc(100% - var(--scaleMargin) * 2);
@@ -150,8 +153,4 @@
             color: rgb(40, 40, 40);
         }
     }
-}
-
-.scaleHidden {
-    left: 100%;
 }

@@ -30,11 +30,11 @@ export const init = (g, l, iface) => {
 }
 
 export const activeCards = async (g, l) => {
-    if (!g.static.section1_animated && g.reactive.scroll.onSection === "section1") {
+    if (g.reactive.scroll.onSection === "section1") {
         const scenes = document.querySelectorAll(".cardScene")
-        g.static.section1_animated = true
         scroll.block(g)
         await animate(scenes, l)
         scroll.unBlock(g)
     }
+    return
 }

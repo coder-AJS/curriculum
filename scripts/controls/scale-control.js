@@ -1,13 +1,21 @@
 import { permitedScroll } from "./scroll-control.js"
 
-const addEvents = (g, l) => {
+const addReactivity = (g, l) => {
     const inter = document.querySelector("#interLayer")
     const scale = document.querySelector("#scale")
     const scaleMargin = parseFloat(l.helper.css.get("scaleMargin", scale))
-
     let over = false
     let dragging = false
     let globalPos = 0
+
+    /* detect movement */
+    inter.addEventListener("pointermove", (e) => {
+        over && (globalPos = linePos(e, l, inter, scale, scaleMargin))
+        if (dragging) {
+            const newScroll = (globalPos / 100) * (permitedScroll)
+            updateReactive(g, newScroll)
+        }
+    })
 
     /* detect mouse enter/out */
     inter.addEventListener("mouseenter", () => {
@@ -36,15 +44,6 @@ const addEvents = (g, l) => {
         inter.releasePointerCapture(e.pointerId)
         const newScroll = (globalPos / 100) * (permitedScroll)
         updateReactive(g, newScroll)
-    })
-
-    /* detect movement */
-    inter.addEventListener("pointermove", (e) => {
-        over && (globalPos = linePos(e, l, inter, scale, scaleMargin))
-        if (dragging) {
-            const newScroll = (globalPos / 100) * (permitedScroll)
-            updateReactive(g, newScroll)
-        }
     })
 }
 
@@ -100,6 +99,10 @@ const updateCounter = async (value, l) => {
     lastInfoValue = value
 }
 
+export const block = (g, l, boolean) => {
+    l.helper.css.set("events", boolean ? "none" : "auto", scale)
+}
+
 export const scalePos = (g, l) => {
     const scrollScale = document.querySelector(".scrollScale")
     l.helper.css.set("dynamicTop", g.reactive.scroll.dynamicScroll + "%", scrollScale)
@@ -124,16 +127,7 @@ export const viewPos = async (dynamicScroll, l) => {
 export const init = (g, l, iface) => {
     iface.init(l)
     g.static.scaleVisibility = 0
-
-    addEvents(g, l)
     updateCounter()
-}
-
-export const visibility = async (g, v) => {
-    if (g.static.scaleVisibility === 1) return
-    if (v <= -100) {
-        const scale = document.querySelector("#scale")
-        g.static.scaleVisibility = 1
-        scale.classList.remove("scaleHidden")
-    }
+    block(g, l, true)
+    addReactivity(g, l)
 }

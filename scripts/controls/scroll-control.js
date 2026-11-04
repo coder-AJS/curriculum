@@ -18,7 +18,6 @@ export const init = (g, l) => {
             (v) => changeSection(v, g),
             () => scale.scalePos(g, l),
             (v) => scale.viewPos(v, l),
-            (v) => scale.visibility(g, v)
         ]
     })
 
@@ -28,16 +27,20 @@ export const init = (g, l) => {
         name: "onSection",
         value: "wellcome",
         listeners: [
-            () => alertSection(g),
-            (v) => console.log(v),
-            () => section1.activeCards(g, l)
+            /* section1 first time */
+            async () => {
+                if (!g.static.section1_animated) {
+                    await section1.activeCards(g, l)
+                    g.static.section1_animated = true
+                    scale.block(g, l, false)
+                }
+            }
         ]
     })
 }
 
-export let permitedScroll = null
 /* dinamic scroll */
-
+export let permitedScroll = null
 const activeWheelEvent = (g, l) => {
     const nonScrollHeight = parseFloat(l.helper.css.get("nonScrollHeight"))
     const scrollHeight = parseFloat(l.helper.css.get("scrollHeight"))
@@ -45,7 +48,7 @@ const activeWheelEvent = (g, l) => {
     let top = 0
 
     window.addEventListener("wheel", (e) => {
-        if (!g.static.dynamicScroll) {
+        if (!g.static.scrollLock) {
             top = Math.sign(e.deltaY) === 1 ? -config.dynamicScrollDistance : config.dynamicScrollDistance
             let nextScroll = g.reactive.scroll.dynamicScroll + top
             nextScroll > 0 && (nextScroll = 0)
@@ -65,9 +68,10 @@ const sections = {
 
 const identifySection = (v) => Object.entries(sections).find(([key, value]) => v <= value[0] && v > value[1])?.[0] || "body"
 
-const alertSection = (g) => console.info(g.reactive.scroll.onSection)
-
+/* const alertSection = (g) => console.info(g.reactive.scroll.onSection)
+ */
 const changeSection = (v, g) => {
     const section = identifySection(v)
     section !== g.reactive.scroll.onSection && (g.reactive.scroll.onSection = section)
 }
+
