@@ -7,7 +7,7 @@ export const init = (g, l) => {
     const sectionScroll = document.querySelector("#sectionScroll")
 
     control.disableNativeScroll()
-    control.block(g)
+    block(g, true)
 
     g.reactive.scroll = l.helper.reactive.newReactive()
     g.reactive.scroll.add({
@@ -30,13 +30,20 @@ export const init = (g, l) => {
             /* section1 first time */
             async () => {
                 if (!g.static.section1_animated) {
+                    block(g, true)
                     await section1.activeCards(g, l)
                     g.static.section1_animated = true
+                    block(g, false)
                     scale.block(g, l, false)
                 }
             }
         ]
     })
+}
+
+export const block = (g, boolean) => {
+    g.static.scrollLock = boolean
+    console.info(`scroll ${boolean ? "block" : "unblock"}`)
 }
 
 /* dinamic scroll */

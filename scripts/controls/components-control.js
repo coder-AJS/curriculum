@@ -1,5 +1,5 @@
 /* import * as devMode from "../controls/devMode.js"
- */import * as scroll from "../helper/scroll.js"
+ */import * as scroll from "./scroll-control.js"
 import * as wellcome from "./wellcome-control.js"
 
 
@@ -15,7 +15,7 @@ export const init = (g, l) => {
         value: false,
         listeners: () => {
             console.log("componentes ready")
-            scroll.unBlock(g)
+            scroll.block(g, false)
         }
     })
 

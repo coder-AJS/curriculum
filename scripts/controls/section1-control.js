@@ -1,4 +1,3 @@
-import * as scroll from "./../helper/scroll.js"
 import { animate } from "./../animations/section1-animation.js"
 
 const components = {
@@ -32,9 +31,7 @@ export const init = (g, l, iface) => {
 export const activeCards = async (g, l) => {
     if (g.reactive.scroll.onSection === "section1") {
         const scenes = document.querySelectorAll(".cardScene")
-        scroll.block(g)
         await animate(scenes, l)
-        scroll.unBlock(g)
     }
     return
 }
