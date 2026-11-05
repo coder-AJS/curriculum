@@ -12,7 +12,7 @@
     /* sections */
     --nonScrollHeight: 100vh;
     --scrollHeight: 200vh;
-    --wellcome-size: 2;
+    --wellcomeBG-size: 6;
 
 }
 
@@ -41,12 +41,12 @@ body {
  */
 }
 
-.bg-cover {
+/* .bg-cover {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
-
+ */
 .horLimit {
     width: 100%;
     max-width: 1200px;

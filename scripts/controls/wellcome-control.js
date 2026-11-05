@@ -5,7 +5,7 @@ export const components = {
 }
 
 export const init = async (g, l, iface) => {
-    g.static.wellcomeBG = l.helper.css.get("wellcome-size", document.body)
+    g.static.wellcomeBG = l.helper.css.get("wellcomeBG-size", document.body)
 
     document.addEventListener("component", (e) => {
         if (e.detail.id in components) {
@@ -52,7 +52,16 @@ export const initComponents = () => {
 }
 
 export const setBgSize = (g, l, v) => {
+    const value = (g.static.wellcomeBG - 1)
+    const newValue = g.static.wellcomeBG - (-v / 100) * value
+    const scaleValue = l.helper.css.get("wellcomeBG-size")
+
+    if (v <= -100 && scaleValue.value !== 1) {
+        l.helper.css.set("wellcomeBG-size", 1, document.body)
+        return
+    }
+
     if (v < -100) return
-    const value = g.static.wellcomeBG - v / -100
-    l.helper.css.set("wellcome-size", value, document.body)
+
+    l.helper.css.set("wellcomeBG-size", newValue, document.body)
 }

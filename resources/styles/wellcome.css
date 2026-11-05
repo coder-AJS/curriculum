@@ -9,7 +9,7 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        transform: scale(var(--wellcome-size));
+        transform: scale(var(--wellcomeBG-size));
         transition: var(--scrollTransition);
     }
 
