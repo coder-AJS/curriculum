@@ -1,5 +1,6 @@
 import { config } from "./../globalConf.js"
 import * as scale from "./scale-control.js"
+import * as wellcome from "./wellcome-control.js"
 import * as section1 from "./section1-control.js"
 
 export const init = (g, l) => {
@@ -17,6 +18,7 @@ export const init = (g, l) => {
             (v) => changeSection(v, g),
             () => scale.scalePos(g, l),
             (v) => scale.viewPos(v, l),
+            (v) => wellcome.setBgSize(g, l, v)
         ]
     })
 
@@ -56,7 +58,7 @@ const activeWheelEvent = (g, l) => {
 
     window.addEventListener("wheel", (e) => {
         if (!g.static.scrollLock) {
-            top = Math.sign(e.deltaY) === 1 ? -config.dynamicScrollDistance : config.dynamicScrollDistance
+            top = Math.sign(e.deltaY) === 1 ? 100 / -config.scrollSteps : 100 / config.scrollSteps
             let nextScroll = g.reactive.scroll.dynamicScroll + top
             nextScroll > 0 && (nextScroll = 0)
             nextScroll <= -permitedScroll && (nextScroll = -permitedScroll) /* limit scroollayer height */

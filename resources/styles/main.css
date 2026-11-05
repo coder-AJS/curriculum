@@ -12,6 +12,8 @@
     /* sections */
     --nonScrollHeight: 100vh;
     --scrollHeight: 200vh;
+    --wellcome-size: 2;
+
 }
 
 body {
@@ -35,8 +37,15 @@ body {
     height: var(--scrollHeight);
     transform: translateY(var(--scrollTop));
     transition: var(--scrollTransition);
-/*     border: 1px solid blue;
- */}
+    /*     border: 1px solid blue;
+ */
+}
+
+.bg-cover {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
 .horLimit {
     width: 100%;
@@ -120,6 +129,11 @@ body {
     height: 100%;
 }
 
+.fit {
+    width: fit-content;
+    height: fit-content;
+}
+
 .z1 {
     z-index: 1;
 }
@@ -132,7 +146,6 @@ body {
     z-index: 3;
 }
 
-/* max specifity */
-.hidden {
+/* .hidden {
     display: none;
-}
+} */

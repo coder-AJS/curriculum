@@ -1,3 +1,5 @@
+import * as typeAnimation from "./../animations/typeWriter.js"
+
 const config = {
     html: {
         css: {
@@ -96,4 +98,9 @@ const addComponents = async (l, box, config, node, module) => {
 export const init = async (l) => {
     const cardBox = document.querySelectorAll(".cardBox")
     Object.entries(config).forEach(([key, conf], index) => addComponents(l, cardBox[index], conf, nodes[key], l.component.statCard))
+}
+
+export const typeType = () => {
+    const box = document.querySelector("#hardTitle")
+    typeAnimation.add(l, "HARD SKILLS", box)
 }

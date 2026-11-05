@@ -5,12 +5,15 @@
     .vpBox {
         border: 1px solid green;
 
-        .hard {
+        .hardTitle {
+            width: fit-content;
+            height: fit-content;
             font-family: "dune";
             font-weight: bolder;
             font-size: 32px;
             color: var(--white);
             margin-bottom: 30px;
+            border: 1px solid red;
         }
 
         .cardsContainer {

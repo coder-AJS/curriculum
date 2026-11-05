@@ -1,8 +1,11 @@
+import { config } from "./../globalConf.js"
+
 export const components = {
     cube: false
 }
 
 export const init = async (g, l, iface) => {
+    g.static.wellcomeBG = l.helper.css.get("wellcome-size", document.body)
 
     document.addEventListener("component", (e) => {
         if (e.detail.id in components) {
@@ -48,9 +51,8 @@ export const initComponents = () => {
     components.cube.init()
 }
 
-export const backgroundSize = (l, v) => {
-    if (v > 100) return
-    const wellcome = document.querySelector("#wellcome")
-    const value = 200
-    l.helper.css.set("bg-size", value + "%", wellcome)
+export const setBgSize = (g, l, v) => {
+    if (v < -100) return
+    const value = g.static.wellcomeBG - v / -100
+    l.helper.css.set("wellcome-size", value, document.body)
 }
