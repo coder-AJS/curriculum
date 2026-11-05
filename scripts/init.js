@@ -1,18 +1,21 @@
 import * as framework from "./level.js"
 import * as resolver from "./helper/resolver.js"
 
+const isLocal = window.location.hostname === "127.0.0.1"
+const base = isLocal ? "" : "/curriculum"
+
 const controls = {
-    scroll: "/scripts/controls/scroll-control.js",
-    scale: "/scripts/controls/scale-control.js",
-    components: "/scripts/controls/components-control.js",
-    wellcome: "/scripts/controls/wellcome-control.js",
-    section1: "/scripts/controls/section1-control.js"
+    scroll: base + "/scripts/controls/scroll-control.js",
+    scale: base + "/scripts/controls/scale-control.js",
+    components: base + "/scripts/controls/components-control.js",
+    wellcome: base + "/scripts/controls/wellcome-control.js",
+    section1: base + "/scripts/controls/section1-control.js"
 }
 
 const iface = {
-    wellcome: "/scripts/iface/wellcome-iface.js",
-    scale: "/scripts/iface/scale-iface.js",
-    section1: "/scripts/iface/section1-iface.js"
+    wellcome: base + "/scripts/iface/wellcome-iface.js",
+    scale: base + "/scripts/iface/scale-iface.js",
+    section1: base + "/scripts/iface/section1-iface.js"
 }
 
 const prepareApp = (global, level, control, iface) => {
@@ -34,7 +37,8 @@ const init = async () => {
         resolver.getModules(iface)
     ])
 
-    const global = { static: {},
+    const global = {
+        static: {},
         reactive: {
             iface: {
                 wellcome: level.helper.reactive.newReactive(),
