@@ -32,7 +32,7 @@ const prepareApp = (global, level, control, iface) => {
 
 const init = async () => {
     const [level] = await Promise.all([
-        framework.init(resolver),
+        framework.init(base,resolver),
         resolver.getModules(controls),
         resolver.getModules(iface)
     ])
