@@ -38,6 +38,7 @@ const init = async () => {
     ])
 
     const global = {
+        base: base,
         static: {},
         reactive: {
             iface: {

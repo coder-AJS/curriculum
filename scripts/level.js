@@ -2,6 +2,7 @@ const levelVersion = "0017b2acf949276dad69fbcbad0980f0e1c9b7c2"
 const serverUrl = `https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}`
 
 export const init = async (base, resolver) => {
+    console.log(base)
     
     const helpers = {
         component: `${serverUrl}/helpers/components.js`,

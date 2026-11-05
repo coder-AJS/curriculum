@@ -25,7 +25,7 @@ export const init = (g, l, iface) => {
         }
     }
 
-    iface.init(l)
+    iface.init(g, l)
 }
 
 export const activeCards = async (g, l) => {
