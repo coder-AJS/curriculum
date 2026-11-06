@@ -15,6 +15,8 @@ const frames = async (frames) => {
     return
 }
 
+const isNumber = (number) => { return typeof (number) === "number" }
+
 /* appear blur */
 export const appearBlur = async ({
     box = null,
@@ -24,7 +26,7 @@ export const appearBlur = async ({
     transition = 500,
     delay = 200
 } = {}) => {
-    if (!box || !text ) return onError()
+    if (!box || !text || !isNumber(blur) || !isNumber(scale) || !isNumber(transition) || !isNumber(delay)) return onError()
 
     const boxes = addText(box, text)
     boxes.forEach(item => {
@@ -33,7 +35,7 @@ export const appearBlur = async ({
         item.style.filter = `blur(${blur}px)`
         item.style.transform = `scale(${scale})`
     })
-    await frames(2)
+    await frames(4)
 
     for (const item of boxes) {
         item.style.opacity = 1
@@ -52,6 +54,8 @@ export const toRigthSeq = async ({
     transition = null,
     delay = 200
 } = {}) => {
+    if (!box || !isNumber(transition) || !isNumber(delay)) return onError()
+
     const charBoxes = Array.from(box.querySelectorAll("span"))
     const boxesWidth = charBoxes.map(item => item.offsetWidth)
     const charsSum = boxesWidth.reduce((acumulador, actual) => acumulador + actual, 0)
@@ -62,7 +66,7 @@ export const toRigthSeq = async ({
         item.style.position = "relative"
     })
 
-    await new Promise(resolve => setTimeout(resolve, 50))
+    await frames(4)
 
     for (let i = charBoxes.length - 1; i >= 0; i--) {
         charBoxes[i].style.left = `calc(100% - ${charsSum}px)`
@@ -71,15 +75,19 @@ export const toRigthSeq = async ({
 }
 
 /* type efect */
-export const init = async ({ 
+export const typeWriter = async ({
     box = null,
-    text = null, 
+    text = null,
     delay = 200
 } = {}) => {
-    for (const item of Array.from(text)) {
-        const charBox = box.appendChild(document.createElement("span"))
-        charBox.textContent = item === " " ? "\u00A0" : item
-        await new Promise(resolve => setTimeout(resolve, delay))
-    }
+    if (!box || !text || !isNumber(delay)) return onError()
+
+    const boxes = addText(box, text)
+    boxes.forEach(item => item.style.opacity = 0)
+
+    await frames(4)
+
+
+    await new Promise(resolve => setTimeout(resolve, delay))
     return
 }
