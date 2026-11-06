@@ -10,12 +10,13 @@ const addText = (box, text) => {
     return box.querySelectorAll("span")
 }
 
-const frames = async (frames) => {
-    for (let i = frames; i >= 0; i--) { await new Promise(requestAnimationFrame) }
-    return
-}
+const frames = async (frames) => { for (let i = frames; i >= 0; i--) { await new Promise(requestAnimationFrame) }; return }
 
 const isNumber = (number) => { return typeof (number) === "number" }
+
+const updateProps = (element, props) => {
+    Object.entries(props).forEach(([key, value]) => element.style[key] = value)
+}
 
 /* appear blur */
 export const appearBlur = async ({
@@ -29,21 +30,18 @@ export const appearBlur = async ({
     if (!box || !text || !isNumber(blur) || !isNumber(scale) || !isNumber(transition) || !isNumber(delay)) return onError()
 
     const boxes = addText(box, text)
-    boxes.forEach(item => {
-        item.style.opacity = 0
-        item.style.transition = transition + "ms"
-        item.style.filter = `blur(${blur}px)`
-        item.style.transform = `scale(${scale})`
-    })
+    boxes.forEach(item => updateProps(item, {
+        opacity: 0,
+        transition: transition + "ms",
+        filter: `blur(${blur}px)`,
+        transform: `scale(${scale})`
+    }))
     await frames(4)
 
     for (const item of boxes) {
-        item.style.opacity = 1
-        item.style.filter = "blur(0px)"
-        item.style.transform = "scale(1)"
+        updateProps(item, { opacity: 1, filter: "blur(0px)", transform: `scale(1)` })
         await new Promise(resolve => setTimeout(resolve, delay))
     }
-
     await new Promise(resolve => setTimeout(resolve, transition))
     return
 }
@@ -51,7 +49,7 @@ export const appearBlur = async ({
 /* move right */
 export const toRigthSeq = async ({
     box = null,
-    transition = null,
+    transition = 500,
     delay = 200
 } = {}) => {
     if (!box || !isNumber(transition) || !isNumber(delay)) return onError()
@@ -60,34 +58,32 @@ export const toRigthSeq = async ({
     const boxesWidth = charBoxes.map(item => item.offsetWidth)
     const charsSum = boxesWidth.reduce((acumulador, actual) => acumulador + actual, 0)
 
-    charBoxes.forEach(item => {
-        item.style.transition = transition + "ms"
-        item.style.left = 0
-        item.style.position = "relative"
-    })
-
+    charBoxes.forEach(item => updateProps(item, { transition: transition + "ms", left: "0px", position: "relative" }))
     await frames(4)
 
     for (let i = charBoxes.length - 1; i >= 0; i--) {
-        charBoxes[i].style.left = `calc(100% - ${charsSum}px)`
+        updateProps(charBoxes[i], { left: `calc(100% - ${charsSum}px)` })
         await new Promise(resolve => setTimeout(resolve, delay))
     }
+    await new Promise(resolve => setTimeout(resolve, transition))
+    return
 }
 
-/* type efect */
+/* type effect */
 export const typeWriter = async ({
     box = null,
     text = null,
     delay = 200
 } = {}) => {
-    if (!box || !text || !isNumber(delay)) return onError()
+    if (!box || typeof text !== "string" || !isNumber(delay)) return onError()
 
     const boxes = addText(box, text)
-    boxes.forEach(item => item.style.opacity = 0)
-
+    boxes.forEach(item => updateProps(item, { opacity: 0 }))
     await frames(4)
 
-
-    await new Promise(resolve => setTimeout(resolve, delay))
+    for (const item of boxes) {
+        updateProps(item, { opacity: 1 })
+        await new Promise(resolve => setTimeout(resolve, delay))
+    }
     return
 }
