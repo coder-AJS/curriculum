@@ -91,9 +91,12 @@ export const init = async (g, l) => {
 
 export const addTitle = async (g, l) => {
     if (g.static.section1_animated) return
+    /* type animation */
     const title = document.querySelector("#hardTitle")
     const delay = parseFloat(l.helper.css.get("scrollTransition").split(" ")[0])
     await l.helper.tempo.sleep(delay)
     await l.animation.typeWriter.init(title, "HARD SKILLS", 80)
-    return
+    await l.helper.tempo.sleep(500)
+    /* toSide animation */
+    l.animation.toSide.toRigthSeq(title, "2000ms", 200)
 }

@@ -32,8 +32,8 @@ export const init = (g, l) => {
             async () => {
                 if (!g.static.section1_animated) {
                     block(g, true)
-                    await section1_iface.addTitle(g, l)
-                    await section1_control.activeCards(g, l)
+                    section1_control.activeCards(g, l)
+                    section1_iface.addTitle(g, l)
                     g.static.section1_animated = true
                     block(g, false)
                     scale_control.block(g, l, false)
