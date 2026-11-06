@@ -1,7 +1,8 @@
 import { config } from "./../globalConf.js"
-import * as scale from "./scale-control.js"
-import * as wellcome from "./wellcome-control.js"
-import * as section1 from "./section1-control.js"
+import * as scale_control from "./scale-control.js"
+import * as wellcome_control from "./wellcome-control.js"
+import * as section1_control from "./section1-control.js"
+import * as section1_iface from "./../iface/section1-iface.js"
 
 export const init = (g, l) => {
     document.documentElement.style.overflow = "hidden"
@@ -16,9 +17,9 @@ export const init = (g, l) => {
         listeners: [
             (v) => smoothScroll(v, sectionScroll, g),
             (v) => changeSection(v, g),
-            () => scale.scalePos(g, l),
-            (v) => scale.viewPos(v, l),
-            (v) => wellcome.setBgSize(g, l, v)
+            () => scale_control.scalePos(g, l),
+            (v) => scale_control.viewPos(v, l),
+            (v) => wellcome_control.setBgSize(g, l, v)
         ]
     })
 
@@ -31,10 +32,11 @@ export const init = (g, l) => {
             async () => {
                 if (!g.static.section1_animated) {
                     block(g, true)
-                    await section1.activeCards(g, l)
+                    await section1_iface.addTitle(g, l)
+                    await section1_control.activeCards(g, l)
                     g.static.section1_animated = true
                     block(g, false)
-                    scale.block(g, l, false)
+                    scale_control.block(g, l, false)
                 }
             }
         ]

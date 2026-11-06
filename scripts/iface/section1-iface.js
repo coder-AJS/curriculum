@@ -89,7 +89,11 @@ export const init = async (g, l) => {
     cardBox.forEach((item, index) => addComponents(g, l, item, index))
 }
 
-export const typeType = () => {
-    const box = document.querySelector("#hardTitle")
-    typeAnimation.add(l, "HARD SKILLS", box)
+export const addTitle = async (g, l) => {
+    if (g.static.section1_animated) return
+    const title = document.querySelector("#hardTitle")
+    const delay = parseFloat(l.helper.css.get("scrollTransition").split(" ")[0])
+    await l.helper.tempo.sleep(delay)
+    await l.animation.typeWriter.init(title, "HARD SKILLS", 80)
+    return
 }

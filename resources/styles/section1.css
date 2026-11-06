@@ -1,4 +1,4 @@
-.section-1 {
+.section_1 {
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
 
@@ -6,14 +6,14 @@
         border: 1px solid green;
 
         .hardTitle {
-            width: fit-content;
-            height: fit-content;
+            width: 100%;
+            height: 60px;
             font-family: "dune";
             font-weight: bolder;
             font-size: 32px;
             color: var(--white);
             margin-bottom: 30px;
-            border: 1px solid red;
+            border: 1px solid rgb(119, 0, 255);
         }
 
         .cardsContainer {

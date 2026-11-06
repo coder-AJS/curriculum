@@ -3,8 +3,8 @@
     left: calc(100vw - var(--scrollScaleWidth));
     width: var(--scrollScaleWidth);
     height: 100vh;
-    transition: background-color 1000ms, left 500ms;
     pointer-events: var(--events);
+    border: 1px solid red;
 
     --scaleHeight: calc(var(--nonScrollHeight) * 2 + var(--scrollHeight));
     /* la altura de scroll + 2 * nonScroll */
@@ -123,9 +123,6 @@
     }
 
     &:hover {
-
-        /*         background-color: rgba(0, 0, 0, 0.6);
- */
         .scrollScale {
             top: var(--scaleMargin);
             height: calc(100% - var(--scaleMargin) * 2);
