@@ -1,5 +1,3 @@
-import * as typeAnimation from "./../animations/typeWriter.js"
-
 const addComponents = async (g, l, box, index) => {
     const config = [
         {
@@ -97,7 +95,7 @@ export const addTitle = async (g, l) => {
     await l.helper.tempo.sleep(delay)
     /*     await l.animation.typeWriter.init(title, "HARD SKILLS", 80)
      */
-    await l.animation.text.appear({
+    await l.animation.text.appearBlur({
         box: title,
         text: "HARD SKILLS",
         blur: 10,
@@ -106,5 +104,9 @@ export const addTitle = async (g, l) => {
     })
 
     /* toSide animation */
-    l.animation.toSide.toRigthSeq(title, "2000ms", 80)
+    l.animation.text.toRigthSeq({
+        box: title, 
+        transition: 2000,
+        delay: 80
+    })
 }

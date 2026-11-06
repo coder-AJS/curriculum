@@ -18,8 +18,6 @@ export const init = async (base, resolver) => {
     }
 
     const animations = {
-        typeWriter: base + "/scripts/animations/typeWriter.js",
-        toSide: base + "/scripts/animations/toSide.js",
         text: base + "/scripts/animations/text.js"
     }
 

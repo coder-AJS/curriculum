@@ -25,10 +25,8 @@ globalStyle.replaceSync(`
 
             .side {
                 transform-style: preserve-3d;
-                border: 2px solid red;
-/*                 font-size: 300px;
-                color: rgba(255, 255, 255, 0.0);
- */            }
+                border: 2px solid white;
+            }
 
             .top { width: 100%; height: var(--perspective); }
             .bottom { width: 100%; height: var(--perspective); }
@@ -109,10 +107,10 @@ export default class Cube3d extends HTMLElement {
                 <ul class="cube max relative mode-${this.logic.sideMode}">
                     <li class="side front FCenter max absolute"></li>
                     <li class="side back FCenter max absolute">${this.node.back.html}</li>
-                    <li class="side top FCenter absolute">3</li>
-                    <li class="side bottom FCenter absolute">4</li>
-                    <li class="side left FCenter absolute">5</li>
-                    <li class="side right FCenter absolute">6</li>
+                    <li class="side top FCenter absolute"></li>
+                    <li class="side bottom FCenter absolute"></li>
+                    <li class="side left FCenter absolute"></li>
+                    <li class="side right FCenter absolute"></li>
                 </ul>
             </div>
         `
