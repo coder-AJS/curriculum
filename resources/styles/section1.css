@@ -10,10 +10,9 @@
             height: 60px;
             font-family: "dune";
             font-weight: bolder;
-            font-size: 40px;
-            color: rgb(201, 199, 199);
+            font-size: 32px;
+            color: var(--white);
             margin-bottom: 30px;
-            text-shadow: 5px 2px 15px rgba(94, 248, 248, 0.6);
         }
 
         .cardsContainer {

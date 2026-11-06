@@ -95,8 +95,16 @@ export const addTitle = async (g, l) => {
     const title = document.querySelector("#hardTitle")
     const delay = parseFloat(l.helper.css.get("scrollTransition").split(" ")[0])
     await l.helper.tempo.sleep(delay)
-    await l.animation.typeWriter.init(title, "HARD SKILLS", 80)
-    await l.helper.tempo.sleep(500)
+    /*     await l.animation.typeWriter.init(title, "HARD SKILLS", 80)
+     */
+    await l.animation.text.appear({
+        box: title,
+        text: "HARD SKILLS",
+        blur: 10,
+        transition: 500,
+        delay: 100
+    })
+
     /* toSide animation */
-    l.animation.toSide.toRigthSeq(title, "2000ms", 200)
+    l.animation.toSide.toRigthSeq(title, "2000ms", 80)
 }
