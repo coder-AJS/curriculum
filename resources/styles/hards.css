@@ -1,0 +1,21 @@
+.hards {
+
+
+    .sectionContent {
+        border: 1px solid red;
+        height: 100%;
+        container-type: size;
+
+        .hardsTitle {
+
+            width: fit-content;
+            height: 60px;
+            font-family: "conthrax";
+            font-size: 7cqi;
+            color: rgba(255, 255, 255, 0.26);
+        }
+        .titleSpc {
+            width: 4cqi;
+        }
+    }
+}

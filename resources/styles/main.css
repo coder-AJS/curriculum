@@ -30,15 +30,18 @@ body {
 /* shared specifics */
 .sectionScroll {
     --scrollTop: 0;
-    /*     border: 1px solid red;
- */
     top: 100vh;
     width: 100%;
     height: var(--scrollHeight);
     transform: translateY(var(--scrollTop));
     transition: var(--scrollTransition);
-    /*     border: 1px solid blue;
- */
+    border: 1px solid blue;
+}
+
+.darkSection {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    padding: 3% 10%;
 }
 
 /* .bg-cover {
