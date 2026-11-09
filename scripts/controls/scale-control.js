@@ -1,6 +1,4 @@
-import { permitedScroll } from "./scroll-control.js"
-
-const addReactivity = (g, l) => {
+const addReactivity = (app, l) => {
     const inter = document.querySelector("#interLayer")
     const scale = document.querySelector("#scale")
     const scaleMargin = parseFloat(l.helper.css.get("scaleMargin", scale))
@@ -12,8 +10,8 @@ const addReactivity = (g, l) => {
     inter.addEventListener("pointermove", (e) => {
         over && (globalPos = linePos(e, l, inter, scale, scaleMargin))
         if (dragging) {
-            const newScroll = (globalPos / 100) * (permitedScroll)
-            updateReactive(g, newScroll)
+            const newScroll = (globalPos / 100) * (app.dynamic.permitedScroll)
+            updateReactive(app, newScroll)
         }
     })
 
@@ -36,14 +34,14 @@ const addReactivity = (g, l) => {
         inter.setPointerCapture(e.pointerId)
         globalPos = linePos(e, l, inter, scale, scaleMargin)
         const newScroll = (globalPos / 100) * (permitedScroll)
-        updateReactive(g, newScroll)
+        updateReactive(app, newScroll)
     })
 
     inter.addEventListener("pointerup", (e) => {
         dragging = false
         inter.releasePointerCapture(e.pointerId)
         const newScroll = (globalPos / 100) * (permitedScroll)
-        updateReactive(g, newScroll)
+        updateReactive(app, newScroll)
     })
 }
 
@@ -58,7 +56,7 @@ const linePos = (e, l, inter, scale, scaleMargin) => {
     return pos
 }
 
-const updateReactive = (g, newScroll) => g.reactive.scroll.dynamicScroll = -Math.round(newScroll)
+const updateReactive = (app, newScroll) => g.reactive.scroll.dynamicScroll = -Math.round(newScroll)
 
 let lastInfoValue = 0
 let contID = 0
@@ -99,11 +97,11 @@ const updateCounter = async (value, l) => {
     lastInfoValue = value
 }
 
-export const block = (g, l, boolean) => {
+export const block = (app, l, boolean) => {
     l.helper.css.set("events", boolean ? "none" : "auto", scale)
 }
 
-export const scalePos = (g, l) => {
+export const scalePos = (app, l) => {
     const scrollScale = document.querySelector(".scrollScale")
     l.helper.css.set("dynamicTop", g.reactive.scroll.dynamicScroll + "%", scrollScale)
 }
@@ -124,10 +122,10 @@ export const viewPos = async (dynamicScroll, l) => {
     l.helper.css.set("viewTop", viewTop + "%", scale)
 }
 
-export const init = (g, l, iface) => {
+export const init = (app, l, iface) => {
     iface.init(l)
     g.static.scaleVisibility = 0
     updateCounter()
-    block(g, l, true)
-    addReactivity(g, l)
+    block(app, l, true)
+    addReactivity(app, l)
 }

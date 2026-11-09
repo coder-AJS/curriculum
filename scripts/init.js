@@ -1,10 +1,13 @@
 import * as framework from "./level.js"
 import * as resolver from "./helper/resolver.js"
-
+import * as reactives from "./reactives.js"
+/* import { permitedScroll } from "./controls/scroll-control.js"
+ */
 const isLocal = window.location.hostname === "127.0.0.1"
 const base = isLocal ? "" : "/curriculum"
 
 const controls = {
+    stats: base + "/scripts/controls/stats-control.js",
     scroll: base + "/scripts/controls/scroll-control.js",
     scale: base + "/scripts/controls/scale-control.js",
     components: base + "/scripts/controls/components-control.js",
@@ -18,28 +21,28 @@ const iface = {
     section1: base + "/scripts/iface/section1-iface.js"
 }
 
-const prepareApp = (global, level, control, iface) => {
-    control.scroll.init(global, level)
-    control.components.init(global, level) /* here init devMode */
-    control.wellcome.init(global, level, iface.wellcome)
+const prepareApp = (app, level, control, iface) => {
+    control.scroll.init(app, level)
+
+
 
     /* parallel */
-
-    control.scale.init(global, level, iface.scale)
-    control.section1.init(global, level, iface.section1)
 
 }
 
 const init = async () => {
     const [level] = await Promise.all([
-        framework.init(base,resolver),
+        framework.init(base, resolver),
         resolver.getModules(controls),
         resolver.getModules(iface)
     ])
 
-    const global = {
+    const app = {
         base: base,
-        static: {},
+        dynamic: {
+            permitedScroll: null,
+            scrollLock: true
+        },
         reactive: {
             iface: {
                 wellcome: level.helper.reactive.newReactive(),
@@ -49,7 +52,8 @@ const init = async () => {
         }
     }
 
-    prepareApp(global, level, controls, iface)
+    reactives.init(app, level)
+    prepareApp(app, level, controls, iface)
 }
 
 init()

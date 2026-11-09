@@ -1,5 +1,5 @@
 /* import * as devMode from "../controls/devMode.js"
- */import * as scroll from "./scroll-control.js"
+ */import * as scroll_helper from "./scroll-control.js"
 import * as wellcome from "./wellcome-control.js"
 
 

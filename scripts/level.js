@@ -4,6 +4,7 @@ const serverUrl = `https://cdn.jsdelivr.net/gh/coder-ajs/lev@${levelVersion}`
 export const init = async (base, resolver) => {
     
     const helpers = {
+        animation: base + "/scripts/helper/animation.js",
         component: `${serverUrl}/helpers/components.js`,
         dom: `${serverUrl}/helpers/dom.js`,
         reactive: `${serverUrl}/helpers/reactive.js`,
@@ -17,18 +18,19 @@ export const init = async (base, resolver) => {
         cube3d: base + "/scripts/components/cube.js"
     }
 
-    const animations = {
+    const motions = {
         text: base + "/scripts/animations/text.js"
     }
 
     await Promise.all([
         resolver.getModules(helpers),
         resolver.getModules(components),
-        resolver.getModules(animations)
+        resolver.getModules(motions)
     ])
+
     return { 
         "helper": helpers, 
         "component": components,
-        "animation": animations
+        "motions": motions
      }
 }
